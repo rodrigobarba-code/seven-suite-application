@@ -1,0 +1,26 @@
+{
+  "session_information":
+  {
+    "ip_address":"192.168.56.117",
+    "username": "mexicali-router-user",
+    "password": "mexicali-root",
+    "ports":
+    {
+      "ssh": 22,
+      "api": 8728,
+      "api_ssl": 8729
+    },
+    "connection_via": "ssh"
+  },
+  "router_information":
+  {
+    "ip_address":
+    [
+      {
+        "address": "192.168.56.117/24",
+        "network": "192.168.56.0",
+        "interface": "ether1"
+      }
+    ]
+  }
+}
