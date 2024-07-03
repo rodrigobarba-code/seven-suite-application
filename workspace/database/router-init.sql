@@ -1,7 +1,7 @@
 /* Create 'router' table */
 DROP TABLE IF EXISTS router;
 CREATE TABLE router (
-    router_id VARCHAR(10240) NOT NULL PRIMARY KEY,
+    router_id VARCHAR(512) NOT NULL PRIMARY KEY,
     router_name VARCHAR(256) NULL,
     fk_site_id INT NOT NULL,
     fk_session_id INT NULL,
