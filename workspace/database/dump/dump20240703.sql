@@ -1,6 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `seven_infrastructure` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `seven_infrastructure`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: localhost    Database: seven_infrastructure
 -- ------------------------------------------------------
@@ -56,6 +54,7 @@ DROP TABLE IF EXISTS `ip_addresses_configuration`;
 CREATE TABLE `ip_addresses_configuration` (
   `ip_address_id` int NOT NULL AUTO_INCREMENT,
   `fk_ip_address_interface` int NOT NULL,
+  `fk_link_type_id` int NOT NULL,
   `ip_address_alias` varchar(512) DEFAULT NULL,
   `ip_address_state` varchar(8) DEFAULT NULL,
   `ip_address` varchar(64) NOT NULL,
@@ -64,7 +63,9 @@ CREATE TABLE `ip_addresses_configuration` (
   `ip_address_gateway` varchar(64) NOT NULL,
   PRIMARY KEY (`ip_address_id`),
   KEY `fk_ip_address_interface` (`fk_ip_address_interface`),
-  CONSTRAINT `ip_addresses_configuration_ibfk_1` FOREIGN KEY (`fk_ip_address_interface`) REFERENCES `interface` (`interface_id`)
+  KEY `fk_link_type_id` (`fk_link_type_id`),
+  CONSTRAINT `ip_addresses_configuration_ibfk_1` FOREIGN KEY (`fk_ip_address_interface`) REFERENCES `interface` (`interface_id`),
+  CONSTRAINT `ip_addresses_configuration_ibfk_2` FOREIGN KEY (`fk_link_type_id`) REFERENCES `link_type` (`link_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -75,6 +76,31 @@ CREATE TABLE `ip_addresses_configuration` (
 LOCK TABLES `ip_addresses_configuration` WRITE;
 /*!40000 ALTER TABLE `ip_addresses_configuration` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ip_addresses_configuration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `link_type`
+--
+
+DROP TABLE IF EXISTS `link_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `link_type` (
+  `link_type_id` int NOT NULL AUTO_INCREMENT,
+  `link_type_name` varchar(100) NOT NULL,
+  `link_type_description` varchar(512) NOT NULL,
+  `link_type_segment` int NOT NULL,
+  PRIMARY KEY (`link_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `link_type`
+--
+
+LOCK TABLES `link_type` WRITE;
+/*!40000 ALTER TABLE `link_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `link_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -201,6 +227,7 @@ CREATE TABLE `site` (
   `site_id` int NOT NULL AUTO_INCREMENT,
   `fk_region_id` int NOT NULL,
   `site_name` varchar(100) NOT NULL,
+  `site_segment` int NOT NULL,
   PRIMARY KEY (`site_id`),
   KEY `fk_region_id` (`fk_region_id`),
   CONSTRAINT `site_ibfk_1` FOREIGN KEY (`fk_region_id`) REFERENCES `region` (`region_id`)
@@ -215,14 +242,6 @@ LOCK TABLES `site` WRITE;
 /*!40000 ALTER TABLE `site` DISABLE KEYS */;
 /*!40000 ALTER TABLE `site` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'seven_infrastructure'
---
-
---
--- Dumping routines for database 'seven_infrastructure'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -233,4 +252,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-02 17:49:03
+-- Dump completed on 2024-07-03 16:43:55
