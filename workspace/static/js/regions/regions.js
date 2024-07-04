@@ -1,0 +1,1 @@
+let table = new DataTable('#regions-table');
