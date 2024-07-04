@@ -104,7 +104,7 @@ LOCK TABLES `link_type` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `region`
+-- Table structure for table `regions`
 --
 
 DROP TABLE IF EXISTS `region`;
@@ -118,12 +118,12 @@ CREATE TABLE `region` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `region`
+-- Dumping data for table `regions`
 --
 
 LOCK TABLES `region` WRITE;
-/*!40000 ALTER TABLE `region` DISABLE KEYS */;
-/*!40000 ALTER TABLE `region` ENABLE KEYS */;
+/*!40000 ALTER TABLE `regions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `regions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

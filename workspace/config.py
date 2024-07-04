@@ -1,6 +1,10 @@
+import os
+
+
 class DevelopmentConfig:
     # Development configurations
     DEBUG = True
+    SECRET_KEY = os.urandom(32)
     MYSQL_HOST = 'localhost'
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = 'root'

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}SevenSuite{% endblock %}</title>
+    <title>{% block title %}Seven Suite{% endblock %}</title>
 
     <! -- Bootstrap CSS -->
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
@@ -49,7 +49,7 @@
 <div class="sidebar close">
     <div class="logo-details">
         <i style="font-size: 20px" class="fa-solid fa-network-wired"></i>
-        <span class="logo_name">SevenSuite</span>
+        <span class="logo_name">Seven&nbsp;Suite</span>
     </div>
     <ul class="nav-links">
         <li>
@@ -71,9 +71,9 @@
             </div>
             <ul class="sub-menu">
                 <li><a class="link_name" href="#">Category</a></li>
-                <li><a href="./routers" id="router-link" >Routers</a></li>
-                <li><a href="./regions">Regions</a></li>
-                <li><a href="./sites">Sites</a></li>
+                <li><a href="" id="router-link" >Routers</a></li>
+                <li><a href="{{ url_for('regions.regions') }}">Regions</a></li>
+                <li><a href="">Sites</a></li>
             </ul>
         </li>
         <li>
@@ -172,7 +172,7 @@
 <section class="home-section">
     <div class="home-content">
         <i class='bx bx-menu'></i>
-        <span id="top-link" class="text">Home</span>
+        <span id="top-link" class="text"></span>
     </div>
     {% block content %}
     {% endblock %}
