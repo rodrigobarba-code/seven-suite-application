@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar With Bootstrap</title>
+    <title>{% block title %}SevenSuite{% endblock %}</title>
 
     <! -- Bootstrap CSS -->
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
@@ -58,7 +58,7 @@
                 <span class="link_name">Dashboard</span>
             </a>
             <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Category</a></li>
+                <li><a class="link_name" href="#">Dashboard</a></li>
             </ul>
         </li>
         <li>
@@ -71,9 +71,9 @@
             </div>
             <ul class="sub-menu">
                 <li><a class="link_name" href="#">Category</a></li>
-                <li><a href="#">HTML & CSS</a></li>
-                <li><a href="#">JavaScript</a></li>
-                <li><a href="#">PHP & MySQL</a></li>
+                <li><a href="./routers" id="router-link" >Routers</a></li>
+                <li><a href="./regions">Regions</a></li>
+                <li><a href="./sites">Sites</a></li>
             </ul>
         </li>
         <li>
@@ -172,7 +172,7 @@
 <section class="home-section">
     <div class="home-content">
         <i class='bx bx-menu'></i>
-        <span class="text">Home</span>
+        <span id="top-link" class="text">Home</span>
     </div>
     {% block content %}
     {% endblock %}
@@ -195,8 +195,13 @@
 
 <! -- Custom JS -->
 <script src="{{ url_for('static', filename='js/base/sidebar.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        let title = document.title;
+        $('#top-link').text(title);
+    });
+</script>
 <! -- Custom JS -->
-
 {% block scripts %}
 {% endblock %}
 </body>

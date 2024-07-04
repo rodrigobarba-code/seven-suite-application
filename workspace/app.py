@@ -38,6 +38,14 @@ def routers():
 def regions():
     return render_template('public/regions.html')
 
+@app.route('/home')
+def home():
+    return render_template('public/home.html')
+
+@app.route('/sites')
+def sites():
+    return render_template('public/sites.html')
+
 
 if __name__ == '__main__':
     app.config.from_object(DevelopmentConfig)
