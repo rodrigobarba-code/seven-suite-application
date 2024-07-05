@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} Regions / Manage {% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/regions/styles.css') }}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/regions/scripts.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<section>
+    <form action="{{ url_for('regions.add_region') if region is none else url_for('regions.update_region', region_id=region.region_id) }}" method="POST">
+        <div class="form-group">
+            <label for="region_name">Region's Name</label>
+            <input value="{{ region.region_name if region is not none }}" type="text" class="form-control" id="region_name" name="region_name" placeholder="Enter region's name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</section>
+{% endblock %}

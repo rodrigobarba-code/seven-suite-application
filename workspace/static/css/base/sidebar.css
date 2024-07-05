@@ -8,6 +8,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
+body {
+    background: #E4E9F7;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
