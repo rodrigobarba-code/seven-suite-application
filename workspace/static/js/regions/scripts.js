@@ -1,1 +1,7 @@
-let table = new DataTable('#regions-table');
+$(document).ready( function () {
+    $('#regions-table').DataTable(
+        {
+            responsive: true
+        }
+    );
+} );
