@@ -90,6 +90,8 @@
             <ul class="sub-menu">
                 <li><a href="{{ url_for('regions.regions') }}">Regions</a></li>
                 <li><a href="{{ url_for('sites.sites') }}">Sites</a></li>
+                <hr class="w-75" style="color: white">
+                <li><a href="{{ url_for('routers.routers') }}">Routers</a></li>
             </ul>
         </li>
         <div class="profile-details" style="text-align: left">
@@ -114,6 +116,18 @@
         <i class='bx bx-menu'></i>
         <span id="top-link" class="text"></span>
     </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="container-fluid pt-2 pb-2">
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     {% block content %}
     {% endblock %}
 </section>

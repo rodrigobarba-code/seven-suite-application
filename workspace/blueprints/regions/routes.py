@@ -54,7 +54,11 @@ def update_region(region_id):
 # Delete Region Route
 @regions_bp.route('/delete/<int:region_id>', methods=['GET', 'POST'])
 def delete_region(region_id):
-    ModelRegion.delete_region(workspace.db, region_id)
-    flash('Region Deleted Successfully', 'success')
+    try:
+        ModelRegion.delete_region(workspace.db, region_id)
+        flash('Region Deleted Successfully', 'success')
+    except Exception as e:
+        if 'foreign key constraint' in str(e):
+            flash('Error in deleting Region: Region is being used in Site', 'danger')
     return redirect(url_for('regions.regions'))
 # Delete Region Route

@@ -29,22 +29,6 @@
 {% block content %}
 
 
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<div class="container-fluid pt-2 pb-2">
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
-<!-- Flash Messages -->
-
-
 <!-- Regions Jumbotron -->
 <section class="regions-jumbotron">
     <div class="p-5 mb-4 base-jumbotron">

@@ -3,6 +3,7 @@ from blueprints.home import home_bp
 from blueprints.dashboard import dashboard_bp
 from blueprints.regions import regions_bp
 from blueprints.sites import sites_bp
+from blueprints.routers import routers_bp
 # Blueprints
 
 # Flask import
@@ -27,6 +28,7 @@ def create_app():
     application.register_blueprint(dashboard_bp, url_prefix='/dashboard')
     application.register_blueprint(regions_bp, url_prefix='/regions')
     application.register_blueprint(sites_bp, url_prefix='/sites')
+    application.register_blueprint(routers_bp, url_prefix='/routers')
     # Register Blueprints
 
     return application
