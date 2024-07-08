@@ -6,18 +6,16 @@ class ModelSessionInformation:
     def add_session_information(self, db, session_information):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_add_session_information(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (
-                session_information.fk_site_id,
-                session_information.fk_user_id,
-                session_information.session_start,
-                session_information.session_end,
-                session_information.session_duration,
-                session_information.session_status,
-                session_information.session_notes,
-                session_information.session_type,
-                session_information.session_location,
-                session_information.session_region,
-                session_information.session_country
+            cursor.execute("CALL sp_add_session_information(%s, %s, %s, %s, %s, %s, %s, %s, %s)", (
+                session_information.session_id,
+                session_information.session_ip_address,
+                session_information.session_mac_address,
+                session_information.session_username,
+                session_information.session_password,
+                session_information.session_connection_type,
+                session_information.session_brand,
+                session_information.session_model,
+                session_information.session_allow_remote_access
             ))
             db.connection.commit()
         except Exception as ex:
@@ -27,19 +25,16 @@ class ModelSessionInformation:
     def update_session_information(self, db, session_information):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_update_session_information(% s, % s, % s, % s, % s, % s, % s, % s, % s, % s, % s)", (
+            cursor.execute("CALL sp_update_session_information(%s, %s, %s, %s, %s, %s, %s, %s, %s)", (
                 session_information.session_id,
-                session_information.fk_site_id,
-                session_information.fk_user_id,
-                session_information.session_start,
-                session_information.session_end,
-                session_information.session_duration,
-                session_information.session_status,
-                session_information.session_notes,
-                session_information.session_type,
-                session_information.session_location,
-                session_information.session_region,
-                session_information.session_country
+                session_information.session_ip_address,
+                session_information.session_mac_address,
+                session_information.session_username,
+                session_information.session_password,
+                session_information.session_connection_type,
+                session_information.session_brand,
+                session_information.session_model,
+                session_information.session_allow_remote_access
             ))
             db.connection.commit()
         except Exception as ex:
@@ -70,10 +65,7 @@ class ModelSessionInformation:
                 session[5],
                 session[6],
                 session[7],
-                session[8],
-                session[9],
-                session[10],
-                session[11]
+                session[8]
             )
         except Exception as ex:
             raise Exception(ex)
