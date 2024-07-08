@@ -42,9 +42,9 @@ class ModelSite:
         try:
             cursor = db.connection.cursor()
             cursor.execute("CALL sp_add_site(%s, %s, %s)", (
+                site.fk_region_id,
                 site.site_name,
-                site.site_address,
-                site.site_region_id
+                site.site_segment
             ))
             db.connection.commit()
         except Exception as ex:
@@ -56,9 +56,9 @@ class ModelSite:
             cursor = db.connection.cursor()
             cursor.execute("CALL sp_update_site(%s, %s, %s, %s)", (
                 site.site_id,
+                site.fk_region_id,
                 site.site_name,
-                site.site_address,
-                site.site_region_id
+                site.site_segment
             ))
             db.connection.commit()
         except Exception as ex:

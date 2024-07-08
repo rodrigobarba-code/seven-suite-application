@@ -1,6 +1,8 @@
 # Blueprints
-from blueprints.main import main_bp
+from blueprints.home import home_bp
+from blueprints.dashboard import dashboard_bp
 from blueprints.regions import regions_bp
+from blueprints.sites import sites_bp
 # Blueprints
 
 # Flask import
@@ -21,8 +23,10 @@ def create_app():
     # Create Database connection
 
     # Register Blueprints
-    application.register_blueprint(main_bp, url_prefix='/')
+    application.register_blueprint(home_bp, url_prefix='/')
+    application.register_blueprint(dashboard_bp, url_prefix='/dashboard')
     application.register_blueprint(regions_bp, url_prefix='/regions')
+    application.register_blueprint(sites_bp, url_prefix='/sites')
     # Register Blueprints
 
     return application

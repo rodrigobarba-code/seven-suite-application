@@ -2,10 +2,13 @@
 <html lang="en">
 
 <head>
+
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Seven Suite{% endblock %}</title>
+
 
     <! -- Bootstrap CSS -->
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
@@ -13,18 +16,22 @@
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <! -- Bootstrap CSS -->
 
+
     <! -- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
     <! -- Google Fonts -->
 
+
     <! -- Font Awesome -->
     <script src="https://kit.fontawesome.com/8562bd2fa0.js" crossorigin="anonymous"></script>
     <! -- Font Awesome -->
 
+
     <! -- Box Icons -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <! -- Box Icons -->
+
 
     <! -- JQuery -->
     <script
@@ -34,138 +41,67 @@
     </script>
     <! -- JQuery -->
 
+
     <! -- Data Tables CSS -->
     <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/datatables.min.css" rel="stylesheet">
     <! -- Data Tables CSS -->
+
 
     <! -- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base/sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base/styles.css') }}">
     <! -- Custom CSS -->
 
+
     {% block head %}
     {% endblock %}
+
+
 </head>
 
+
 <body>
+
+
 <! -- Sidebar -->
 <div class="sidebar close">
     <div class="logo-details">
-        <i style="font-size: 20px" class="fa-solid fa-network-wired"></i>
+        <a href="{{ url_for('home.home') }}"> <i class="fa-solid fa-server"></i> </a>
         <span class="logo_name">Seven&nbsp;Suite</span>
     </div>
     <ul class="nav-links">
         <li>
-            <a href="#">
-                <i class='bx bx-grid-alt'></i>
+            <a href="">
+                <i class="fa-solid fa-gauge"></i>
                 <span class="link_name">Dashboard</span>
             </a>
             <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Dashboard</a></li>
+                <li><a class="link_name" href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
             </ul>
         </li>
         <li>
             <div class="iocn-link">
-                <a href="#">
-                    <i class='bx bx-collection'></i>
-                    <span class="link_name">Category</span>
+                <a>
+                    <i class="fa-solid fa-database"></i>
+                    <span class="link_name">Databases</span>
                 </a>
                 <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-                <li><a class="link_name" href="#">Category</a></li>
-                <li><a href="" id="router-link">Routers</a></li>
                 <li><a href="{{ url_for('regions.regions') }}">Regions</a></li>
-                <li><a href="">Sites</a></li>
+                <li><a href="{{ url_for('sites.sites') }}">Sites</a></li>
             </ul>
         </li>
-        <li>
-            <div class="iocn-link">
-                <a href="#">
-                    <i class='bx bx-book-alt'></i>
-                    <span class="link_name">Posts</span>
-                </a>
-                <i class='bx bxs-chevron-down arrow'></i>
+        <div class="profile-details" style="text-align: left">
+            <div class="profile-content">
+                <img src="https://r1.ilikewallpaper.net/ipad-pro-wallpapers/download/94728/rainbow-blur-abstract-5k-ipad-pro-wallpaper-ilikewallpaper_com_200.jpg"
+                     alt="profileImg">
             </div>
-            <ul class="sub-menu">
-                <li><a class="link_name" href="#">Posts</a></li>
-                <li><a href="#">Web Design</a></li>
-                <li><a href="#">Login Form</a></li>
-                <li><a href="#">Card Design</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">
-                <i class='bx bx-pie-chart-alt-2'></i>
-                <span class="link_name">Analytics</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Analytics</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">
-                <i class='bx bx-line-chart'></i>
-                <span class="link_name">Chart</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Chart</a></li>
-            </ul>
-        </li>
-        <li>
-            <div class="iocn-link">
-                <a href="#">
-                    <i class='bx bx-plug'></i>
-                    <span class="link_name">Plugins</span>
-                </a>
-                <i class='bx bxs-chevron-down arrow'></i>
+            <div class="name-job">
+                <div class="profile_name">Rodrigo Barba</div>
+                <div class="job">Web Developer</div>
             </div>
-            <ul class="sub-menu">
-                <li><a class="link_name" href="#">Plugins</a></li>
-                <li><a href="#">UI Face</a></li>
-                <li><a href="#">Pigments</a></li>
-                <li><a href="#">Box Icons</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">
-                <i class='bx bx-compass'></i>
-                <span class="link_name">Explore</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Explore</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">
-                <i class='bx bx-history'></i>
-                <span class="link_name">History</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">History</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="#">
-                <i class='bx bx-cog'></i>
-                <span class="link_name">Setting</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Setting</a></li>
-            </ul>
-        </li>
-        <li>
-            <div class="profile-details">
-                <div class="profile-content">
-                    <img src="https://r1.ilikewallpaper.net/ipad-pro-wallpapers/download/94728/rainbow-blur-abstract-5k-ipad-pro-wallpaper-ilikewallpaper_com_200.jpg"
-                         alt="profileImg">
-                </div>
-                <div class="name-job">
-                    <div class="profile_name">Rodrigo Barba</div>
-                    <div class="job">Web Developer</div>
-                </div>
-                <i class='bx bx-log-out'></i>
-            </div>
+        </div>
         </li>
     </ul>
 </div>
@@ -174,7 +110,7 @@
 
 <! -- Content -->
 <section class="home-section">
-    <div class="home-content">
+    <div class="home-content" id="home-content">
         <i class='bx bx-menu'></i>
         <span id="top-link" class="text"></span>
     </div>
@@ -196,9 +132,11 @@
         crossorigin="anonymous"></script>
 <! -- Bootstrap JS -->
 
+
 <! -- Data Tables JS -->
 <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
 <! -- Data Tables JS -->
+
 
 <! -- Custom JS -->
 <script src="{{ url_for('static', filename='js/base/sidebar.js') }}"></script>
@@ -209,8 +147,13 @@
     });
 </script>
 <! -- Custom JS -->
+
+
 {% block scripts %}
 {% endblock %}
+
+
 </body>
+
 
 </html>
