@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 
-{% block title %} Router {% endblock %}
+{% block title %} {{ "Router / Add" if router is none else "Router / Update" }} {% endblock %}
 
 
 {% block head %}
@@ -71,14 +71,14 @@
 <!-- Routers Forms -->
 <section class="routers-forms">
     <div class="container-fluid w-75 pb-3">
-        <form action=""
+        <form action="{{ url_for('routers.add_router') if router is none else url_for('routers.update_router', router_id=router.router_id) }}"
               method="POST">
             <h2> Basic Information </h2>
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <label class="mb-2" for="router_name">Router's Alias <span style="color: red">*</span> </label>
-                        <input value="" type="text" class="form-control mb-2"
+                        <input value="{{ router.router_name }}" type="text" class="form-control mb-2"
                                id="router_name" name="router_name" placeholder="Enter router's alias" required>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                     <select class="form-select" id="fk_site_id" name="fk_site_id" aria-label="Site Selector" required>
                         <option value="">Choose a site</option>
                         {% for site in sites_list %}
-                        {% if site is not none and site.site_id == site.fk_site_id %}
+                        {% if router is not none and router.fk_site_id == site.site_id %}
                         <option value="{{ site.site_id }}" selected>{{ site.site_name }}</option>
                         {% else %}
                         <option value="{{ site.site_id }}">{{ site.site_name }}</option>
@@ -111,7 +111,7 @@
                                     style="color: red">*</span>
                             </label>
                             <input value="" type="text" class="form-control mb-2"
-                                   id="router_ip" name="router_ip" placeholder="Enter router's IP address" required>
+                                   id="router_ip" name="router_ip" placeholder="Enter router's IP address">
                         </div>
                     </div>
                     <div class="col">
@@ -129,7 +129,7 @@
                                     style="color: red">*</span></label>
                             <input value="" type="text" class="form-control mb-2"
                                    id="router_username" name="router_username" placeholder="Enter router's username"
-                                   requerid>
+                            >
                         </div>
                     </div>
                     <div class="col">
@@ -138,14 +138,17 @@
                                     style="color: red">*</span></label>
                             <input value="" type="text" class="form-control mb-2"
                                    id="router_password" name="router_password" placeholder="Enter router's password"
-                                   required>
+
+                            >
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label class="mb-2" for="session-connection-type">Connection Type <span style="color: red">*</span></label>
-                        <select class="form-select" id="session-connection-type" name="session-connection-type" aria-label="Connection Type Selector" required>
+                        <label class="mb-2" for="session-connection-type">Connection Type <span
+                                style="color: red">*</span></label>
+                        <select class="form-select" id="session-connection-type" name="session-connection-type"
+                                aria-label="Connection Type Selector">
                             <option value="">Choose a connection type</option>
                             <option value="ssh">SSH</option>
                             <option value="api">API</option>
@@ -176,7 +179,7 @@
             </div>
             <div class="mt-2">
                 <button type="submit" class="btn btn-primary">Save</button>
-                <a href="" class="btn btn-secondary">Cancel</a>
+                <a href="{{ url_for('routers.routers') }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

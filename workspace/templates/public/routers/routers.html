@@ -13,13 +13,13 @@
 <script src="{{ url_for('static', filename='js/routers/scripts.js') }}"></script>
 <script>
     function delete_router(id, name) {
-        url = "{{ url_for('sites.delete_site', site_id=0) }}";
+        url = "{{ url_for('routers.delete_router', router_id=0) }}";
         url = url.replace('0', id);
 
-        modal_body = document.getElementById('modal-body-site');
-        modal_body.innerHTML = "Are you sure you want to delete this site: <b>" + name + "</b>?";
+        modal_body = document.getElementById('modal-body-router');
+        modal_body.innerHTML = "Are you sure you want to delete this router: <b>" + name + "</b>?";
 
-        modal_button = document.getElementById('button-delete-site');
+        modal_button = document.getElementById('button-delete-router');
         modal_button.href = url;
     }
 </script>
@@ -29,26 +29,11 @@
 {% block content %}
 
 
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<div class="container-fluid pt-2 pb-2">
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
-<!-- Flash Messages -->
-
-
 <!-- Routers Jumbotron -->
 <section class="routers-jumbotron">
     <div class="p-5 mb-4 base-jumbotron">
         <div class="container-fluid py-5">
+
             <h1 class="display-5 fw-bold">Routers</h1>
             <p class="col-md-8 fs-4">Lorem Ipsum</p>
             <a href="{{ url_for('routers.add_router') }}" class="btn btn-primary btn-lg" type="button"><i
@@ -83,6 +68,7 @@
         <table class="table table-responsive" id="routers-table">
             <thead>
             <tr>
+                <th scope="col"></th>
                 <th scope="col">#</th>
                 <th scope="col">Router's Name</th>
                 <th scope="col">Router's Site</th>
@@ -91,24 +77,30 @@
             </tr>
             </thead>
             <tbody>
-            <!--
-            {% for site in sites_list %}
+            {% for router in routers_list %}
             <tr>
-                <th scope="row"></th>
+                <th scope="row">
+                    <input class="form-check" type="checkbox" name="router_ids" value="{{ router.router_id }}">
+                </th>
+                <td>{{ router.router_id }}</td>
+                <td>{{ router.router_name }}</td>
+                <td>{{ sites_functions.get_site_by_id(db, router.fk_site_id).site_name }}</td>
+                <td>{{ router.router_ip }}</td>
                 <td>
-                    <a href="" class="btn btn-warning"
+                    <a href="{{ url_for('routers.update_router', router_id=router.router_id) }}" class="btn btn-warning"
                        type="button"><i class="fa-solid fa-edit"></i></a>
-                    <button class="btn btn-danger" type="button" data-bs-toggle="modal"
-                       data-bs-target="#routers-delete-modal" onclick=""><i class="fa-solid fa-trash"></i></button>
+                    <a class="btn btn-danger" type="button" data-bs-toggle="modal"
+                       data-bs-target="#routers-delete-modal"
+                       onclick="delete_router('{{ router.router_id }}', '{{ router.router_name }}')"><i
+                            class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
             {% endfor %}
-            -->
-
 
 
             <!-- Routers Deletion Modal -->
-            <div class="modal fade" id="routers-delete-modal" tabindex="-1" aria-labelledby="" aria-hidden="true" style="z-index: 5000">
+            <div class="modal fade" id="routers-delete-modal" tabindex="-1" aria-labelledby="" aria-hidden="true"
+                 style="z-index: 5000">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -126,7 +118,6 @@
                 </div>
             </div>
             <!-- Router Deletion Modal -->
-
 
 
             </tbody>
