@@ -1,7 +1,7 @@
 class Router:
     def __init__(
         self,
-        router_id: str,
+        router_id: int,
         router_name: str,
         fk_site_id: int,
         fk_session_id: int,

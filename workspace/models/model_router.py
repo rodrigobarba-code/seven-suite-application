@@ -1,4 +1,5 @@
 from .entities.router import Router
+from .entities.session_information import SessionInformation
 
 
 class ModelRouter:
@@ -44,8 +45,9 @@ class ModelRouter:
     def add_router(self, db, router):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_add_router(%s, %s, %s, %s, %s)",
-                           (router.router_id, router.router_name, router.fk_site_id, router.fk_session_id, router.fk_ip_address_id))
+            cursor.execute("CALL sp_add_router(%s, %s, %s, %s)",
+                           (router.router_name, router.fk_site_id, router.fk_session_id,
+                            router.fk_ip_address_id))
             db.connection.commit()
             cursor.close()
         except Exception as ex:
@@ -56,19 +58,44 @@ class ModelRouter:
         try:
             cursor = db.connection.cursor()
             cursor.execute("CALL sp_update_router(%s, %s, %s, %s, %s)",
-                           (router.router_id, router.router_name, router.fk_site_id, router.fk_session_id, router.fk_ip_address_id))
+                           (router.router_id, router.router_name, router.fk_site_id, router.fk_session_id,
+                            router.fk_ip_address_id))
             db.connection.commit()
             cursor.close()
         except Exception as ex:
             raise Exception(ex)
 
     @classmethod
-    def delete_router(self, db, router_id):
+    def delete_router(self, db, router_id, session_id):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_delete_router(%s)", (router_id,))
+            cursor.execute("CALL sp_delete_router(%s, %s)", (router_id, session_id))
             db.connection.commit()
             cursor.close()
         except Exception as ex:
             raise Exception(ex)
 
+    @classmethod
+    def add_router_with_session(self, db, router, session_information):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute(
+                "CALL sp_add_router_with_session_information(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (
+                 router.router_name,
+                 router.fk_site_id,
+                 router.fk_session_id,
+                 router.fk_ip_address_id,
+                 session_information.session_ip_address,
+                 session_information.session_mac_address,
+                 session_information.session_username,
+                 session_information.session_password,
+                 session_information.session_connection_type,
+                 session_information.session_brand,
+                 session_information.session_model,
+                 session_information.allow_remote_access
+                 ))
+            db.connection.commit()
+            cursor.close()
+        except Exception as ex:
+            raise Exception(ex)

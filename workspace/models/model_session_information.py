@@ -6,8 +6,7 @@ class ModelSessionInformation:
     def add_session_information(self, db, session_information):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_add_session_information(%s, %s, %s, %s, %s, %s, %s, %s, %s)", (
-                session_information.session_id,
+            cursor.execute("CALL sp_add_session_information(%s, %s, %s, %s, %s, %s, %s, %s)", (
                 session_information.session_ip_address,
                 session_information.session_mac_address,
                 session_information.session_username,
@@ -15,7 +14,7 @@ class ModelSessionInformation:
                 session_information.session_connection_type,
                 session_information.session_brand,
                 session_information.session_model,
-                session_information.session_allow_remote_access
+                session_information.allow_remote_access
             ))
             db.connection.commit()
         except Exception as ex:
@@ -34,7 +33,7 @@ class ModelSessionInformation:
                 session_information.session_connection_type,
                 session_information.session_brand,
                 session_information.session_model,
-                session_information.session_allow_remote_access
+                session_information.allow_remote_access
             ))
             db.connection.commit()
         except Exception as ex:

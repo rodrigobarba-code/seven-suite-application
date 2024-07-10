@@ -5,186 +5,264 @@
 
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/routers/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/routers/styles.css') }}">
 {% endblock %}
 
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/routers/routers.js') }}"></script>
-<script>
-    // Check if the checkbox is checked
-    document.addEventListener('DOMContentLoaded', () => {
-        const siteCheck = document.getElementById('router-check');
-        const siteForm = document.querySelector('form');
+    <script src="{{ url_for('static', filename='js/routers/routers.js') }}"></script>
+    <script>
+        // Check if the checkbox is checked
+        document.addEventListener('DOMContentLoaded', () => {
+            const siteCheck = document.getElementById('router-check');
+            const siteForm = document.querySelector('form');
 
-        // Add event listener to the form to verify if the checkbox is checked
-        siteForm.addEventListener('submit', (e) => {
-            if (!siteCheck.checked) {
-                e.preventDefault();
-                alert('Please accept the terms and conditions');
-            }
+            // Add event listener to the form to verify if the checkbox is checked
+            siteForm.addEventListener('submit', (e) => {
+                if (!siteCheck.checked) {
+                    e.preventDefault();
+                    alert('Please accept the terms and conditions');
+                }
+            });
+            // Add event listener to the form to verify if the checkbox is checked
         });
-        // Add event listener to the form to verify if the checkbox is checked
-    });
 
-    // Check if the session information checkbox is checked
-    document.addEventListener('DOMContentLoaded', () => {
-        const routerCheck = document.getElementById('router-check-session-info');
-        const routerSessionForm = document.querySelector('.router-session-information-form');
+        // Check if the session information checkbox is checked
+        document.addEventListener('DOMContentLoaded', () => {
+            const routerCheck = document.getElementById('router-check-session-info');
+            const routerSessionForm = document.querySelector('.router-session-information-form');
 
-        routerCheck.addEventListener('click', () => {
-            // Check if the checkbox is checked
-            if (routerCheck.checked) {
-                routerSessionForm.style.transition = 'opacity 1.0s';
-                routerSessionForm.style.display = 'block';
-                routerSessionForm.style.opacity = '1';
+            routerCheck.addEventListener('click', () => {
+                // Check if the checkbox is checked
+                if (routerCheck.checked) {
+                    routerSessionForm.style.transition = 'opacity 1.0s';
+                    routerSessionForm.style.display = 'block';
+                    routerSessionForm.style.opacity = '1';
+
+                    document.getElementById('router_ip').required = true;
+                    document.getElementById('router_username').required = true;
+                    document.getElementById('router_password').required = true;
+                    document.getElementById('session-connection-type').required = true;
+
+                } else {
+                    routerSessionForm.style.transition = 'opacity 0.25s';
+                    routerSessionForm.style.opacity = '0';
+                    setTimeout(() => {
+                        routerSessionForm.style.display = 'none';
+                    }, 150);
+
+                    document.getElementById('router_ip').required = false;
+                    document.getElementById('router_username').required = false;
+                    document.getElementById('router_password').required = false;
+                    document.getElementById('session-connection-type').required = false;
+                }
+            });
+        });
+
+        function updateSessionPortFields() {
+            var connectionType = document.getElementById('session_connection_type').value;
+            var sessionPortLabel = document.getElementById('session_port_label');
+            var sessionPortInput = document.getElementById('session_port');
+
+            if (connectionType === 'ssh') {
+                sessionPortLabel.textContent = 'SSH Port';
+                sessionPortInput.name = 'ssh_port';
+                sessionPortInput.placeholder = 'Enter SSH port';
+            } else if (connectionType === 'api') {
+                sessionPortLabel.textContent = 'API Port';
+                sessionPortInput.name = 'api_port';
+                sessionPortInput.placeholder = 'Enter API port';
+            } else if (connectionType === 'api_ssl') {
+                sessionPortLabel.textContent = 'API SSL Port';
+                sessionPortInput.name = 'api_ssl_port';
+                sessionPortInput.placeholder = 'Enter API SSL port';
             } else {
-                routerSessionForm.style.transition = 'opacity 0.25s';
-                routerSessionForm.style.opacity = '0';
-                setTimeout(() => {
-                    routerSessionForm.style.display = 'none';
-                }, 150);
+                sessionPortLabel.textContent = 'Session Port';
+                sessionPortInput.name = 'session_port';
+                sessionPortInput.placeholder = 'Enter session\'s port';
             }
-        });
-    });
-    // Check if the session information checkbox is checked
+        }
 
-</script>
+        document.getElementById('session_connection_type').addEventListener('change', updateSessionPortFields);
+
+        window.onload = updateSessionPortFields;
+    </script>
 {% endblock %}
 
 
 {% block content %}
 
 
-<!-- Routers Jumbotron -->
-<section class="router-jumbotron">
-    <div class="p-5 mb-4 base-jumbotron">
-        <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">Add Router</h1>
-            <p class="col-md-8 fs-4">Lorem Ipsum</p>
+    <!-- Routers Jumbotron -->
+    <section class="router-jumbotron">
+        <div class="p-5 mb-4 base-jumbotron">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">{{ "Add Router" if router is none else "Update Router" }}</h1>
+                <p class="col-md-8 fs-4">Lorem Ipsum</p>
+            </div>
         </div>
-    </div>
-</section>
-<!-- Routers Jumbotron -->
+    </section>
+    <!-- Routers Jumbotron -->
 
 
-<!-- Routers Forms -->
-<section class="routers-forms">
-    <div class="container-fluid w-75 pb-3">
-        <form action="{{ url_for('routers.add_router') if router is none else url_for('routers.update_router', router_id=router.router_id) }}"
-              method="POST">
-            <h2> Basic Information </h2>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label class="mb-2" for="router_name">Router's Alias <span style="color: red">*</span> </label>
-                        <input value="{{ router.router_name }}" type="text" class="form-control mb-2"
-                               id="router_name" name="router_name" placeholder="Enter router's alias" required>
-                    </div>
-                </div>
-                <div class="col">
-                    <label class="mb-2" for="fk_site_id">Router's Site <span style="color: red">*</span></label>
-                    <select class="form-select" id="fk_site_id" name="fk_site_id" aria-label="Site Selector" required>
-                        <option value="">Choose a site</option>
-                        {% for site in sites_list %}
-                        {% if router is not none and router.fk_site_id == site.site_id %}
-                        <option value="{{ site.site_id }}" selected>{{ site.site_name }}</option>
-                        {% else %}
-                        <option value="{{ site.site_id }}">{{ site.site_name }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="mt-1 mb-3 form-switch">
-                <input type="checkbox" class="form-check-input" id="router-check-session-info">
-                <label class="form-check-label" for="router-check-session-info"> &nbsp; Add Router's Session
-                    Information</label>
-            </div>
-            <div class="router-session-information-form" style="display: none">
-                <hr>
-                <h2> Router's Session Information </h2>
+    <!-- Routers Forms -->
+    <section class="routers-forms">
+        <div class="container-fluid w-75 pb-3">
+            <form action="{{ url_for('routers.add_router') if router is none else url_for('routers.update_router', router_id=router.router_id) }}"
+                  method="POST">
+                <h2> Basic Information </h2>
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            <label class="mb-2" for="router_ip">Router's IP Address <span
-                                    style="color: red">*</span>
+                            <label class="mb-2" for="router_name">Router's Alias <span style="color: red">*</span>
                             </label>
-                            <input value="" type="text" class="form-control mb-2"
-                                   id="router_ip" name="router_ip" placeholder="Enter router's IP address">
+                            <input value="{{ router.router_name }}" type="text" class="form-control mb-2"
+                                   id="router_name" name="router_name" placeholder="Enter router's alias" required>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group">
-                            <label class="mb-2" for="router_mac">Router's MAC Address</label>
-                            <input value="" type="text" class="form-control mb-2"
-                                   id="router_mac" name="router_ip" placeholder="Enter router's MAC address">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="mb-2" for="router_ip">Router's Username <span
-                                    style="color: red">*</span></label>
-                            <input value="" type="text" class="form-control mb-2"
-                                   id="router_username" name="router_username" placeholder="Enter router's username"
-                            >
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="mb-2" for="router_password">Router's Password <span
-                                    style="color: red">*</span></label>
-                            <input value="" type="text" class="form-control mb-2"
-                                   id="router_password" name="router_password" placeholder="Enter router's password"
-
-                            >
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <label class="mb-2" for="session-connection-type">Connection Type <span
-                                style="color: red">*</span></label>
-                        <select class="form-select" id="session-connection-type" name="session-connection-type"
-                                aria-label="Connection Type Selector">
-                            <option value="">Choose a connection type</option>
-                            <option value="ssh">SSH</option>
-                            <option value="api">API</option>
-                            <option value="api_ssl">API SSL</option>
+                        <label class="mb-2" for="fk_site_id">Router's Site <span style="color: red">*</span></label>
+                        <select class="form-select" id="fk_site_id" name="fk_site_id" aria-label="Site Selector"
+                                required>
+                            <option value="">Choose a site</option>
+                            {% for site in sites_list %}
+                                {% if router is not none and router.fk_site_id == site.site_id %}
+                                    <option value="{{ site.site_id }}" selected>{{ site.site_name }}</option>
+                                {% else %}
+                                    <option value="{{ site.site_id }}">{{ site.site_name }}</option>
+                                {% endif %}
+                            {% endfor %}
                         </select>
                     </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="mb-2" for="router_brand">Router's Brand</span></label>
-                            <input value="Mikrotik" type="text" class="form-control mb-2"
-                                   id="router_brand" name="router_brand" placeholder="Enter router's brand" disabled>
+                </div>
+                {% if router is none %}
+                    <div class="mt-1 mb-3 form-switch">
+                        <input type="checkbox" class="form-check-input" id="router-check-session-info"
+                               name="router-check-session-info">
+                        <label class="form-check-label" for="router-check-session-info"> &nbsp; Add Router's Session
+                            Information</label>
+                    </div>
+                {% endif %}
+                {% if router is not none %}
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            document.querySelector('.router-session-information-form').style.display = 'block';
+                        });
+                    </script>
+                {% endif %}
+                <div class="router-session-information-form" style="display: none">
+                    <hr>
+                    <h2> Session Configuration </h2>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="mb-2" for="router_ip">Router's IP Address <span
+                                        style="color: red">*</span>
+                                </label>
+                                <input value="{{ router_session.session_ip_address }}" type="text"
+                                       class="form-control mb-2"
+                                       id="session_ip_address" name="session_ip_address"
+                                       placeholder="Enter router's IP address">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="mb-2" for="router_mac">Router's MAC Address</label>
+                                <input value="{{ router_session.session_mac_address }}" type="text"
+                                       class="form-control mb-2"
+                                       id="session_mac_address" name="session_mac_address"
+                                       placeholder="Enter router's MAC address">
+                            </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="mb-2" for="router_model">Router's Model</span></label>
-                            <input value="" type="text" class="form-control mb-2"
-                                   id="router_model" name="router_model" placeholder="Enter router's model">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="mb-2" for="router_ip">Router's Username <span
+                                        style="color: red">*</span></label>
+                                <input value="{{ router_session.session_username }}" type="text"
+                                       class="form-control mb-2"
+                                       id="session_username" name="session_username"
+                                       placeholder="Enter router's username"
+                                >
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="mb-2" for="router_password">Router's Password <span
+                                        style="color: red">*</span></label>
+                                <input value="" type="text" class="form-control mb-2"
+                                       id="session_password" name="session_password"
+                                       placeholder="Enter router's password"
+
+                                >
+                            </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="mb-2" for="session_brand">Router's Brand</label>
+                                <input value="Mikrotik" type="text" class="form-control mb-2" id="session_brand"
+                                       name="session_brand" placeholder="Enter router's brand" disabled>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="mb-2" for="router_model">Router's Model</label>
+                                <input value="{{ router_session.session_model }}" type="text" class="form-control mb-2"
+                                       id="session_model" name="session_model" placeholder="Enter router's model">
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h2> Session Ports </h2>
+                    <div class="row">
+                        <div class="col">
+                            <label class="mb-2" for="session-connection-type">Connection Type <span
+                                    style="color: red">*</span></label>
+                            <select class="form-select" id="session_connection_type" name="session_connection_type"
+                                    aria-label="Connection Type Selector" name="connection_type">
+                                <option value=""
+                                        {% if router_session.session_connection_type == '' %}selected{% endif %}>Choose
+                                    a connection type
+                                </option>
+                                <option value="ssh"
+                                        {% if router_session.session_connection_type == 'ssh' %}selected{% endif %}>SSH
+                                </option>
+                                <option value="api"
+                                        {% if router_session.session_connection_type == 'api' %}selected{% endif %}>API
+                                </option>
+                                <option value="api_ssl"
+                                        {% if router_session.session_connection_type == 'api_ssl' %}selected{% endif %}>
+                                    API SSL
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="mb-2" id="session_port_label" for="session_port">Session Port</label>
+                                <input value="" type="text" class="form-control mb-2" id="session_port"
+                                       name="session_port" placeholder="Enter session's port">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-1 mb-3 form-switch">
+                        <input type="checkbox" class="form-check-input" id="allow_remote_access"
+                               name="allow_remote_access"
+                               {% if router_session.allow_remote_access == 1 %}checked{% endif %}>
+                        <label class="form-check-label" for="allow_remote_access"> &nbsp; Allow Remote
+                            Connection </label>
+                    </div>
                 </div>
-                <div class="mt-1 mb-3 form-switch">
-                    <input type="checkbox" class="form-check-input" id="router-allow-remote-access"
-                           name="router_allow_remote_access">
-                    <label class="form-check-label" for="router-allow-remote-access"> &nbsp; Allow Remote
-                        Connection</label>
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="{{ url_for('routers.routers') }}" class="btn btn-secondary">Cancel</a>
                 </div>
-            </div>
-            <div class="mt-2">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a href="{{ url_for('routers.routers') }}" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
-</section>
-<!-- Routers Forms -->
+            </form>
+        </div>
+    </section>
+    <!-- Routers Forms -->
 
 
 {% endblock %}

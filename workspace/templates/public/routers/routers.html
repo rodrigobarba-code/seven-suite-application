@@ -12,9 +12,12 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/routers/scripts.js') }}"></script>
 <script>
-    function delete_router(id, name) {
-        url = "{{ url_for('routers.delete_router', router_id=0) }}";
-        url = url.replace('0', id);
+    function delete_router(id, name, session_id) {
+        if (session_id == "None") {
+            url = "{{ url_for('routers.delete_router', router_id='router_id') }}".replace('router_id', id);
+        } else {
+            url = "{{ url_for('routers.delete_router', router_id='router_id', session_id='session_id') }}".replace('router_id', id).replace('session_id', session_id);
+        }
 
         modal_body = document.getElementById('modal-body-router');
         modal_body.innerHTML = "Are you sure you want to delete this router: <b>" + name + "</b>?";
@@ -91,7 +94,7 @@
                        type="button"><i class="fa-solid fa-edit"></i></a>
                     <a class="btn btn-danger" type="button" data-bs-toggle="modal"
                        data-bs-target="#routers-delete-modal"
-                       onclick="delete_router('{{ router.router_id }}', '{{ router.router_name }}')"><i
+                       onclick="delete_router('{{ router.router_id }}', '{{ router.router_name }}', '{{ router.fk_session_id }}')"><i
                             class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
