@@ -16,3 +16,11 @@ sidebarBtn.addEventListener("click", () => {
     sidebar.classList.toggle("close");
 });
 // Toggle sidebar
+
+document.addEventListener('DOMContentLoaded', function() {
+    var logoIcon = document.querySelector('.logo-icon');
+
+    logoIcon.addEventListener('click', function() {
+        window.location.href = document.getElementById('logo-link').href;
+    });
+});
