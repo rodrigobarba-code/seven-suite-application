@@ -30,9 +30,29 @@ html, body {
 
 .sidebar .logo-details {
     height: 60px;
-    width: 100%;
     display: flex;
     align-items: center;
+}
+
+.logo-icon {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    text-decoration-line: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding-left: 18px;
+}
+
+.sidebar .logo-details .a-logo {
+    width: calc(100% - 78px);
+    display: flex;
+    align-items: center;
+    text-decoration-line: none;
+}
+
+.sidebar .logo-details span {
+    padding-left: 10px;
 }
 
 .sidebar .logo-details i {
@@ -286,3 +306,4 @@ html, body {
     font-size: 26px;
     font-weight: 600;
 }
+
