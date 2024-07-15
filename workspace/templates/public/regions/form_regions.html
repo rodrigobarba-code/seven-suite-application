@@ -1,14 +1,8 @@
 {% extends 'base.html' %}
-
-
 {% block title %} {{ "Region / Add" if region is none else "Region / Update" }} {% endblock %}
-
-
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/regions/styles.css') }}">
 {% endblock %}
-
-
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/regions/scripts.js') }}"></script>
 <script>
@@ -29,11 +23,7 @@
     // Check if the checkbox is checked
 </script>
 {% endblock %}
-
-
 {% block content %}
-
-
 <!-- Regions Jumbotron -->
 <section class="regions-jumbotron">
     <div class="p-5 mb-4 base-jumbotron">
@@ -44,8 +34,6 @@
     </div>
 </section>
 <!-- Regions Jumbotron -->
-
-
 <!-- Regions Forms -->
 <section class="regions-forms">
     <div class="container-fluid w-75">
@@ -54,8 +42,7 @@
             <div class="form-group">
                 <label class="mb-2" for="region_name">Region's Name</label>
                 <input value="{{ region.region_name if region is not none }}" type="text" class="form-control mb-2"
-                       id="region_name" name="region_name" placeholder="Enter region's name">
-
+                       id="region_name" name="region_name" placeholder="Enter region's name" maxlength="128">
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="region-check">
@@ -68,6 +55,4 @@
     </div>
 </section>
 <!-- Regions Forms -->
-
-
 {% endblock %}

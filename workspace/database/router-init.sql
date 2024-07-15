@@ -3,9 +3,9 @@ DROP TABLE IF EXISTS router;
 CREATE TABLE router (
     router_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     router_name VARCHAR(256) NULL,
+    router_description VARCHAR(512) NULL,
     fk_site_id INT NOT NULL,
-    fk_session_id INT NULL,
-    fk_ip_address_id INT NULL
+    fk_session_id INT NULL
 );
 /* Create 'router' table */
 

@@ -40,25 +40,29 @@ def add_router():
             fk_ip_address_id=None
         )
 
-        if 'router-check-session-info' in request.form:
-            session_info = SessionInformation(
-                session_id=0,
-                session_ip_address=request.form['session_ip_address'],
-                session_mac_address=request.form['session_mac_address'],
-                session_username=request.form['session_username'],
-                session_password=request.form['session_password'],
-                session_connection_type=request.form['session_connection_type'],
-                session_brand="Mikrotik",
-                session_model=request.form['session_model'],
-                allow_remote_access=True if 'allow_remote_access' in request.form else False
-            )
+        try:
+            if 'router-check-session-info' in request.form:
+                session_info = SessionInformation(
+                    session_id=0,
+                    session_ip_address=request.form['session_ip_address'],
+                    session_mac_address=request.form['session_mac_address'],
+                    session_username=request.form['session_username'],
+                    session_password=request.form['session_password'],
+                    session_connection_type=request.form['session_connection_type'],
+                    session_brand="Mikrotik",
+                    session_model=request.form['session_model'],
+                    allow_remote_access=True if 'allow_remote_access' in request.form else False
+                )
 
-            ModelSessionInformation.add_session_information(workspace.db, session_info)
-            ModelRouter.add_router_with_session(workspace.db, router, session_info)
+                ModelSessionInformation.add_session_information(workspace.db, session_info)
+                ModelRouter.add_router_with_session(workspace.db, router, session_info)
 
-            return redirect(url_for('routers.routers'))
-        else:
-            ModelRouter.add_router(workspace.db, router)
+                return redirect(url_for('routers.routers'))
+            else:
+                ModelRouter.add_router(workspace.db, router)
+                return redirect(url_for('routers.routers'))
+        except Exception as ex:
+            flash('An error occurred while adding the router', 'danger')
             return redirect(url_for('routers.routers'))
 
     sites_list = ModelSite.get_sites(workspace.db)

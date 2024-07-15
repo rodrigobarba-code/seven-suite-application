@@ -1,14 +1,87 @@
 from .entities.region import Region
+from .sql_errors import SQLErrors
 
 
 class ModelRegion:
 
+    # Add Region
+    @classmethod
+    def add_region(self, db, region):
+        try:
+            # Create a cursor object using the cursor() method
+            cursor = db.connection.cursor()
+            # Execute the SQL procedure
+            cursor.execute("CALL sp_add_region(%s)", (
+                region.region_name,
+            ))
+            # Commit your changes in the database
+            db.connection.commit()
+            # Close the cursor
+            cursor.close()
+        except Exception as ex:
+            if '45001' in str(ex):
+                raise Exception("Error: %s, %s" % (SQLErrors.errors['45001'][0], SQLErrors.errors['45001'][1]))
+            else:
+                raise Exception(ex)
+
+    # Add Region
+
+    # Update Region
+    @classmethod
+    def update_region(self, db, region):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_update_region(%s, %s)", (
+                region.region_id,
+                region.region_name
+            ))
+            db.connection.commit()
+        except Exception as ex:
+            if '45001' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45001'][0],
+                    error_message=SQLErrors.errors['45001'][1]
+                ))
+            elif '45002' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45002'][0],
+                    error_message=SQLErrors.errors['45002'][1]
+                ))
+            else:
+                raise Exception(ex)
+
+    # Update Region
+
+    # Delete Region
+    @classmethod
+    def delete_region(self, db, region_id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_delete_region(%s)", (region_id,))
+            db.connection.commit()
+        except Exception as ex:
+            if '45002' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45002'][0],
+                    error_message=SQLErrors.errors['45002'][1]
+                ))
+            elif '45003' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45003'][0],
+                    error_message=SQLErrors.errors['45003'][1]
+                ))
+            else:
+                raise Exception(ex)
+
+    # Delete Region
+
+    # Get Regions
     @classmethod
     def get_regions(self, db):
         try:
             regions_list = []
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_get_all_regions")
+            cursor.execute("CALL sp_get_regions")
             regions = cursor.fetchall()
             for i in range(len(regions)):
                 regions_list.append(Region(
@@ -20,11 +93,14 @@ class ModelRegion:
         except Exception as ex:
             raise Exception(ex)
 
+    # Get Regions
+
+    # Get Region
     @classmethod
-    def get_region_by_id(self, db, region_id):
+    def get_region(self, db, region_id):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_get_region_by_id(%s)", (region_id,))
+            cursor.execute("CALL sp_get_region(%s)", (region_id,))
             region = cursor.fetchone()
             cursor.close()
             return Region(
@@ -32,34 +108,11 @@ class ModelRegion:
                 region[1]
             )
         except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def add_region(self, db, region):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_add_region(%s)", (
-                region.region_name,))
-            db.connection.commit()
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def update_region(self, db, region):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_update_region(%s, %s)", (
-                region.region_id,
-                region.region_name))
-            db.connection.commit()
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def delete_region(self, db, region_id):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_delete_region(%s)", (region_id,))
-            db.connection.commit()
-        except Exception as ex:
-            raise Exception(ex)
+            if '45002' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45002'][0],
+                    error_message=SQLErrors.errors['45002'][1]
+                ))
+            else:
+                raise Exception(ex)
+    # Get Region

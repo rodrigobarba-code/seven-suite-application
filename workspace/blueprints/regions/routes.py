@@ -10,18 +10,17 @@ from workspace.models.model_region import ModelRegion
 
 # Importing Entities
 from workspace.models.entities.region import Region
-
-
-# Importing
+# Importing Entities
 
 
 # Main Route
 @regions_bp.route('/')
 def regions():
     regions_list = ModelRegion.get_regions(workspace.db)
-    return render_template('public/regions/regions.html', regions_list=regions_list)
-
-
+    return render_template(
+        'public/regions/regions.html',
+        regions_list=regions_list
+    )
 # Main Route
 
 
@@ -33,23 +32,39 @@ def add_region():
             region_id=0,
             region_name=request.form['region_name'],
         )
-        ModelRegion.add_region(workspace.db, region)
-        flash('Region Added Successfully', 'success')
-        return redirect(url_for('regions.regions'))
-    return render_template('public/regions/form_regions.html', region=None)
+        try:
+            ModelRegion.add_region(workspace.db, region)
+            flash('Region Added Successfully', 'success')
+            return redirect(url_for('regions.regions'))
+        except Exception as e:
+            flash("{error_message}".format(error_message=str(e)), 'danger')
+            return redirect(url_for('regions.regions'))
+    return render_template(
+        'public/regions/form_regions.html',
+        region=None
+    )
 # Add Region Route
+
 
 # Update Region Route
 @regions_bp.route('/update/<int:region_id>', methods=['GET', 'POST'])
 def update_region(region_id):
-    region = ModelRegion.get_region_by_id(workspace.db, region_id)
-    if request.method == 'POST':
-        region.region_name = request.form['region_name']
-        ModelRegion.update_region(workspace.db, region)
-        flash('Region Updated Successfully', 'success')
+    try:
+        region = ModelRegion.get_region(workspace.db, region_id)
+        if request.method == 'POST':
+            region.region_name = request.form['region_name']
+            ModelRegion.update_region(workspace.db, region)
+            flash('Region Updated Successfully', 'success')
+            return redirect(url_for('regions.regions'))
+    except Exception as e:
+        flash("{error_message}".format(error_message=str(e)), 'danger')
         return redirect(url_for('regions.regions'))
-    return render_template('public/regions/form_regions.html', region=region)
+    return render_template(
+        'public/regions/form_regions.html',
+        region=region
+    )
 # Update Region Route
+
 
 # Delete Region Route
 @regions_bp.route('/delete/<int:region_id>', methods=['GET', 'POST'])
@@ -58,7 +73,6 @@ def delete_region(region_id):
         ModelRegion.delete_region(workspace.db, region_id)
         flash('Region Deleted Successfully', 'success')
     except Exception as e:
-        if 'foreign key constraint' in str(e):
-            flash('Error in deleting Region: Region is being used in Site', 'danger')
+        flash("{error_message}".format(error_message=str(e)), 'danger')
     return redirect(url_for('regions.regions'))
 # Delete Region Route

@@ -8,7 +8,7 @@ class DevelopmentConfig:
     MYSQL_HOST = 'localhost'
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = 'root'
-    MYSQL_DB = 'seven_infrastructure'
+    MYSQL_DB = 'seven_suite'
     # Add other development configurations here
 
 

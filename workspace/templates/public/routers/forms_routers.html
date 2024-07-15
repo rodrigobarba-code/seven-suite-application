@@ -32,6 +32,9 @@
             const routerCheck = document.getElementById('router-check-session-info');
             const routerSessionForm = document.querySelector('.router-session-information-form');
 
+            const remoteConnectionCheck = document.getElementById('allow_remote_access');
+            const remoteConnectionForm = document.querySelector('.router-session-ports-form');
+
             routerCheck.addEventListener('click', () => {
                 // Check if the checkbox is checked
                 if (routerCheck.checked) {
@@ -55,6 +58,26 @@
                     document.getElementById('router_username').required = false;
                     document.getElementById('router_password').required = false;
                     document.getElementById('session-connection-type').required = false;
+                }
+            });
+
+            remoteConnectionCheck.addEventListener('click', () => {
+                // Check if the checkbox is checked
+                if (remoteConnectionCheck.checked) {
+                    remoteConnectionForm.style.transition = 'opacity 1.0s';
+                    remoteConnectionForm.style.display = 'block';
+                    remoteConnectionForm.style.opacity = '1';
+
+                    document.getElementById('session_port').required = true;
+
+                } else {
+                    remoteConnectionForm.style.transition = 'opacity 0.25s';
+                    remoteConnectionForm.style.opacity = '0';
+                    setTimeout(() => {
+                        remoteConnectionForm.style.display = 'none';
+                    }, 150);
+
+                    document.getElementById('session_port').required = false;
                 }
             });
         });
@@ -215,44 +238,50 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
-                    <h2> Session Ports </h2>
-                    <div class="row">
-                        <div class="col">
-                            <label class="mb-2" for="session-connection-type">Connection Type <span
-                                    style="color: red">*</span></label>
-                            <select class="form-select" id="session_connection_type" name="session_connection_type"
-                                    aria-label="Connection Type Selector" name="connection_type">
-                                <option value=""
-                                        {% if router_session.session_connection_type == '' %}selected{% endif %}>Choose
-                                    a connection type
-                                </option>
-                                <option value="ssh"
-                                        {% if router_session.session_connection_type == 'ssh' %}selected{% endif %}>SSH
-                                </option>
-                                <option value="api"
-                                        {% if router_session.session_connection_type == 'api' %}selected{% endif %}>API
-                                </option>
-                                <option value="api_ssl"
-                                        {% if router_session.session_connection_type == 'api_ssl' %}selected{% endif %}>
-                                    API SSL
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label class="mb-2" id="session_port_label" for="session_port">Session Port</label>
-                                <input value="" type="text" class="form-control mb-2" id="session_port"
-                                       name="session_port" placeholder="Enter session's port">
-                            </div>
-                        </div>
-                    </div>
                     <div class="mt-1 mb-3 form-switch">
                         <input type="checkbox" class="form-check-input" id="allow_remote_access"
                                name="allow_remote_access"
                                {% if router_session.allow_remote_access == 1 %}checked{% endif %}>
                         <label class="form-check-label" for="allow_remote_access"> &nbsp; Allow Remote
                             Connection </label>
+                    </div>
+
+                    <div class="router-session-ports-form" style="display: none">
+                        <hr>
+                        <h2> Session Ports </h2>
+                        <div class="row">
+                            <div class="col">
+                                <label class="mb-2" for="session-connection-type">Connection Type <span
+                                        style="color: red">*</span></label>
+                                <select class="form-select" id="session_connection_type" name="session_connection_type"
+                                        aria-label="Connection Type Selector" name="connection_type">
+                                    <option value=""
+                                            {% if router_session.session_connection_type == '' %}selected{% endif %}>
+                                        Choose
+                                        a connection type
+                                    </option>
+                                    <option value="ssh"
+                                            {% if router_session.session_connection_type == 'ssh' %}selected{% endif %}>
+                                        SSH
+                                    </option>
+                                    <option value="api"
+                                            {% if router_session.session_connection_type == 'api' %}selected{% endif %}>
+                                        API
+                                    </option>
+                                    <option value="api_ssl"
+                                            {% if router_session.session_connection_type == 'api_ssl' %}selected{% endif %}>
+                                        API SSL
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label class="mb-2" id="session_port_label" for="session_port">Session Port</label>
+                                    <input value="" type="text" class="form-control mb-2" id="session_port"
+                                           name="session_port" placeholder="Enter session's port">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="mt-2">
