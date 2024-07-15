@@ -1,19 +1,24 @@
-# Blueprints
+# Blueprints import
 from blueprints.home import home_bp
 from blueprints.dashboard import dashboard_bp
 from blueprints.regions import regions_bp
 from blueprints.sites import sites_bp
 from blueprints.routers import routers_bp
-# Blueprints
+# Blueprints import
+
 
 # Flask import
 from flask_mysqldb import MySQL
 from flask import *
 # Flask import
 
+
+# Database connection
 db = MySQL()
+# Database connection
 
 
+# Function to create Flask application
 def create_app():
     # Create Flask application
     application = Flask(__name__)
@@ -31,4 +36,6 @@ def create_app():
     application.register_blueprint(routers_bp, url_prefix='/routers')
     # Register Blueprints
 
+    # Return application
     return application
+    # Return application

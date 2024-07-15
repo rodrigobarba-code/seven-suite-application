@@ -27,7 +27,7 @@ BEGIN
     -- Verify if the site name already exists
     IF EXISTS (SELECT 1 FROM site WHERE LOWER(site.site_name) = LOWER(site_name)) THEN
         SIGNAL SQLSTATE '45004'
-        SET MESSAGE_TEXT = '45004 - Site name already exists.';
+        SET MESSAGE_TEXT = '45004 - Site already exists.';
     ELSE
         -- Assign the next minimum available identifier
         SELECT MIN(t1.site_id + 1) INTO site_id
@@ -66,7 +66,7 @@ BEGIN
         -- Verify if the site name already exists
         IF EXISTS (SELECT 1 FROM site WHERE LOWER(site.site_name) = LOWER(site_name) AND site.site_id != site_id) THEN
             SIGNAL SQLSTATE '45004'
-            SET MESSAGE_TEXT = '45004 - Site name already exists.';
+            SET MESSAGE_TEXT = '45004 - Site already exists.';
         ELSE
             -- Update the site
             UPDATE site SET fk_region_id = fk_region_id, site_name = site_name, site_segment = site_segment WHERE site_id = site_id;
@@ -127,20 +127,21 @@ END //
 DELIMITER ;
 /* Create stored procedure 'sp_get_sites' */
 
-/* Create stored procedure 'sp_verify_region' */
-DROP PROCEDURE IF EXISTS sp_verify_region;
+/* Create stored procedure 'sp_get_region_name' */
+DROP PROCEDURE IF EXISTS sp_get_region_name;
 DELIMITER //
-CREATE PROCEDURE sp_verify_region
+CREATE PROCEDURE sp_get_region_name
 (
-    IN region_id INT
+    IN site_name VARCHAR(128)
 )
 BEGIN
-    -- Verify if the region exists
-    IF NOT EXISTS (SELECT 1 FROM region WHERE region.region_id = region_id) THEN
-        SIGNAL SQLSTATE '45002'
-        SET MESSAGE_TEXT = '45002 - Region does not exist.';
+    -- Verify if the site exists
+    IF NOT EXISTS (SELECT 1 FROM site WHERE site.site_name = site_name) THEN
+        SIGNAL SQLSTATE '45005'
+        SET MESSAGE_TEXT = '45005 - Site does not exist.';
+    ELSE
+        -- Get the region name
+        SELECT region_name FROM region WHERE region_id = (SELECT fk_region_id FROM site WHERE site_name = site_name);
     END IF;
 END //
-DELIMITER ;
-/* Create stored procedure 'sp_verify_region' */
-/* Stored Procedures */
+/* Create stored procedure 'sp_get_region_name' */

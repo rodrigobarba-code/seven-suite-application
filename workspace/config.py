@@ -1,8 +1,10 @@
+# Import necessary modules
 import os
+# Import necessary modules
 
 
+# Development configurations
 class DevelopmentConfig:
-    # Development configurations
     DEBUG = True
     SECRET_KEY = os.urandom(32)
     MYSQL_HOST = 'localhost'
@@ -10,15 +12,19 @@ class DevelopmentConfig:
     MYSQL_PASSWORD = 'root'
     MYSQL_DB = 'seven_suite'
     # Add other development configurations here
+# Development configurations
 
 
+# Production configurations
 class ProductionConfig:
-    # Production configurations
     DEBUG = False
     # Add other production configurations here
+# Production configurations
 
 
+# Configuration dictionary
 config = {
     'development': DevelopmentConfig,
     'production': ProductionConfig
 }
+# Configuration dictionary
