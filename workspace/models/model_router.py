@@ -1,101 +1,31 @@
 from .entities.router import Router
-from .entities.session_information import SessionInformation
+from .sql_errors import SQLErrors
 
 
 class ModelRouter:
 
+    # Add Router
     @classmethod
-    def get_routers(self, db):
+    def add_router(cls, db, router):
         try:
-            routers_list = []
+            # Create a cursor object using the cursor() method
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_get_all_routers")
-            routers = cursor.fetchall()
-            for i in range(len(routers)):
-                routers_list.append(Router(
-                    routers[i][0],
-                    routers[i][1],
-                    routers[i][2],
-                    routers[i][3],
-                    routers[i][4]
+            # Execute the SQL procedure
+            cursor.execute("CALL sp_add_site(%s, %s, %s)", (
+                site.fk_region_id,
+                site.site_name,
+                site.site_segment
+            ))
+            # Commit your changes in the database
+            db.connection.commit()
+            # Close the cursor
+            cursor.close()
+        except Exception as ex:
+            if '45004' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45004'][0],
+                    error_message=SQLErrors.errors['45004'][1]
                 ))
-            cursor.close()
-            return routers_list
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def get_router_by_id(self, db, router_id):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_get_router_by_id(%s)", (router_id,))
-            router = cursor.fetchone()
-            cursor.close()
-            return Router(
-                router[0],
-                router[1],
-                router[2],
-                router[3],
-                router[4]
-            )
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def add_router(self, db, router):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_add_router(%s, %s, %s, %s)",
-                           (router.router_name, router.fk_site_id, router.fk_session_id,
-                            router.fk_ip_address_id))
-            db.connection.commit()
-            cursor.close()
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def update_router(self, db, router):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_update_router(%s, %s, %s, %s, %s)",
-                           (router.router_id, router.router_name, router.fk_site_id, router.fk_session_id,
-                            router.fk_ip_address_id))
-            db.connection.commit()
-            cursor.close()
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def delete_router(self, db, router_id, session_id):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_delete_router(%s, %s)", (router_id, session_id))
-            db.connection.commit()
-            cursor.close()
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def add_router_with_session(self, db, router, session_information):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute(
-                "CALL sp_add_router_with_session_information(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (
-                 router.router_name,
-                 router.fk_site_id,
-                 router.fk_session_id,
-                 router.fk_ip_address_id,
-                 session_information.session_ip_address,
-                 session_information.session_mac_address,
-                 session_information.session_username,
-                 session_information.session_password,
-                 session_information.session_connection_type,
-                 session_information.session_brand,
-                 session_information.session_model,
-                 session_information.allow_remote_access
-                 ))
-            db.connection.commit()
-            cursor.close()
-        except Exception as ex:
-            raise Exception(ex)
+            else:
+                raise Exception(ex)
+    # Add Router

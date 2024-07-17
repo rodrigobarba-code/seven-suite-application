@@ -22,6 +22,7 @@ DROP PROCEDURE IF EXISTS sp_add_session_information;
 DELIMITER //
 CREATE PROCEDURE sp_add_session_information
 (
+    IN p_session_ip VARCHAR(16),
     IN p_session_mac VARCHAR(32),
     IN p_session_username VARCHAR(128),
     IN p_session_password VARCHAR(128),
@@ -92,6 +93,34 @@ BEGIN
 END //
 /* Create stored procedure 'sp_add_session_information' */
 
+/* Create stored procedure 'sp_add_session_only' and return the session_id */
+DROP PROCEDURE IF EXISTS sp_add_session_only;
+DELIMITER //
+CREATE PROCEDURE sp_add_session_only(OUT p_session_id INT)
+BEGIN
+    -- Declare variables
+    DECLARE session_id INT;
+
+    -- Assign the next minimum available identifier
+    SELECT MIN(t1.session_id + 1) INTO session_id
+    FROM session_information t1
+    LEFT JOIN session_information t2 ON t1.session_id + 1 = t2.session_id
+    WHERE t2.session_id IS NULL;
+
+    -- If no session_id is available, assign the maximum identifier + 1
+    IF session_id IS NULL THEN
+        SELECT IFNULL(MAX(session_id), 0) + 1 INTO session_id FROM session_information;
+    END IF;
+
+    -- Insert the new session
+    INSERT INTO session_information(session_id) VALUES(session_id);
+
+    -- Return the session_id
+    SET p_session_id = session_id;
+END //
+DELIMITER ;
+/* Create stored procedure 'sp_add_session_only' */
+
 /* Create stored procedure 'sp_update_session_information' */
 DROP PROCEDURE IF EXISTS sp_update_session_information;
 DELIMITER //
@@ -149,7 +178,7 @@ BEGIN
         ELSE
             SIGNAL SQLSTATE '45007'
             SET MESSAGE_TEXT = '45007 - Invalid MAC address.';
-        END
+        END IF;
     ELSE
         SIGNAL SQLSTATE '45006'
         SET MESSAGE_TEXT = '45006 - Invalid IP address.';

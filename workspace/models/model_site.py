@@ -1,13 +1,117 @@
 from .entities.site import Site
+from .sql_errors import SQLErrors
+
 
 class ModelSite:
 
+    # Add Site
     @classmethod
-    def get_sites(self, db):
+    def add_site(cls, db, site):
+        try:
+            # Create a cursor object using the cursor() method
+            cursor = db.connection.cursor()
+            # Execute the SQL procedure
+            cursor.execute("CALL sp_add_site(%s, %s, %s)", (
+                site.fk_region_id,
+                site.site_name,
+                site.site_segment
+            ))
+            # Commit your changes in the database
+            db.connection.commit()
+            # Close the cursor
+            cursor.close()
+        except Exception as ex:
+            if '45004' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45004'][0],
+                    error_message=SQLErrors.errors['45004'][1]
+                ))
+            else:
+                raise Exception(ex)
+    # Add Site
+
+    # Update Site
+    @classmethod
+    def update_site(cls, db, site):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_update_site(%s, %s, %s, %s)", (
+                site.site_id,
+                site.fk_region_id,
+                site.site_name,
+                site.site_segment
+            ))
+            db.connection.commit()
+            cursor.close()
+        except Exception as ex:
+            if '45004' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45004'][0],
+                    error_message=SQLErrors.errors['45004'][1]
+                ))
+            elif '45005' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45005'][0],
+                    error_message=SQLErrors.errors['45005'][1]
+                ))
+            else:
+                raise Exception(ex)
+    # Update Site
+
+    # Delete Site
+    @classmethod
+    def delete_site(cls, db, site_id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_delete_site(%s)", (
+                site_id,
+            ))
+            db.connection.commit()
+            cursor.close()
+        except Exception as ex:
+            if '45005' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45005'][0],
+                    error_message=SQLErrors.errors['45005'][1]
+                ))
+            else:
+                raise Exception(ex)
+    # Delete Site
+
+    # Get Site
+    @classmethod
+    def get_site(cls, db, site_id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_get_site(%s)", (
+                site_id,
+            ))
+            result = cursor.fetchone()
+            site = Site(
+                result[0],
+                result[1],
+                result[2],
+                result[3]
+            )
+            cursor.close()
+            return site
+        except Exception as ex:
+            if '45005' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45005'][0],
+                    error_message=SQLErrors.errors['45005'][1]
+                ))
+            else:
+                raise Exception(ex)
+    # Get Site
+
+    # Get Sites
+    @classmethod
+    def get_sites(cls, db):
         try:
             sites_list = []
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_get_all_sites")
+            cursor.execute("CALL sp_get_sites")
             sites = cursor.fetchall()
             for i in range(len(sites)):
                 sites_list.append(Site(
@@ -20,67 +124,25 @@ class ModelSite:
             return sites_list
         except Exception as ex:
             raise Exception(ex)
+    # Get Sites
 
+    # Get Region Name
     @classmethod
-    def get_site_by_id(self, db, site_id):
+    def get_region_name(cls, db, site_name):
         try:
             cursor = db.connection.cursor()
-            cursor.execute("CALL sp_get_site_by_id(%s)", (site_id,))
-            site = cursor.fetchone()
-            cursor.close()
-            return Site(
-                site[0],
-                site[1],
-                site[2],
-                site[3]
-            )
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def add_site(self, db, site):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_add_site(%s, %s, %s)", (
-                site.fk_region_id,
-                site.site_name,
-                site.site_segment
+            cursor.execute("CALL sp_get_region_name(%s)", (
+                site_name,
             ))
-            db.connection.commit()
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def update_site(self, db, site):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_update_site(%s, %s, %s, %s)", (
-                site.site_id,
-                site.fk_region_id,
-                site.site_name,
-                site.site_segment
-            ))
-            db.connection.commit()
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def delete_site(self, db, site_id):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_delete_site(%s)", (site_id,))
-            db.connection.commit()
-        except Exception as ex:
-            raise Exception(ex)
-
-    @classmethod
-    def verify_region(self, db, site_id):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_verify_region(%s)", (site_id,))
-            region = cursor.fetchone()
+            result = cursor.fetchone()
             cursor.close()
-            return str(region[0])
+            return result[0]
         except Exception as ex:
-            raise Exception(ex)
-
+            if '45005' in str(ex):
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45005'][0],
+                    error_message=SQLErrors.errors['45005'][1]
+                ))
+            else:
+                raise Exception(ex)
+    # Get Region Name

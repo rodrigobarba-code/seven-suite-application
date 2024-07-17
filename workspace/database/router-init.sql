@@ -25,16 +25,7 @@ CREATE PROCEDURE sp_add_router
 (
     IN p_router_name VARCHAR(256),
     IN p_router_description VARCHAR(512),
-    IN p_fk_site_id INT,
-    IN p_fk_session_id INT,
-    IN p_session_ip VARCHAR(16),
-    IN p_session_mac VARCHAR(32),
-    IN p_session_username VARCHAR(128),
-    IN p_session_password VARCHAR(128),
-    IN p_session_via ENUM('API', 'API_SSL'),
-    IN p_api_port INT,
-    IN p_api_port_ssl INT,
-    IN p_allow_scan BOOLEAN
+    IN p_fk_site_id INT
 )
 BEGIN
     DECLARE router_id INT;
@@ -48,23 +39,21 @@ BEGIN
         SET MESSAGE_TEXT = '45010 - Router already exists.';
     ELSE
         -- Create identifier with region_id in two digits, site_id in two digits and datetime in format YYMMDDHHMM
-        SELECT region_id INTO t_region_id FROM site WHERE site_id = p_fk_site_id;
+        SELECT fk_region_id INTO t_region_id FROM site WHERE site_id = p_fk_site_id;
         SELECT site_id INTO t_site_id FROM site WHERE site_id = p_fk_site_id;
+        SET router_id = (SELECT CONCAT(t_region_id, t_site_id));
 
-        SET router_id = (SELECT CONCAT(
-            region_id,
-            site_id,
-            DATE_FORMAT(NOW(), '%y%m%d%H%i'))
-        );
+        -- Verify if the router_id already exists
+        IF EXISTS (SELECT 1 FROM router WHERE router.router_id = router_id) THEN
+            SIGNAL SQLSTATE '45015'
+            SET MESSAGE_TEXT = '45015 - Can only have one router per site.';
+        ELSE
+            -- Create the session_id from sp_add_session_only
+            CALL sp_add_session_only(session_id);
 
-        -- Create the session information
-        CALL sp_add_session_information(p_session_ip, p_session_mac, p_session_username, p_session_password, p_session_via, p_api_port, p_api_port_ssl, p_allow_scan);
-
-        -- Get last session_id
-        SELECT session_information.session_id INTO session_id WHERE session_id = LAST_INSERT_ID();
-
-        -- Insert the new router
-        INSERT INTO router(router_id, router_name, router_description, fk_site_id, fk_session_id) VALUES(router_id, p_router_name, p_router_description, p_fk_site_id, p_fk_session_id);
+            -- Insert the new router
+            INSERT INTO router(router_id, router_name, router_description, fk_site_id, fk_session_id) VALUES(router_id, p_router_name, p_router_description, p_fk_site_id, session_id);
+        END IF;
     END IF;
 END //
 DELIMITER ;

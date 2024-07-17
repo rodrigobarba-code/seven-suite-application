@@ -6,7 +6,7 @@ class ModelRegion:
 
     # Add Region
     @classmethod
-    def add_region(self, db, region):
+    def add_region(cls, db, region):
         try:
             # Create a cursor object using the cursor() method
             cursor = db.connection.cursor()
@@ -20,15 +20,17 @@ class ModelRegion:
             cursor.close()
         except Exception as ex:
             if '45001' in str(ex):
-                raise Exception("Error: %s, %s" % (SQLErrors.errors['45001'][0], SQLErrors.errors['45001'][1]))
+                raise Exception("Error: {error_number}, {error_message}".format(
+                    error_number=SQLErrors.errors['45001'][0],
+                    error_message=SQLErrors.errors['45001'][1]
+                ))
             else:
                 raise Exception(ex)
-
     # Add Region
 
     # Update Region
     @classmethod
-    def update_region(self, db, region):
+    def update_region(cls, db, region):
         try:
             cursor = db.connection.cursor()
             cursor.execute("CALL sp_update_region(%s, %s)", (
@@ -49,12 +51,11 @@ class ModelRegion:
                 ))
             else:
                 raise Exception(ex)
-
     # Update Region
 
     # Delete Region
     @classmethod
-    def delete_region(self, db, region_id):
+    def delete_region(cls, db, region_id):
         try:
             cursor = db.connection.cursor()
             cursor.execute("CALL sp_delete_region(%s)", (region_id,))
@@ -72,12 +73,11 @@ class ModelRegion:
                 ))
             else:
                 raise Exception(ex)
-
     # Delete Region
 
     # Get Regions
     @classmethod
-    def get_regions(self, db):
+    def get_regions(cls, db):
         try:
             regions_list = []
             cursor = db.connection.cursor()
@@ -92,12 +92,11 @@ class ModelRegion:
             return regions_list
         except Exception as ex:
             raise Exception(ex)
-
     # Get Regions
 
     # Get Region
     @classmethod
-    def get_region(self, db, region_id):
+    def get_region(cls, db, region_id):
         try:
             cursor = db.connection.cursor()
             cursor.execute("CALL sp_get_region(%s)", (region_id,))
