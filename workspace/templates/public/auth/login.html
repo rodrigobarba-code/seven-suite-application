@@ -1,0 +1,105 @@
+<!-- Make a login page with glassmorphism -->
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+
+
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Seven Suite{% endblock %}</title>
+
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
+
+
+        <!-- Google Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+        <!-- Google Fonts -->
+
+
+        <!-- Font Awesome -->
+        <script src="https://kit.fontawesome.com/8562bd2fa0.js" crossorigin="anonymous"></script>
+        <!-- Font Awesome -->
+
+
+        <!-- Box Icons -->
+        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+        <!-- Box Icons -->
+
+
+        <!-- JQuery -->
+        <script
+                src="https://code.jquery.com/jquery-3.7.1.js"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+                crossorigin="anonymous">
+        </script>
+        <!-- JQuery -->
+
+
+        <!-- Data Tables CSS -->
+        <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/datatables.min.css" rel="stylesheet">
+        <!-- Data Tables CSS -->
+
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base/sidebar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base/styles.css') }}">
+        <!-- Custom CSS -->
+
+
+        {% block head %}
+        {% endblock %}
+
+
+</head>
+
+
+<body>
+
+    <!-- Login -->
+    <section class="login">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 login-form">
+                    <h2 class="login-title">Login</h2>
+                    <form action="{{ url_for('auth.login') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+                <div class="col-md-6 login-image">
+                    <img src="{{ url_for('static', filename='img/login/login.svg') }}" alt="Login Image">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Login -->
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS -->
+
+
+</body>
+
+
+
+</html>
+
+

@@ -80,6 +80,27 @@
                 <li><a href="{{ url_for('routers.routers') }}">Routers</a></li>
             </ul>
         </li>
+        <li>
+            <a href="{{ url_for('users.users') }}">
+                <i class="fa-solid fa-users"></i>
+                <span class="link_name">Users</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{{ url_for('users.users') }}">Users</a></li>
+            </ul>
+        </li>
+        <div class="user-actions">
+            <ul class="dropdown-menu position-relative d-flex gap-1 p-2 rounded-3"
+                data-bs-theme="dark">
+                <li><a class="dropdown-item rounded-2" href="#"><i
+                        class="fa-solid fa-address-card fa-2xs"></i>Profile</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a id="logout-button" class="dropdown-item rounded-2" href="#"><i class="fa-solid fa-right-from-bracket fa-2xs"></i>Log
+                    Out</a></li>
+            </ul>
+        </div>
         <div class="profile-details" style="text-align: left">
             <div class="profile-content">
                 <img src="https://r1.ilikewallpaper.net/ipad-pro-wallpapers/download/94728/rainbow-blur-abstract-5k-ipad-pro-wallpaper-ilikewallpaper_com_200.jpg"
@@ -93,6 +114,7 @@
         </li>
     </ul>
 </div>
+
 <! -- Sidebar -->
 
 <! -- Content -->
