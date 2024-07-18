@@ -1,4 +1,4 @@
-class SQLErrors:
+class Errors:
     errors = {
         '45001': ['1', 'Region already exists.'],
         '45002': ['2', 'Region does not exist.'],
@@ -13,5 +13,5 @@ class SQLErrors:
         '45011': ['11', 'Router does not exist.'],
         '45012': ['12', 'IP address does not exist.'],
         '45013': ['13', 'Router is being used in a Site.'],
-        '45014': ['14', 'ARP entry does not exist.'],
+        '45014': ['14', 'ARP entry does not exist.']
     }
