@@ -1,20 +1,20 @@
-class IPAddressesConfiguration:
+class IPAddress:
     def __init__(
         self,
-        ip_address_id: int,
-        fk_ip_address_interface: int,
-        ip_address_alias: str,
-        ip_address_state: str,
-        ip_address: str,
-        ip_address_netmask: str,
-        ip_address_network: str,
-        ip_address_gateway: str
+        address_id: int,
+        fk_router_id: int,
+        address_alias: str,
+        address_state: str,
+        address_ip: str,
+        address_netmask: str,
+        address_interface: str,
+        address_network: str
     ) -> None:
-        self.ip_address_id = ip_address_id
-        self.fk_ip_address_interface = fk_ip_address_interface
-        self.ip_address_alias = ip_address_alias
-        self.ip_address_state = ip_address_state
-        self.ip_address = ip_address
-        self.ip_address_netmask = ip_address_netmask
-        self.ip_address_network = ip_address_network
-        self.ip_address_gateway = ip_address_gateway
+        self.address_id = address_id
+        self.fk_router_id = fk_router_id
+        self.address_alias = address_alias
+        self.address_state = address_state
+        self.address_ip = address_ip
+        self.address_netmask = address_netmask
+        self.address_interface = address_interface
+        self.address_network = address_network
