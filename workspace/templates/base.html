@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Seven Suite{% endblock %}</title>
-
 
     <! -- Bootstrap CSS -->
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
@@ -16,22 +12,18 @@
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <! -- Bootstrap CSS -->
 
-
     <! -- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
     <! -- Google Fonts -->
 
-
     <! -- Font Awesome -->
     <script src="https://kit.fontawesome.com/8562bd2fa0.js" crossorigin="anonymous"></script>
     <! -- Font Awesome -->
 
-
     <! -- Box Icons -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <! -- Box Icons -->
-
 
     <! -- JQuery -->
     <script
@@ -41,28 +33,19 @@
     </script>
     <! -- JQuery -->
 
-
     <! -- Data Tables CSS -->
     <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/datatables.min.css" rel="stylesheet">
     <! -- Data Tables CSS -->
-
 
     <! -- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base/sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base/styles.css') }}">
     <! -- Custom CSS -->
 
-
     {% block head %}
     {% endblock %}
-
-
 </head>
-
-
 <body>
-
-
 <! -- Sidebar -->
 <div class="sidebar close">
     <div class="logo-details">
@@ -112,7 +95,6 @@
 </div>
 <! -- Sidebar -->
 
-
 <! -- Content -->
 <section class="home-section">
     <div class="home-content" id="home-content">
@@ -136,7 +118,6 @@
 </section>
 <! -- Content -->
 
-
 <! -- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
@@ -149,11 +130,9 @@
         crossorigin="anonymous"></script>
 <! -- Bootstrap JS -->
 
-
 <! -- Data Tables JS -->
 <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
 <! -- Data Tables JS -->
-
 
 <! -- Custom JS -->
 <script src="{{ url_for('static', filename='js/base/sidebar.js') }}"></script>
@@ -165,12 +144,7 @@
 </script>
 <! -- Custom JS -->
 
-
 {% block scripts %}
 {% endblock %}
-
-
 </body>
-
-
 </html>

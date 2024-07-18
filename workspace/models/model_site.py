@@ -1,5 +1,5 @@
 from .entities.site import Site
-from .sql_errors import SQLErrors
+from .errors import Errors
 
 
 class ModelSite:
@@ -23,8 +23,8 @@ class ModelSite:
         except Exception as ex:
             if '45004' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45004'][0],
-                    error_message=SQLErrors.errors['45004'][1]
+                    error_number=Errors.errors['45004'][0],
+                    error_message=Errors.errors['45004'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -46,13 +46,13 @@ class ModelSite:
         except Exception as ex:
             if '45004' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45004'][0],
-                    error_message=SQLErrors.errors['45004'][1]
+                    error_number=Errors.errors['45004'][0],
+                    error_message=Errors.errors['45004'][1]
                 ))
             elif '45005' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45005'][0],
-                    error_message=SQLErrors.errors['45005'][1]
+                    error_number=Errors.errors['45005'][0],
+                    error_message=Errors.errors['45005'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -71,8 +71,8 @@ class ModelSite:
         except Exception as ex:
             if '45005' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45005'][0],
-                    error_message=SQLErrors.errors['45005'][1]
+                    error_number=Errors.errors['45005'][0],
+                    error_message=Errors.errors['45005'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -98,8 +98,8 @@ class ModelSite:
         except Exception as ex:
             if '45005' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45005'][0],
-                    error_message=SQLErrors.errors['45005'][1]
+                    error_number=Errors.errors['45005'][0],
+                    error_message=Errors.errors['45005'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -140,8 +140,8 @@ class ModelSite:
         except Exception as ex:
             if '45005' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45005'][0],
-                    error_message=SQLErrors.errors['45005'][1]
+                    error_number=Errors.errors['45005'][0],
+                    error_message=Errors.errors['45005'][1]
                 ))
             else:
                 raise Exception(ex)
