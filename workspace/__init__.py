@@ -4,6 +4,8 @@ from blueprints.dashboard import dashboard_bp
 from blueprints.regions import regions_bp
 from blueprints.sites import sites_bp
 from blueprints.routers import routers_bp
+from blueprints.auth import auth_bp
+from blueprints.users import users_bp
 # Blueprints import
 
 
@@ -30,6 +32,8 @@ def create_app():
 
     # Register Blueprints
     application.register_blueprint(home_bp, url_prefix='/')
+    application.register_blueprint(auth_bp, url_prefix='/auth')
+    application.register_blueprint(users_bp, url_prefix='/users')
     application.register_blueprint(dashboard_bp, url_prefix='/dashboard')
     application.register_blueprint(regions_bp, url_prefix='/regions')
     application.register_blueprint(sites_bp, url_prefix='/sites')
