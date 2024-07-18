@@ -78,7 +78,7 @@ BEGIN
     ELSE
         -- Verify if the router name already exists
         IF EXISTS (SELECT 1 FROM router WHERE LOWER(router.router_name) = LOWER(p_router_name) AND router.router_id != p_router_id) THEN
-            SIGNAL SQLSTATE '45012'
+            SIGNAL SQLSTATE '45010'
             SET MESSAGE_TEXT = '45010 - Router already exists.';
         ELSE
             -- Update the router
@@ -112,6 +112,8 @@ BEGIN
             SIGNAL SQLSTATE '45013'
             SET MESSAGE_TEXT = '45013 - Router is being used in a Site.';
         ELSE
+        -- Delete session information of the router
+        DELETE FROM session_information WHERE session_information.session_id = (SELECT fk_session_id FROM router WHERE router_id = p_router_id);
         -- Delete the router
         DELETE FROM router WHERE router_id = p_router_id;
         END IF;

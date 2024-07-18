@@ -69,7 +69,7 @@ BEGIN
             SET MESSAGE_TEXT = '45004 - Site already exists.';
         ELSE
             -- Update the site
-            UPDATE site SET fk_region_id = fk_region_id, site_name = site_name, site_segment = site_segment WHERE site_id = site_id;
+            UPDATE site SET site.fk_region_id = fk_region_id, site.site_name = site_name, site.site_segment = site_segment WHERE site.site_id = site_id;
         END IF;
     END IF;
 END //
@@ -90,7 +90,7 @@ BEGIN
         SET MESSAGE_TEXT = '45005 - Site does not exist.';
     ELSE
         -- Delete the site
-        DELETE FROM site WHERE site_id = site_id;
+        DELETE FROM site WHERE site.site_id = site_id;
     END IF;
 END //
 DELIMITER ;
@@ -110,7 +110,7 @@ BEGIN
         SET MESSAGE_TEXT = '45005 - Site does not exist.';
     ELSE
         -- Get the site
-        SELECT site_id, fk_region_id, site_name, site_segment FROM site WHERE site_id = site_id;
+        SELECT site_id, fk_region_id, site_name, site_segment FROM site WHERE site.site_id = site_id;
     END IF;
 END //
 DELIMITER ;
@@ -141,7 +141,7 @@ BEGIN
         SET MESSAGE_TEXT = '45005 - Site does not exist.';
     ELSE
         -- Get the region name
-        SELECT region_name FROM region WHERE region_id = (SELECT fk_region_id FROM site WHERE site_name = site_name);
+        SELECT region_name FROM region WHERE region_id = (SELECT fk_region_id FROM site WHERE site.site_name = site_name);
     END IF;
 END //
 /* Create stored procedure 'sp_get_region_name' */

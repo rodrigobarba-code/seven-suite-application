@@ -1,5 +1,5 @@
 from .entities.session_information import SessionInformation
-from .sql_errors import SQLErrors
+from .errors import Errors
 
 
 class ModelSessionInformation:
@@ -28,18 +28,18 @@ class ModelSessionInformation:
         except Exception as ex:
             if '45006' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45006'][0],
-                    error_message=SQLErrors.errors['45006'][1]
+                    error_number=Errors.errors['45006'][0],
+                    error_message=Errors.errors['45006'][1]
                 ))
             elif '45007' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45007'][0],
-                    error_message=SQLErrors.errors['45007'][1]
+                    error_number=Errors.errors['45007'][0],
+                    error_message=Errors.errors['45007'][1]
                 ))
             elif '45008' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45008'][0],
-                    error_message=SQLErrors.errors['45008'][1]
+                    error_number=Errors.errors['45008'][0],
+                    error_message=Errors.errors['45008'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -66,8 +66,8 @@ class ModelSessionInformation:
         except Exception as ex:
             if '45009' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45009'][0],
-                    error_message=SQLErrors.errors['45009'][1]
+                    error_number=Errors.errors['45009'][0],
+                    error_message=Errors.errors['45009'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -86,8 +86,8 @@ class ModelSessionInformation:
         except Exception as ex:
             if '45009' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45009'][0],
-                    error_message=SQLErrors.errors['45009'][1]
+                    error_number=Errors.errors['45009'][0],
+                    error_message=Errors.errors['45009'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -117,8 +117,8 @@ class ModelSessionInformation:
         except Exception as ex:
             if '45009' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45009'][0],
-                    error_message=SQLErrors.errors['45009'][1]
+                    error_number=Errors.errors['45009'][0],
+                    error_message=Errors.errors['45009'][1]
                 ))
             else:
                 raise Exception(ex)

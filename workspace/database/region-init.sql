@@ -3,7 +3,7 @@
 DROP TABLE IF EXISTS region;
 CREATE TABLE region
 (
-    region_id INT NOT NULL PRIMARY KEY,
+    region_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     region_name VARCHAR(128) NOT NULL
 );
 /* Create 'regions' table */
@@ -18,25 +18,13 @@ CREATE PROCEDURE sp_add_region
     IN region_name VARCHAR(128)
 )
 BEGIN
-    DECLARE region_id INT;
-
     -- Verify if the region name already exists
     IF EXISTS (SELECT 1 FROM region WHERE LOWER(region.region_name) = LOWER(region_name)) THEN
         SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = '45001 - Region name already exists.';
     ELSE
-        -- Assign the next minimum available identifier
-        SELECT MIN(t1.region_id + 1) INTO region_id
-        FROM region t1
-        LEFT JOIN region t2 ON t1.region_id + 1 = t2.region_id
-        WHERE t2.region_id IS NULL;
-
-        -- If no region_id is available, assign the maximum identifier + 1
-        IF region_id IS NULL THEN
-            SELECT IFNULL(MAX(region_id), 0) + 1 INTO region_id FROM region;
-        END IF;
-
         -- Insert the new region
+        ALTER TABLE region AUTO_INCREMENT = 1;
         INSERT INTO region(region_id, region_name) VALUES(region_id, region_name);
     END IF;
 END //

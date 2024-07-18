@@ -1,5 +1,5 @@
 from .entities.region import Region
-from .sql_errors import SQLErrors
+from .errors import Errors
 
 
 class ModelRegion:
@@ -21,8 +21,8 @@ class ModelRegion:
         except Exception as ex:
             if '45001' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45001'][0],
-                    error_message=SQLErrors.errors['45001'][1]
+                    error_number=Errors.errors['45001'][0],
+                    error_message=Errors.errors['45001'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -41,13 +41,13 @@ class ModelRegion:
         except Exception as ex:
             if '45001' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45001'][0],
-                    error_message=SQLErrors.errors['45001'][1]
+                    error_number=Errors.errors['45001'][0],
+                    error_message=Errors.errors['45001'][1]
                 ))
             elif '45002' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45002'][0],
-                    error_message=SQLErrors.errors['45002'][1]
+                    error_number=Errors.errors['45002'][0],
+                    error_message=Errors.errors['45002'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -63,13 +63,13 @@ class ModelRegion:
         except Exception as ex:
             if '45002' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45002'][0],
-                    error_message=SQLErrors.errors['45002'][1]
+                    error_number=Errors.errors['45002'][0],
+                    error_message=Errors.errors['45002'][1]
                 ))
             elif '45003' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45003'][0],
-                    error_message=SQLErrors.errors['45003'][1]
+                    error_number=Errors.errors['45003'][0],
+                    error_message=Errors.errors['45003'][1]
                 ))
             else:
                 raise Exception(ex)
@@ -109,8 +109,8 @@ class ModelRegion:
         except Exception as ex:
             if '45002' in str(ex):
                 raise Exception("Error: {error_number}, {error_message}".format(
-                    error_number=SQLErrors.errors['45002'][0],
-                    error_message=SQLErrors.errors['45002'][1]
+                    error_number=Errors.errors['45002'][0],
+                    error_message=Errors.errors['45002'][1]
                 ))
             else:
                 raise Exception(ex)

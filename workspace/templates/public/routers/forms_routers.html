@@ -26,6 +26,7 @@
             });
             // Add event listener to the form to verify if the checkbox is checked
         });
+        // Check if the checkbox is checked
 
         // Check if the session information checkbox is checked
         document.addEventListener('DOMContentLoaded', () => {
@@ -81,7 +82,9 @@
                 }
             });
         });
+        // Check if the session information checkbox is checked
 
+        // Update the session port fields based on the connection type
         function updateSessionPortFields() {
             var connectionType = document.getElementById('session_connection_type').value;
             var sessionPortLabel = document.getElementById('session_port_label');
