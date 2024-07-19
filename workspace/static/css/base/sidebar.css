@@ -295,11 +295,11 @@ html, body {
     top: 0;
     background-color: #E4E9F7;
     overflow: hidden;
+    transition: background-color 0.3s ease, opacity 0.3s ease, border-bottom-left-radius 0.3s ease, border-bottom-right-radius 0.3s ease, border-top-left-radius 0.3s ease;
 }
 
 .home-section .home-content .bx-menu,
 .home-section .home-content .text {
-    color: #11101d;
     font-size: 35px;
 }
 
