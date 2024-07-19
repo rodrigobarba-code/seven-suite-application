@@ -19,6 +19,8 @@ sidebarBtn.addEventListener("click", () => {
     // Check if the sidebar is being closed and hide the user-action dropdown
     if (sidebar.classList.contains("close")) {
         const userActions = document.querySelector('.user-actions');
+
+
         if (userActions.classList.contains('visible')) {
             userActions.classList.remove('visible');
             setTimeout(() => {
@@ -67,5 +69,16 @@ document.querySelector('.profile-content img').addEventListener('click', functio
                 }
             }, 500); // Adjust this duration to match your CSS transition
         }
+    }
+});
+
+document.addEventListener("scroll", function () {
+    var homeContent = document.querySelector('.home-content');
+    if (window.scrollY > 100) { // If user scrolls down 100px from the top of the document
+        homeContent.style.borderBottomLeftRadius = "15px"; // Add border radius to bottom left
+        homeContent.style.borderBottomRightRadius = "15px"; // Add border radius to bottom right
+    } else {
+        homeContent.style.borderBottomLeftRadius = ""; // Remove border radius from bottom left
+        homeContent.style.borderBottomRightRadius = ""; // Remove border radius from bottom right
     }
 });

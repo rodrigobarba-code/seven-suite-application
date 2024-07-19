@@ -1,8 +1,93 @@
 {% extends 'base.html' %}
-
-{% block title %}
-Users
+{% block title %} Users {% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users/styles.css') }}">
 {% endblock %}
-
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/users/scripts.js') }}"></script>
+{% endblock %}
 {% block content %}
+    <!-- Users Jumbotron -->
+    <section class="users-jumbotron">
+        <div class="p-5 mb-4 base-jumbotron">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Users</h1>
+                <p class="col-md-8 fs-4">Manage your users here.</p>
+                <a href="{{ url_for('users.add_user') }}" class="btn btn-primary btn-lg" type="button"><i
+                        class="fa-solid fa-plus"></i> Add New User</a>
+            </div>
+        </div>
+    </section>
+    <!-- Users Jumbotron -->
+
+    <!-- Users Database -->
+    <section class="users-database pt-3">
+        <div class="container w-75">
+            <h2 class="users-database-title">Users <b>List</b></h2>
+        </div>
+    </section>
+    <!-- Users Database -->
+
+    <!-- Users Separator -->
+    <section class="users-separator">
+        <div class="container w-75">
+            <hr>
+        </div>
+    </section>
+    <!-- Users Separator -->
+
+    <!-- Users Table -->
+    <section class="users-table hide-scroll pt-3 pb-3">
+        <div class="container w-75" id="users-table-c">
+            <table class="table table-responsive" id="users-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User's Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users_list %}
+                    <tr>
+                        <th scope="row">{{ user.user_id }}</th>
+                        <td>{{ user.user_name }}</td>
+                        <td>
+                            <a href="{{ url_for('user.update_user', user_id=user.user_id) }}" type="button"
+                               class="btn btn-sm btn-warning"><i
+                                    class="fa-solid fa-edit"></i></a>
+                            <a data-bs-toggle="modal" data-bs-target="#users-delete-modal" type="button"
+                               class="btn btn-sm btn-danger"
+                               onclick="delete_user('{{ url_for('users.delete_user', user_id=user.user_id) }}', '{{ user.user_name }}')"><i
+                                    class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                <!-- Users Deletion Modal -->
+                <div class="modal fade" id="users-delete-modal" tabindex="-1" aria-labelledby="" aria-hidden="true"
+                     style="z-index: 5000">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="modal-body-user">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a id="button-delete-user" type="button" class="btn btn-primary">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Users Deletion Modal -->
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!-- Users Table -->
 {% endblock %}
