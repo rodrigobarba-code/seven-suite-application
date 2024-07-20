@@ -1,8 +1,7 @@
 from flask import Flask
 from app.config import Config
 from app.extensions import db, migrate
-from app.blueprints.items import items_bp
-from app.blueprints.users import users_bp
+from app.blueprints.region import regions_bp
 
 
 def create_app():
@@ -12,7 +11,6 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    app.register_blueprint(items_bp, url_prefix='/items')
-    app.register_blueprint(users_bp, url_prefix='/users')
+    app.register_blueprint(regions_bp, url_prefix='/regions')
 
     return app
