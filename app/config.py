@@ -1,6 +1,16 @@
+# Importing OS module to generate a random secret key
 import os
+# Importing OS module to generate a random secret key
 
-class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'your_secret_key'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///seven_suite.db'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+# Config class to store all the configurations of the database
+class DatabaseConfig:
+    SQLALCHEMY_TRACK_MODIFICATIONS = False  # SQLALCHEMY_TRACK_MODIFICATIONS too False to suppress warning
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///seven_suite.db'  # Database URI for the app
+# Config class to store all the configurations of the database
+
+# Config class to store all the configurations of the application
+class AppConfig:
+    PORT = 10  # Port number for the app
+    DEBUG = True  # Debug mode for the app
+    SECRET_KEY = os.urandom(24)  # Secret key for the app
+# Config class to store all the configurations of the application
