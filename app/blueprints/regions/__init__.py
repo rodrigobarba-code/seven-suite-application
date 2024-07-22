@@ -7,5 +7,5 @@ regions_bp = Blueprint('regions', __name__, template_folder='templates')
 # Defining Blueprint
 
 # Importing Routes
-from app.blueprints.region import routes
+from app.blueprints.regions import routes
 # Importing Routes

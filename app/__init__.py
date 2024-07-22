@@ -5,7 +5,9 @@ from app.config import DatabaseConfig, AppConfig
 # Importing Flask, Configurations and App Extensions
 
 # Importing Blueprints
-from app.blueprints.region import regions_bp
+from app.blueprints.home import home_bp
+from app.blueprints.regions import regions_bp
+from app.blueprints.dashboard import dashboard_bp
 # Importing Blueprints
 
 # Function constructor to create the app
@@ -19,7 +21,9 @@ def create_app():
     migrate.init_app(app, db)  # Initializing the migration
 
     # Registering the blueprints
+    app.register_blueprint(home_bp, url_prefix='/')
     app.register_blueprint(regions_bp, url_prefix='/regions')
+    app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
     # Registering the blueprints
 
     return app  # Returning the app

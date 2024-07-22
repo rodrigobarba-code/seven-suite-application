@@ -1,4 +1,70 @@
-{% for region in region_list %}
-    <h2>{{ region.region_id }}</h2>
-    <p>{{ region.region_name }}</p>
-{% endfor %}
+{% extends 'base.html' %}
+{% block title %} Regions {% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/regions/styles.css') }}">
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/regions/scripts.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <!-- Regions Jumbotron -->
+    <section class="regions-jumbotron">
+        <div class="p-5 mb-4 base-jumbotron">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Regions</h1>
+                <p class="col-md-8 fs-4">Lorem Ipsum</p>
+                <a href="{{ url_for('regions.add_region') }}" class="btn btn-primary btn-lg" type="button"><i
+                        class="fa-solid fa-plus"></i> Create New Region</a>
+            </div>
+        </div>
+    </section>
+    <!-- Regions Jumbotron -->
+
+    <!-- Regions Database -->
+    <section class="regions-database pt-3">
+        <div class="container w-75">
+            <h2 class="regions-database-title">Regions <b>Available</b></h2>
+        </div>
+    </section>
+    <!-- Regions Database -->
+
+    <!-- Regions Separator -->
+    <section class="regions-separator">
+        <div class="container w-75">
+            <hr>
+        </div>
+    </section>
+    <!-- Regions Separator -->
+
+    <!-- Regions Table -->
+    <section class="regions-table hide-scroll pt-3 pb-3">
+        <div class="container w-75" id="regions-table-c">
+            <table class="table table-responsive" id="regions-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Region's Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for region in region_list %}
+                    <tr>
+                        <th scope="row">{{ region.region_id }}</th>
+                        <td>{{ region.region_name }}</td>
+                        <td>
+                            <a href="{{ url_for('regions.update_region', region_id=region.region_id) }}" type="button"
+                               class="btn btn-sm btn-warning"><i
+                                    class="fa-solid fa-edit"></i></a>
+                            <a href="{{ url_for('regions.delete_region', region_id=region.region_id) }}" type="button"
+                               class="btn btn-sm btn-danger"><i
+                                    class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!-- Regions Table -->
+{% endblock %}

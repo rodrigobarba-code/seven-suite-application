@@ -5,7 +5,7 @@ from app.extensions import db
 # Importing Required Libraries
 
 # Importing Required Entities
-from app.blueprints.region.entities import RegionEntity
+from app.blueprints.regions.entities import RegionEntity
 # Importing Required Entities
 
 # Region Model
@@ -37,7 +37,11 @@ class Region(db.Model):
     @staticmethod
     def add_region(region):
         try:
-            db.session.add(region)
+            db.session.add(
+                Region(
+                    region_name=region.region_name
+                )
+            )
             db.session.commit()
         except Exception as e:
             db.session.rollback()
@@ -48,8 +52,8 @@ class Region(db.Model):
     @staticmethod
     def update_region(new_region):
         try:
-            region = Region.query.get_or_404(new_region.region_id)
-            region.region_name = new_region.region_name
+            old_region = db.session.query(Region).get(new_region.region_id)
+            old_region.region_name = new_region.region_name
             db.session.commit()
         except Exception as e:
             db.session.rollback()
@@ -83,7 +87,11 @@ class Region(db.Model):
     @staticmethod
     def get_region(region_id):
         try:
-            return Region.query.get_or_404(region_id).to_dict()
+            tmp = Region.query.get_or_404(region_id).to_dict()
+            return RegionEntity(
+                tmp['region_id'],
+                tmp['region_name']
+            )
         except Exception as e:
             return str(e)
     # Get Region
