@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %} Sites {% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sites/styles.css') }}">
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/sites/scripts.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <!-- Sites Jumbotron -->
+    <section class="sites-jumbotron">
+        <div class="p-5 mb-4 base-jumbotron">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Sites</h1>
+                <p class="col-md-8 fs-4">Manage the sites</p>
+                <a href="{{ url_for('sites.add_site') }}" class="btn btn-primary btn-lg" type="button"><i
+                        class="fa-solid fa-plus"></i> Create New Site</a>
+            </div>
+        </div>
+    </section>
+    <!-- Sites Jumbotron -->
+
+    <!-- Sites Database -->
+    <section class="sites-database pt-3">
+        <div class="container w-75">
+            <h2 class="sites-database-title">Sites <b>Available</b></h2>
+        </div>
+    </section>
+    <!-- Sites Database -->
+
+    <!-- Sites Separator -->
+    <section class="sites-separator">
+        <div class="container w-75">
+            <hr>
+        </div>
+    </section>
+    <!-- Sites Separator -->
+
+    <!-- Sites Table -->
+    <section class="sites-table hide-scroll pt-3 pb-3">
+        <div class="container w-75" id="sites-table-c">
+            <table class="table table-responsive" id="sites-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Sites's Name</th>
+                    <th scope="col">Region</th>
+                    <th scope="col">Segment</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for site in site_list %}
+                    <tr>
+                        <th scope="row">{{ site.site_id }}</th>
+                        <td>{{ site.site_name }}</td>
+                        <td>{{ region_functions.get_region(site.fk_region_id).region_name }}</td>
+                        <td>{{ site.site_segment }}</td>
+                        <td>
+                            <a href="{{ url_for('sites.update_site', site_id=site.site_id) }}" class="btn btn-warning"
+                               type="button"><i class="fa-solid fa-edit"></i></a>
+                            <a href="{{ url_for('sites.delete_site', site_id=site.site_id) }}" class="btn btn-danger"
+                               type="button"><i class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!-- Sites Table -->
+{% endblock %}
