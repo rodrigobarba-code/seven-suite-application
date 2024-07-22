@@ -11,10 +11,12 @@ class ModelRouter:
             # Create a cursor object using the cursor() method
             cursor = db.connection.cursor()
             # Execute the SQL procedure
-            cursor.execute("CALL sp_add_router(%s, %s, %s)", (
+            cursor.execute("CALL sp_add_router(%s, %s, %s, %s, %s)", (
                 router.router_name,
                 router.router_description,
-                router.fk_site_id
+                router.fk_site_id,
+                router.router_brand,
+                router.router_model
             ))
             # Commit your changes in the database
             db.connection.commit()
@@ -128,8 +130,10 @@ class ModelRouter:
                     router_id=router[0],
                     router_name=router[1],
                     router_description=router[2],
-                    fk_site_id=router[3],
-                    fk_session_id=router[4]
+                    router_brand=router[3],
+                    router_model=router[4],
+                    fk_site_id=router[5],
+                    fk_session_id=router[6]
                 ))
             cursor.close()
             return router_list

@@ -32,41 +32,27 @@ def routers():
 @routers_bp.route('/add', methods=['GET', 'POST'])
 def add_router():
     if request.method == 'POST':
-        router = Router(
-            router_id="",
-            router_name=request.form['router_name'],
-            fk_site_id=int(request.form['fk_site_id']),
-            fk_session_id=None,
-            fk_ip_address_id=None
-        )
-
         try:
-            if 'router-check-session-info' in request.form:
-                session_info = SessionInformation(
-                    session_id=0,
-                    session_ip_address=request.form['session_ip_address'],
-                    session_mac_address=request.form['session_mac_address'],
-                    session_username=request.form['session_username'],
-                    session_password=request.form['session_password'],
-                    session_connection_type=request.form['session_connection_type'],
-                    session_brand="Mikrotik",
-                    session_model=request.form['session_model'],
-                    allow_remote_access=True if 'allow_remote_access' in request.form else False
-                )
-
-                ModelSessionInformation.add_session_information(workspace.db, session_info)
-                ModelRouter.add_router_with_session(workspace.db, router, session_info)
-
-                return redirect(url_for('routers.routers'))
-            else:
-                ModelRouter.add_router(workspace.db, router)
-                return redirect(url_for('routers.routers'))
+            router = Router(
+                router_id="",
+                router_name=request.form['router_name'],
+                router_description="",
+                router_brand="",
+                router_model="",
+                fk_site_id=int(request.form['fk_site_id']),
+                fk_session_id=""
+            )
+            ModelRouter.add_router(workspace.db, router)
+            return redirect(url_for('routers.routers'))
         except Exception as ex:
-            flash('An error occurred while adding the router', 'danger')
+            flash('An error occurred while adding the router','danger')
+            print(ex)
             return redirect(url_for('routers.routers'))
 
     sites_list = ModelSite.get_sites(workspace.db)
     return render_template('public/routers/forms_routers.html', sites_list=sites_list, router=None, router_session=None)
+
+
 
 
 @routers_bp.route('/update/<router_id>', methods=['GET', 'POST'])

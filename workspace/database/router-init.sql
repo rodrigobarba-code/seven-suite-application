@@ -5,6 +5,8 @@ CREATE TABLE router (
     router_id VARCHAR(36) NOT NULL PRIMARY KEY,
     router_name VARCHAR(256) NULL,
     router_description VARCHAR(512) NULL,
+    router_brand VARCHAR(256) NULL,
+    router_model VARCHAR(256) NULL,
     fk_site_id INT NULL,
     fk_session_id INT NULL
 );
@@ -25,7 +27,9 @@ CREATE PROCEDURE sp_add_router
 (
     IN p_router_name VARCHAR(256),
     IN p_router_description VARCHAR(512),
-    IN p_fk_site_id INT
+    IN p_fk_site_id INT,
+    IN p_router_brand VARCHAR(256),
+    IN p_router_model VARCHAR(256)
 )
 BEGIN
     DECLARE router_id INT;
@@ -43,17 +47,11 @@ BEGIN
         SELECT site_id INTO t_site_id FROM site WHERE site_id = p_fk_site_id;
         SET router_id = (SELECT CONCAT(t_region_id, t_site_id));
 
-        -- Verify if the router_id already exists
-        IF EXISTS (SELECT 1 FROM router WHERE router.router_id = router_id) THEN
-            SIGNAL SQLSTATE '45015'
-            SET MESSAGE_TEXT = '45015 - Can only have one router per site.';
-        ELSE
             -- Create the session_id from sp_add_session_only
-            CALL sp_add_session_only(session_id);
+        CALL sp_add_session_only(session_id);
 
             -- Insert the new router
-            INSERT INTO router(router_id, router_name, router_description, fk_site_id, fk_session_id) VALUES(router_id, p_router_name, p_router_description, p_fk_site_id, session_id);
-        END IF;
+        INSERT INTO router(router_id, router_name, router_description, router_brand, router_model, fk_site_id, fk_session_id) VALUES(router_id, p_router_name, p_router_description,p_router_brand, p_router_model, p_fk_site_id, session_id);
     END IF;
 END //
 DELIMITER ;
@@ -67,6 +65,7 @@ CREATE PROCEDURE sp_update_router
     IN p_router_id INT,
     IN p_router_name VARCHAR(256),
     IN p_router_description VARCHAR(512),
+    IN p_router_brand VARCHAR(256),
     IN p_fk_site_id INT,
     IN p_fk_session_id INT
 )
@@ -85,6 +84,7 @@ BEGIN
             UPDATE router
             SET router_name = p_router_name,
                 router_description = p_router_description,
+                router_brand = p_router_brand,
                 fk_site_id = p_fk_site_id,
                 fk_session_id = p_fk_session_id
             WHERE router_id = p_router_id;
@@ -136,7 +136,7 @@ BEGIN
         SET MESSAGE_TEXT = '45012 - Router does not exist.';
     ELSE
         -- Get the router
-        SELECT router_id, router_name, router_description, fk_site_id, fk_session_id FROM router WHERE router_id = p_router_id;
+        SELECT router_id, router_name, router_description, router_brand, fk_site_id, fk_session_id FROM router WHERE router_id = p_router_id;
     END IF;
 END //
 DELIMITER ;
@@ -148,7 +148,7 @@ DELIMITER //
 CREATE PROCEDURE sp_get_routers()
 BEGIN
     -- Get all routers
-    SELECT router_id, router_name, router_description, fk_site_id, fk_session_id FROM router;
+    SELECT router_id, router_name, router_description, router_brand, router_model, fk_site_id, fk_session_id FROM router;
 END //
 DELIMITER ;
 /* Create 'sp_get_routers' stored procedure */

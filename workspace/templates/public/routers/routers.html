@@ -5,129 +5,137 @@
 
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/routers/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/routers/styles.css') }}">
 {% endblock %}
 
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/routers/scripts.js') }}"></script>
-<script>
-    function delete_router(id, name, session_id) {
-        if (session_id == "None") {
-            url = "{{ url_for('routers.delete_router', router_id='router_id') }}".replace('router_id', id);
-        } else {
-            url = "{{ url_for('routers.delete_router', router_id='router_id', session_id='session_id') }}".replace('router_id', id).replace('session_id', session_id);
+    <script src="{{ url_for('static', filename='js/routers/scripts.js') }}"></script>
+    <script>
+        function delete_router(id, name, session_id) {
+            if (session_id == "None") {
+                url = "{{ url_for('routers.delete_router', router_id='router_id') }}".replace('router_id', id);
+            } else {
+                url = "{{ url_for('routers.delete_router', router_id='router_id', session_id='session_id') }}".replace('router_id', id).replace('session_id', session_id);
+            }
+
+            modal_body = document.getElementById('modal-body-router');
+            modal_body.innerHTML = "Are you sure you want to delete this router: <b>" + name + "</b>?";
+
+            modal_button = document.getElementById('button-delete-router');
+            modal_button.href = url;
         }
-
-        modal_body = document.getElementById('modal-body-router');
-        modal_body.innerHTML = "Are you sure you want to delete this router: <b>" + name + "</b>?";
-
-        modal_button = document.getElementById('button-delete-router');
-        modal_button.href = url;
-    }
-</script>
+    </script>
 {% endblock %}
 
 
 {% block content %}
 
 
-<!-- Routers Jumbotron -->
-<section class="routers-jumbotron">
-    <div class="p-5 mb-4 base-jumbotron">
-        <div class="container-fluid py-5">
+    <!-- Routers Jumbotron -->
+    <section class="routers-jumbotron">
+        <div class="p-5 mb-4 base-jumbotron">
+            <div class="container-fluid py-5">
 
-            <h1 class="display-5 fw-bold">Routers</h1>
-            <p class="col-md-8 fs-4">Lorem Ipsum</p>
-            <a href="{{ url_for('routers.add_router') }}" class="btn btn-primary btn-lg" type="button"><i
-                    class="fa-solid fa-plus"></i> Create New Router</a>
+                <h1 class="display-5 fw-bold">Routers</h1>
+                <p class="col-md-8 fs-4">Lorem Ipsum</p>
+                <a href="{{ url_for('routers.add_router') }}" class="btn btn-primary btn-lg" type="button"><i
+                        class="fa-solid fa-plus"></i> Create New Router</a>
+            </div>
         </div>
-    </div>
-</section>
-<!-- Routers Jumbotron -->
+    </section>
+    <!-- Routers Jumbotron -->
 
 
-<!-- Routers Database -->
-<section class="routers-database pt-3">
-    <div class="container w-75">
-        <h2 class="routers-database-title">Routers <b>Availables</b></h2>
-    </div>
-</section>
-<!-- Routers Database -->
+    <!-- Routers Database -->
+    <section class="routers-database pt-3">
+        <div class="container w-75">
+            <h2 class="routers-database-title">Routers <b>Availables</b></h2>
+        </div>
+    </section>
+    <!-- Routers Database -->
 
 
-<!-- Routers Separator -->
-<section class="routers-separator">
-    <div class="container w-75">
-        <hr>
-    </div>
-</section>
-<!-- Routers Separator -->
+    <!-- Routers Separator -->
+    <section class="routers-separator">
+        <div class="container w-75">
+            <hr>
+        </div>
+    </section>
+    <!-- Routers Separator -->
 
 
-<!-- Routers Table -->
-<section class="routers-table hide-scroll pt-3 pb-3">
-    <div class="container w-75" id="sites-table-c">
-        <table class="table table-responsive" id="routers-table">
-            <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">#</th>
-                <th scope="col">Router's Name</th>
-                <th scope="col">Router's Site</th>
-                <th scope="col">Router's IP</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for router in routers_list %}
-            <tr>
-                <th scope="row">
-                    <input class="form-check" type="checkbox" name="router_ids" value="{{ router.router_id }}">
-                </th>
-                <td>{{ router.router_id }}</td>
-                <td>{{ router.router_name }}</td>
-                <td>{{ sites_functions.get_site_by_id(db, router.fk_site_id).site_name }}</td>
-                <td>{{ router.router_ip }}</td>
-                <td>
-                    <a href="{{ url_for('routers.update_router', router_id=router.router_id) }}" class="btn btn-warning"
-                       type="button"><i class="fa-solid fa-edit"></i></a>
-                    <a class="btn btn-danger" type="button" data-bs-toggle="modal"
-                       data-bs-target="#routers-delete-modal"
-                       onclick="delete_router('{{ router.router_id }}', '{{ router.router_name }}', '{{ router.fk_session_id }}')"><i
-                            class="fa-solid fa-trash"></i></a>
-                </td>
-            </tr>
-            {% endfor %}
+    <!-- Routers Table -->
+    <section class="routers-table hide-scroll pt-3 pb-3">
+        <div class="container w-75" id="sites-table-c">
+            <table class="table table-responsive" id="routers-table">
+                <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">#</th>
+                    <th scope="col">Router's Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Router's Site</th>
+                    <th scope="col">Router's IP</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for router in routers_list %}
+                    <tr>
+                        <th scope="row">
+                            <input class="form-check" type="checkbox" name="router_ids" value="{{ router.router_id }}">
+                        </th>
+                        <td>{{ router.router_id }}</td>
+                        <td>{{ router.router_name }}</td>
+                        <td>{{ router.router_description }}</td>
+                        <td>{{ router.router_brand }}</td>
+                        <td>{{ router.router_model }}</td>
+                        <td>{{ sites_functions.get_site(db, router.fk_site_id).site_name }}</td>
+                        <td>{{ router.router_ip }}</td>
+                        <td>
+                            <a href="{{ url_for('routers.update_router', router_id=router.router_id) }}"
+                               class="btn btn-warning"
+                               type="button"><i class="fa-solid fa-edit"></i></a>
+                            <a class="btn btn-danger" type="button" data-bs-toggle="modal"
+                               data-bs-target="#routers-delete-modal"
+                               onclick="delete_router('{{ router.router_id }}', '{{ router.router_name }}', '{{ router.fk_session_id }}')"><i
+                                    class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
 
 
-            <!-- Routers Deletion Modal -->
-            <div class="modal fade" id="routers-delete-modal" tabindex="-1" aria-labelledby="" aria-hidden="true"
-                 style="z-index: 5000">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Delete Router</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" id="modal-body-router">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <a href="" type="button"
-                               class="btn btn-primary" id="button-delete-router">Delete</a>
+                <!-- Routers Deletion Modal -->
+                <div class="modal fade" id="routers-delete-modal" tabindex="-1" aria-labelledby="" aria-hidden="true"
+                     style="z-index: 5000">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Delete Router</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="modal-body-router">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="" type="button"
+                                   class="btn btn-primary" id="button-delete-router">Delete</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Router Deletion Modal -->
+                <!-- Router Deletion Modal -->
 
 
-            </tbody>
-        </table>
-    </div>
-</section>
-<!-- Router Table -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!-- Router Table -->
 
 
 {% endblock %}

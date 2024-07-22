@@ -120,7 +120,7 @@
 
 
     <!-- Routers Jumbotron -->
-    <section class="router-jumbotron">
+    <section class="routers-jumbotron">
         <div class="p-5 mb-4 base-jumbotron">
             <div class="container-fluid py-5">
                 <h1 class="display-5 fw-bold">{{ "Add Router" if router is none else "Update Router" }}</h1>
@@ -182,21 +182,21 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label class="mb-2" for="router_ip">Router's IP Address <span
+                                <label class="mb-2" for="session_ip">Router's IP Address <span
                                         style="color: red">*</span>
                                 </label>
-                                <input value="{{ router_session.session_ip_address }}" type="text"
+                                <input value="{{ router_session.session_ip }}" type="text"
                                        class="form-control mb-2"
-                                       id="session_ip_address" name="session_ip_address"
+                                       id="session_ip" name="session_ip"
                                        placeholder="Enter router's IP address">
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label class="mb-2" for="router_mac">Router's MAC Address</label>
+                                <label class="mb-2" for="session_mac">Router's MAC Address</label>
                                 <input value="{{ router_session.session_mac_address }}" type="text"
                                        class="form-control mb-2"
-                                       id="session_mac_address" name="session_mac_address"
+                                       id="session_mac" name="session_mac"
                                        placeholder="Enter router's MAC address">
                             </div>
                         </div>
@@ -215,7 +215,7 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label class="mb-2" for="router_password">Router's Password <span
+                                <label class="mb-2" for="session_password">Router's Password <span
                                         style="color: red">*</span></label>
                                 <input value="" type="text" class="form-control mb-2"
                                        id="session_password" name="session_password"
@@ -228,24 +228,24 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label class="mb-2" for="session_brand">Router's Brand</label>
-                                <input value="Mikrotik" type="text" class="form-control mb-2" id="session_brand"
-                                       name="session_brand" placeholder="Enter router's brand" disabled>
+                                <label class="mb-2" for="router_brand">Router's Brand</label>
+                                <input value="Mikrotik" type="text" class="form-control mb-2" id="router_brand"
+                                       name="router_brand" placeholder="Enter router's brand" disabled>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label class="mb-2" for="router_model">Router's Model</label>
-                                <input value="{{ router_session.session_model }}" type="text" class="form-control mb-2"
-                                       id="session_model" name="session_model" placeholder="Enter router's model">
+                                <input value="{{ router_session.router_model }}" type="text" class="form-control mb-2"
+                                       id="router_model" name="session_model" placeholder="Enter router's model">
                             </div>
                         </div>
                     </div>
                     <div class="mt-1 mb-3 form-switch">
-                        <input type="checkbox" class="form-check-input" id="allow_remote_access"
-                               name="allow_remote_access"
-                               {% if router_session.allow_remote_access == 1 %}checked{% endif %}>
-                        <label class="form-check-label" for="allow_remote_access"> &nbsp; Allow Remote
+                        <input type="checkbox" class="form-check-input" id="allow_scan"
+                               name="allow_scan"
+                               {% if router_session.allow_scan == 1 %}checked{% endif %}>
+                        <label class="form-check-label" for="allow_scan"> &nbsp; Allow Remote
                             Connection </label>
                     </div>
 
@@ -254,34 +254,26 @@
                         <h2> Session Ports </h2>
                         <div class="row">
                             <div class="col">
-                                <label class="mb-2" for="session-connection-type">Connection Type <span
+                                <label class="mb-2" for="session_via">Connection Type <span
                                         style="color: red">*</span></label>
-                                <select class="form-select" id="session_connection_type" name="session_connection_type"
-                                        aria-label="Connection Type Selector" name="connection_type">
+                                <select class="form-select" id="session-via" name="session_via"
+                                        aria-label="Connection Type Selector" name="session_via_c">
                                     <option value=""
-                                            {% if router_session.session_connection_type == '' %}selected{% endif %}>
+                                            {% if router_session.session_via == '' %}selected{% endif %}>
                                         Choose
                                         a connection type
                                     </option>
-                                    <option value="ssh"
-                                            {% if router_session.session_connection_type == 'ssh' %}selected{% endif %}>
-                                        SSH
-                                    </option>
-                                    <option value="api"
-                                            {% if router_session.session_connection_type == 'api' %}selected{% endif %}>
-                                        API
-                                    </option>
                                     <option value="api_ssl"
-                                            {% if router_session.session_connection_type == 'api_ssl' %}selected{% endif %}>
+                                            {% if router_session.session_via == 'api_ssl' %}selected{% endif %}>
                                         API SSL
                                     </option>
                                 </select>
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <label class="mb-2" id="session_port_label" for="session_port">Session Port</label>
-                                    <input value="" type="text" class="form-control mb-2" id="session_port"
-                                           name="session_port" placeholder="Enter session's port">
+                                    <label class="mb-2" id="api_port" for="api_port">Session Port</label>
+                                    <input value="" type="text" class="form-control mb-2" id="api_port"
+                                           name="api_port" placeholder="Enter session's port">
                                 </div>
                             </div>
                         </div>

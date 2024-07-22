@@ -1,6 +1,6 @@
 # Import Creation Function from __init__.py
-from __init__ import create_app
-from config import DevelopmentConfig
+from workspace import create_app
+from workspace.config import DevelopmentConfig
 # Import Creation Function from __init__.py
 
 
