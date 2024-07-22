@@ -33,45 +33,7 @@ sidebarBtn.addEventListener("click", () => {
 // Toggle sidebar
 
 
-document.querySelector('.profile-content img').addEventListener('click', function (e) {
-    e.stopPropagation(); // Prevents any parent event handlers from being executed
-
-    const sidebar = document.querySelector('.sidebar');
-    const userActions = document.querySelector('.user-actions');
-
-    // If user-actions is visible and sidebar is open, close both
-    if (userActions.classList.contains('visible') && !sidebar.classList.contains('close')) {
-        sidebar.classList.add('close');
-        userActions.classList.remove('visible');
-        setTimeout(() => {
-            userActions.style.display = 'none';
-        }, 500); // Adjust this duration to match your CSS transition
-    } else {
-        // If the sidebar is closed, open it and show user-actions
-        if (sidebar.classList.contains('close')) {
-            sidebar.classList.remove('close');
-            userActions.style.display = 'flex';
-            requestAnimationFrame(() => {
-                userActions.classList.add('visible');
-            });
-        } else if (!userActions.classList.contains('visible')) {
-            // If sidebar is open but user-actions is not visible, just show user-actions
-            userActions.style.display = 'flex';
-            requestAnimationFrame(() => {
-                userActions.classList.add('visible');
-            });
-        } else {
-            // If user-actions is visible, hide it
-            userActions.classList.remove('visible');
-            setTimeout(() => {
-                if (!userActions.classList.contains('visible')) {
-                    userActions.style.display = 'none';
-                }
-            }, 500); // Adjust this duration to match your CSS transition
-        }
-    }
-});
-
+// Add border radius to home content when user scrolls down
 document.addEventListener("scroll", function () {
     var homeContent = document.querySelector('.home-content');
     if (window.scrollY > 100) { // If user scrolls down 100px from the top of the document
@@ -80,5 +42,34 @@ document.addEventListener("scroll", function () {
     } else {
         homeContent.style.borderBottomLeftRadius = ""; // Remove border radius from bottom left
         homeContent.style.borderBottomRightRadius = ""; // Remove border radius from bottom right
+    }
+});
+
+let isAnimating = false; // Track if animation is in progress
+
+document.querySelector('.profile-content img').addEventListener('click', function (e) {
+    if (isAnimating) return; // Exit if an animation is already in progress
+    isAnimating = true; // Lock further interactions until the current animation completes
+
+    e.stopPropagation(); // Prevent parent event handlers from being executed
+
+    const sidebar = document.querySelector('.sidebar');
+    const userActions = document.querySelector('.user-actions');
+
+    // Toggle visibility based on current state
+    if (!sidebar.classList.contains('close') || userActions.classList.contains('visible')) {
+        sidebar.classList.add('close');
+        userActions.classList.remove('visible');
+        setTimeout(() => {
+            userActions.style.display = 'none';
+            isAnimating = false; // Unlock interactions
+        }, 500); // Match this duration with your CSS transition
+    } else {
+        sidebar.classList.remove('close');
+        userActions.style.display = 'flex';
+        setTimeout(() => {
+            userActions.classList.add('visible');
+            isAnimating = false; // Unlock interactions
+        }, 30); // A short delay before adding 'visible' to ensure it's seen as a change
     }
 });
