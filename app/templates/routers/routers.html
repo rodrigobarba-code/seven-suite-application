@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %} Routers {% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/routers/styles.css') }}">
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/routers/scripts.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <!-- Routers Jumbotron -->
+    <section class="routers-jumbotron">
+        <div class="p-5 mb-4 base-jumbotron">
+            <div class="container-fluid py-5">
+
+                <h1 class="display-5 fw-bold">Routers</h1>
+                <p class="col-md-8 fs-4">Lorem Ipsum</p>
+                <a href="{{ url_for('routers.add_router') }}" class="btn btn-primary btn-lg" type="button"><i
+                        class="fa-solid fa-plus"></i> Create New Router</a>
+            </div>
+        </div>
+    </section>
+    <!-- Routers Jumbotron -->
+
+    <!-- Routers Database -->
+    <section class="routers-database pt-3">
+        <div class="container w-75">
+            <h2 class="routers-database-title">Routers <b>Available</b></h2>
+        </div>
+    </section>
+    <!-- Routers Database -->
+
+    <!-- Routers Separator -->
+    <section class="routers-separator">
+        <div class="container w-75">
+            <hr>
+        </div>
+    </section>
+    <!-- Routers Separator -->
+
+    <!-- Routers Table -->
+    <section class="routers-table hide-scroll pt-3 pb-3">
+        <div class="container w-75" id="sites-table-c">
+            <table class="table table-responsive" id="routers-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Router Name</th>
+                    <th scope="col">Router Description</th>
+                    <th scope="col">Router Brand</th>
+                    <th scope="col">Router Model</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for router in router_list %}
+                    <tr>
+                    <td>{{ router.router_id }}</td>
+                    <td>{{ router.router_name }}</td>
+                    <td>{{ router.router_description }}</td>
+                    <td>{{ router.router_brand }}</td>
+                    <td>{{ router.router_model }}</td>
+                    <td>
+                        <button
+                                class="btn btn-primary" data-bs-toggle="collapse"
+                                data-bs-target="#collapse-row-{{ router.router_id }}"
+                                type="button" aria-expanded="false"
+                                aria-controls="collapse-row-{{ router.router_id }}"><i class="fa-solid fa-eye"></i>
+                        </button>
+                        <a href="{{ url_for('routers.update_router', router_id=router.router_id) }}"
+                           class="btn btn-warning"
+                           type="button"><i class="fa-solid fa-edit"></i></a>
+                        <a href="{{ url_for('routers.delete_router', router_id=router.router_id) }}"
+                           class="btn btn-danger"
+                           type="button"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                    <div>
+                        <tr id="collapse-row-{{ router.router_id }}" class="collapse">
+                            <td colspan="6">
+                                <table class="table table-responsive">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">More Information:</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Router Site: {{ router.fk_site_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Router IP: {{ router.router_ip }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Router MAC: {{ router.router_mac }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <!-- Router Table -->
+{% endblock %}

@@ -7,6 +7,7 @@ from app.config import DatabaseConfig, AppConfig
 # Importing Blueprints
 from app.blueprints.home import home_bp
 from app.blueprints.sites import sites_bp
+from app.blueprints.routers import routers_bp
 from app.blueprints.regions import regions_bp
 from app.blueprints.dashboard import dashboard_bp
 # Importing Blueprints
@@ -24,6 +25,7 @@ def create_app():
     # Registering the blueprints
     app.register_blueprint(home_bp, url_prefix='/')
     app.register_blueprint(sites_bp, url_prefix='/sites')
+    app.register_blueprint(routers_bp, url_prefix='/routers')
     app.register_blueprint(regions_bp, url_prefix='/regions')
     app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
     # Registering the blueprints
