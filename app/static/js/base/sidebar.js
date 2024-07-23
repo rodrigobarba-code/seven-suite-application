@@ -29,24 +29,27 @@ sidebarBtn.addEventListener("click", () => {
         }
     }
 });
-
 // Toggle sidebar
 
 
 // Add border radius to home content when user scrolls down
-document.addEventListener("scroll", function () {
-    var homeContent = document.querySelector('.home-content');
-    if (window.scrollY > 100) { // If user scrolls down 100px from the top of the document
-        homeContent.style.borderBottomLeftRadius = "15px"; // Add border radius to bottom left
-        homeContent.style.borderBottomRightRadius = "15px"; // Add border radius to bottom right
-    } else {
-        homeContent.style.borderBottomLeftRadius = ""; // Remove border radius from bottom left
-        homeContent.style.borderBottomRightRadius = ""; // Remove border radius from bottom right
-    }
-});
+// document.addEventListener("scroll", function () {
+//     var homeContent = document.querySelector('.home-content');
+//     if (window.scrollY > 100) { // If user scrolls down 100px from the top of the document
+//         homeContent.style.borderBottomLeftRadius = "15px"; // Add border radius to bottom left
+//         homeContent.style.borderBottomRightRadius = "15px"; // Add border radius to bottom right
+//     } else {
+//         homeContent.style.borderBottomLeftRadius = ""; // Remove border radius from bottom left
+//         homeContent.style.borderBottomRightRadius = ""; // Remove border radius from bottom right
+//     }
+// });
+// Add border radius to home content when user scrolls down
+
 
 let isAnimating = false; // Track if animation is in progress
 
+
+// Toggle user actions dropdown
 document.querySelector('.profile-content img').addEventListener('click', function (e) {
     if (isAnimating) return; // Exit if an animation is already in progress
     isAnimating = true; // Lock further interactions until the current animation completes

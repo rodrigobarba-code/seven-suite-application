@@ -20,12 +20,14 @@ html, body {
     height: 100%;
     width: 260px;
     background: #11101d;
-    z-index: 100;
+    z-index: 101; /* Higher than .home-section */
     transition: all 0.5s ease;
 }
 
 .sidebar.close {
     width: 78px;
+    height: inherit; /* Ensure sidebar takes full height */
+
 }
 
 .sidebar .logo-details {
@@ -274,15 +276,9 @@ html, body {
 .home-section {
     position: relative;
     background: #E4E9F7;
-    height: fit-content;
-    left: 260px;
-    width: calc(100% - 260px);
     transition: all 0.5s ease;
-}
-
-.sidebar.close ~ .home-section {
-    left: 78px;
-    width: calc(100% - 78px);
+    z-index: 100; /* Ensure this is lower than .sidebar */
+    margin-left: 78px
 }
 
 
@@ -363,4 +359,50 @@ html, body {
 
 .profile-content img {
     cursor: pointer;
+}
+
+/* Ensure sidebar overlaps content on phone views */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 260px; /* Adjust based on your sidebar width */
+        position: fixed; /* Ensure sidebar is positioned over content */
+        left: 0; /* Ensure sidebar is positioned at the left edge */
+        overflox-y: hidden;
+    }
+
+    .home-section {
+        position: relative; /* Ensure this is positioned relative to allow z-index to work */
+        z-index: 100; /* Ensure this is lower than .sidebar */
+        left: 0; /* Ensure content is not shifted by sidebar */
+        overflox-y: hidden; /* Hide horizontal overflow */
+        height: max-content;
+        margin-left: 78px;
+    }
+
+    .sidebar .home-section {
+        padding-left: 78px;
+
+    }
+
+    .profile-details {
+        height: auto;
+    }
+
+    .sidebar.close .profile-details {
+    }
+
+    .nav-links {
+        overflow: hidden;
+    }
+
+    .user-actions {
+        height: auto;
+    }
+
+    .user-actions.visible {
+        opacity: 1; /* Make it fully visible */
+        transform: translateY(0); /* Move it to its natural position */
+        pointer-events: auto; /* Allow interaction */
+        padding-top: 10rem;
+    }
 }
