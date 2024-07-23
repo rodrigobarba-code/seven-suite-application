@@ -112,6 +112,17 @@ class Router(db.Model):
             return str(e)
     # Delete Router
 
+    # Delete All Routers
+    @staticmethod
+    def delete_all_routers():
+        try:
+            Router.query.delete()
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return str(e)
+    # Delete All Routers
+
     # Get Router
     @staticmethod
     def get_router(router_id):

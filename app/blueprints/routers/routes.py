@@ -98,3 +98,31 @@ def delete_router(router_id):
         flash(str(e), 'danger')
         return render_template('routers/routers.html')
 # Routers Delete Route
+
+# Routers Bulk Delete Route
+@routers_bp.route('/bulk_delete_router', methods=['POST'])
+def bulk_delete_router():
+    data = request.get_json()
+    router_ids = data.get('router_ids', [])
+    print(router_ids)
+    try:
+        for router_id in router_ids:
+            Router.delete_router(router_id)
+        flash('Routers Deleted Successfully', 'success')
+        return jsonify({'message': 'Routers deleted successfully'}), 200
+    except Exception as e:
+        flash(str(e), 'danger')
+        return jsonify({'message': 'Failed to delete routers', 'error': str(e)}), 500
+# Routers Bulk Delete Route
+
+# Routers Delete All Route
+@routers_bp.route('/delete_all_routers', methods=['POST'])
+def delete_all_routers():
+    try:
+        Router.delete_all_routers()
+        flash('All Routers Deleted Successfully', 'success')
+        return jsonify({'message': 'Routers deleted successfully'}), 200
+    except Exception as e:
+        flash(str(e), 'danger')
+        return jsonify({'message': 'Failed to delete routers', 'error': str(e)}), 500
+# Routers Delete All Route

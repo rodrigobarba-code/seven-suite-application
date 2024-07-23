@@ -5,6 +5,50 @@
 {% endblock %}
 {% block scripts %}
     <script src="{{ url_for('static', filename='js/routers/scripts.js') }}"></script>
+    <script>
+        document.getElementById('delete-selected').addEventListener('click', function () {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            document.getElementById('total-selected').innerText = String(checkboxes.length);
+        });
+
+        document.getElementById('confirm-delete').addEventListener('click', function () {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const selectedIds = Array.from(checkboxes).map(cb => cb.id.replace('router-', ''));
+
+            if (selectedIds.length > 0) {
+                fetch('{{ url_for('routers.bulk_delete_router') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({router_ids: selectedIds})
+                }).then(response => {
+                    if (response.ok) {
+                        location.href = '{{ url_for('routers.routers') }}';
+                    } else {
+                        alert('Failed to delete routers');
+                    }
+                });
+            } else {
+                alert('No routers selected');
+            }
+        });
+
+        document.getElementById('confirm-delete-all').addEventListener('click', function () {
+            fetch('{{ url_for('routers.delete_all_routers') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    location.href = '{{ url_for('routers.routers') }}';
+                } else {
+                    alert('Failed to delete routers');
+                }
+            });
+        });
+    </script>
 {% endblock %}
 {% block content %}
     <!-- Routers Jumbotron -->
@@ -23,10 +67,24 @@
 
     <!-- Routers Database -->
     <section class="routers-database pt-3">
-        <div class="container w-75">
-            <h2 class="routers-database-title">Routers <b>Available</b></h2>
+        <div class="container w-100 align-items-center">
+            <div class="row">
+                <div class="col-8 text-left">
+                    <h2 class="routers-database-title">Routers <b>Available</b></h2>
+                </div>
+                <div class="col-4 d-flex justify-content-end">
+                    <button class="btn btn-danger me-2" id="delete-selected" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal">
+                        Delete Selected
+                    </button>
+                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#deleteAllModal">
+                        Delete All
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
+
     <!-- Routers Database -->
 
     <!-- Routers Separator -->
@@ -43,6 +101,7 @@
             <table class="table table-responsive" id="routers-table">
                 <thead>
                 <tr>
+                    <th scope="col"></th>
                     <th scope="col">#</th>
                     <th scope="col">Router Name</th>
                     <th scope="col">Router Description</th>
@@ -54,52 +113,70 @@
                 <tbody>
                 {% for router in router_list %}
                     <tr>
-                    <td>{{ router.router_id }}</td>
-                    <td>{{ router.router_name }}</td>
-                    <td>{{ router.router_description }}</td>
-                    <td>{{ router.router_brand }}</td>
-                    <td>{{ router.router_model }}</td>
-                    <td>
-                        <button
-                                class="btn btn-primary" data-bs-toggle="collapse"
-                                data-bs-target="#collapse-row-{{ router.router_id }}"
-                                type="button" aria-expanded="false"
-                                aria-controls="collapse-row-{{ router.router_id }}"><i class="fa-solid fa-eye"></i>
-                        </button>
-                        <a href="{{ url_for('routers.update_router', router_id=router.router_id) }}"
-                           class="btn btn-warning"
-                           type="button"><i class="fa-solid fa-edit"></i></a>
-                        <a href="{{ url_for('routers.delete_router', router_id=router.router_id) }}"
-                           class="btn btn-danger"
-                           type="button"><i class="fa-solid fa-trash"></i></a>
-                    </td>
-                    <div>
-                        <tr id="collapse-row-{{ router.router_id }}" class="collapse">
-                            <td colspan="6">
-                                <table class="table table-responsive">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">More Information:</th>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Router Site: {{ router.fk_site_id }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Router IP: {{ router.router_ip }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Router MAC: {{ router.router_mac }}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </div>
+                        <td><input type="checkbox" class="form-check-input" id="router-{{ router.router_id }}"></td>
+                        <td>{{ router.router_id }}</td>
+                        <td>{{ router.router_name }}</td>
+                        <td>{{ router.router_description }}</td>
+                        <td>{{ router.router_brand }}</td>
+                        <td>{{ router.router_model }}</td>
+                        <td>
+                            <a href="{{ url_for('routers.update_router', router_id=router.router_id) }}"
+                               class="btn btn-warning"
+                               type="button"><i class="fa-solid fa-edit"></i></a>
+                            <a href="{{ url_for('routers.delete_router', router_id=router.router_id) }}"
+                               class="btn btn-danger"
+                               type="button"><i class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </section>
+
+    <!-- Router Selected Delete Modal -->
+    <section class="router-selected-delete-modal">
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete <span id="total-selected">0</span> router(s)?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Router Selected Delete Modal -->
+
+    <!-- Router Delete All Modal -->
+    <section class="router-delete-all-modal">
+        <div class="modal fade" id="deleteAllModal" tabindex="-1" aria-labelledby="deleteAllModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAllModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body
+                    ">Are you sure you want to delete all routers?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirm-delete-all">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Router Delete All Modal -->
     <!-- Router Table -->
 {% endblock %}
