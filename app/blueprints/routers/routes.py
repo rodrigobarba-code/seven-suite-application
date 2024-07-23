@@ -126,3 +126,27 @@ def delete_all_routers():
         flash(str(e), 'danger')
         return jsonify({'message': 'Failed to delete routers', 'error': str(e)}), 500
 # Routers Delete All Route
+
+# Routers Get Router Details Route
+@routers_bp.route('/get_router_details', methods=['POST'])
+def get_router_details():
+    try:
+        data = request.get_json()
+        router_id = data.get('router_id', None)
+        router = Router.get_router(router_id)
+        json_obj = {
+            'router_name': router.router_name,
+            'router_description': router.router_description,
+            'router_brand': router.router_brand,
+            'router_model': router.router_model,
+            'fk_site_id': Site.get_site(router.fk_site_id).site_name,
+            'router_ip': router.router_ip,
+            'router_mac': router.router_mac,
+            'router_username': router.router_username,
+            'router_password': router.router_password,
+            'allow_scan': "Yes" if router.allow_scan == 1 else "No"
+        }
+        return jsonify(json_obj), 200
+    except Exception as e:
+        return jsonify({'message': 'Failed to get router data', 'error': str(e)}), 500
+# Routers Get Router Details Route

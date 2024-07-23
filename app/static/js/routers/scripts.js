@@ -1,7 +1,15 @@
 $(document).ready(function () {
     $('#routers-table').DataTable(
         {
-            responsive: true
+           // Configuraciones adicionales
+            "paging": true, // Habilita la paginación
+            "searching": true, // Habilita la búsqueda
+            "ordering": true, // Habilita la ordenación
+            "info": true, // Habilita la información sobre la tabla
+            "lengthChange": true, // Habilita la cantidad de registros a mostrar
+            "autoWidth": false, // Habilita el ancho automático
+            "responsive": true, // Habilita el diseño responsivo
+
         }
     );
 });

@@ -48,6 +48,35 @@
                 }
             });
         });
+
+        function show_router_details(router_id) {
+            fetch('{{ url_for('routers.get_router_details') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({router_id: router_id})
+            }).then(response => {
+                if (response.ok) {
+                    response.json().then(data => {
+                        document.getElementById('router-name-d').innerText = data.router_name;
+                        document.getElementById('router-description-d').innerText = data.router_description;
+                        document.getElementById('router-brand-d').innerText = data.router_brand;
+                        document.getElementById('router-model-d').innerText = data.router_model;
+                        document.getElementById('router-site-d').innerText = data.fk_site_id;
+                        document.getElementById('router-ip-d').innerText = data.router_ip;
+                        document.getElementById('router-mac-d').innerText = data.router_mac;
+                        document.getElementById('router-username-d').innerText = data.router_username;
+                        document.getElementById('router-password-d').innerText = data.router_password;
+                        document.getElementById('router-allow-scan-d').innerText = data.allow_scan;
+
+                        $('#detailsModal').modal('show');
+                    });
+                } else {
+                    alert('Failed to get router details');
+                }
+            });
+        }
     </script>
 {% endblock %}
 {% block content %}
@@ -105,27 +134,24 @@
                     <th scope="col">#</th>
                     <th scope="col">Router Name</th>
                     <th scope="col">Router Description</th>
-                    <th scope="col">Router Brand</th>
-                    <th scope="col">Router Model</th>
+                    <th scope="col">Allow Remote Scan?</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for router in router_list %}
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input" id="router-{{ router.router_id }}"></td>
+                    <tr class="main-row" data-router-id="{{ router.router_id }}">
+                        <td class="text-center"><label for="router-{{ router.router_id }}"></label><input type="checkbox" class="form-check-input" id="router-{{ router.router_id }}"></td>
                         <td>{{ router.router_id }}</td>
                         <td>{{ router.router_name }}</td>
                         <td>{{ router.router_description }}</td>
-                        <td>{{ router.router_brand }}</td>
-                        <td>{{ router.router_model }}</td>
+                        <td><h5><span class="badge rounded-pill bg-{{ "success" if router.allow_scan == 1 else "secondary" }}">{{ "Enable" if router.allow_scan == 1 else "Disable" }}</span></h5></td>
                         <td>
                             <a href="{{ url_for('routers.update_router', router_id=router.router_id) }}"
-                               class="btn btn-warning"
-                               type="button"><i class="fa-solid fa-edit"></i></a>
+                               class="btn btn-warning" type="button"><i class="fa-solid fa-edit"></i></a>
                             <a href="{{ url_for('routers.delete_router', router_id=router.router_id) }}"
-                               class="btn btn-danger"
-                               type="button"><i class="fa-solid fa-trash"></i></a>
+                               class="btn btn-danger" type="button"><i class="fa-solid fa-trash"></i></a>
+                            <button data-bs-toggle="modal" data-bs-target="#detailsModal" class="btn btn-primary show-details-button" type="button" onclick="show_router_details({{ router.router_id }})"><i class="fa-solid fa-eye"></i></button>
                         </td>
                     </tr>
                 {% endfor %}
@@ -133,6 +159,7 @@
             </table>
         </div>
     </section>
+    <!-- Routers Table -->
 
     <!-- Router Selected Delete Modal -->
     <section class="router-selected-delete-modal">
@@ -178,5 +205,59 @@
         </div>
     </section>
     <!-- Router Delete All Modal -->
+
+    <!-- Router Details Modal -->
+    <section class="router-details-modal">
+        <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailsModalLabel">Router Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p><strong>Router Name: </strong> <span id="router-name-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router Description: </strong> <span id="router-description-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router Brand: </strong> <span id="router-brand-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router Model: </strong> <span id="router-model-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router Site: </strong> <span id="router-site-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router IP: </strong> <span id="router-ip-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router MAC: </strong> <span id="router-mac-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router Username: </strong> <span id="router-username-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router Password: </strong> <span id="router-password-d"></span></p>
+                                </div>
+                                <div class="col-12">
+                                    <p><strong>Router Allow Scan: </strong> <span id="router-allow-scan-d"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Router Details Modal -->
     <!-- Router Table -->
 {% endblock %}
