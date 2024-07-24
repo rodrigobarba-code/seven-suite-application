@@ -9,24 +9,23 @@ for (var i = 0; i < arrow.length; i++) {
 // Load sidebar
 
 // Toggle sidebar
-let sidebar = document.querySelector(".sidebar");
+// Toggle sidebar
 let sidebarBtn = document.querySelector(".bx-menu");
-console.log(sidebarBtn);
 sidebarBtn.addEventListener("click", () => {
     sidebar.classList.toggle("close");
 
-
-    // Check if the sidebar is being closed and hide the user-action dropdown
-    if (sidebar.classList.contains("close")) {
-        const userActions = document.querySelector('.user-actions');
-
-
-        if (userActions.classList.contains('visible')) {
-            userActions.classList.remove('visible');
-            setTimeout(() => {
-                userActions.style.display = 'none';
-            }, 500); // Adjust this duration to match your CSS transition
-        }
+    // Asegurarse de manejar correctamente la visibilidad de 'user-actions'
+    const userActions = document.querySelector('.user-actions');
+    if (!sidebar.classList.contains("close") && !userActions.classList.contains('visible')) {
+        userActions.style.display = 'flex';
+        setTimeout(() => {
+            userActions.classList.add('visible');
+        }, 30); // Un breve retraso antes de agregar 'visible'
+    } else if (sidebar.classList.contains("close") && userActions.classList.contains('visible')) {
+        userActions.classList.remove('visible');
+        setTimeout(() => {
+            userActions.style.display = 'none';
+        }, 500); // Ajustar esta duración para que coincida con la transición CSS
     }
 });
 // Toggle sidebar
@@ -76,3 +75,58 @@ document.querySelector('.profile-content img').addEventListener('click', functio
         }, 30); // A short delay before adding 'visible' to ensure it's seen as a change
     }
 });
+
+// Close user actions dropdown when user clicks outside
+document.addEventListener('click', function (e) {
+    const sidebar = document.querySelector('.sidebar');
+    const useract = document.querySelector('.user-actions');
+    const isClickInsideSidebar = sidebar.contains(e.target);
+
+    if (!isClickInsideSidebar && !sidebar.classList.contains('close')) {
+        // Aquí, asumimos que la clase 'close' es la que controla la visibilidad del sidebar.
+        // Ajusta esta lógica según cómo manejes la apertura/cierre del sidebar en tu proyecto.
+        sidebar.classList.add('close');
+        useract.classList.remove('visible');
+    }
+});
+// Close user actions dropdown when user clicks outside
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+// Elemento del sidebar y user-actions
+const sidebar = document.querySelector('.sidebar');
+const useract = document.querySelector('.user-actions');
+
+// Detectar inicio del toque
+sidebar.addEventListener('touchstart', function (event) {
+    touchStartX = event.changedTouches[0].screenX;
+}, false);
+
+// Detectar fin del toque
+sidebar.addEventListener('touchend', function (event) {
+    touchEndX = event.changedTouches[0].screenX;
+    handleSwipeGesture();
+}, false);
+
+// Función para manejar el gesto de deslizamiento
+// Función para manejar el gesto de deslizamiento
+function handleSwipeGesture() {
+    // Deslizamiento hacia la derecha para abrir el sidebar
+    if (touchEndX > touchStartX) {
+        // Umbral para determinar si el deslizamiento es significativo
+        if (touchEndX - touchStartX > 50) {
+            // Abrir el sidebar
+            sidebar.classList.remove('close');
+            useract.classList.add('visible');
+        }
+    }
+    // Deslizamiento hacia la izquierda para cerrar el sidebar
+    else if (touchStartX > touchEndX) {
+        if (touchStartX - touchEndX > 50) {
+            // Cerrar el sidebar
+            sidebar.classList.add('close');
+            useract.classList.remove('visible');
+        }
+    }
+}

@@ -277,7 +277,6 @@ html, body {
     position: relative;
     background: #E4E9F7;
     transition: all 0.5s ease;
-    z-index: 100; /* Ensure this is lower than .sidebar */
     margin-left: 78px
 }
 
@@ -339,6 +338,10 @@ html, body {
     background-color: #F03A47;
 }
 
+#profile-button:hover {
+    background-color: rgba(123, 226, 255, 0.76);
+}
+
 /* Default width for .dropdown-menu when sidebar is open */
 .dropdown-menu {
     flex-direction: column;
@@ -372,7 +375,6 @@ html, body {
 
     .home-section {
         position: relative; /* Ensure this is positioned relative to allow z-index to work */
-        z-index: 100; /* Ensure this is lower than .sidebar */
         left: 0; /* Ensure content is not shifted by sidebar */
         overflox-y: hidden; /* Hide horizontal overflow */
         height: max-content;
