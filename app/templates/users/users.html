@@ -6,52 +6,8 @@
 {% block scripts %}
     <script src="{{ url_for('static', filename='js/users/scripts.js') }}"></script>
     <script>
-        document.getElementById('delete-selected').addEventListener('click', function () {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            document.getElementById('total-selected').innerText = String(checkboxes.length);
-        });
-
-        document.getElementById('confirm-delete').addEventListener('click', function () {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            const selectedIds = Array.from(checkboxes).map(cb => cb.id.replace('user-', ''));
-
-            if (selectedIds.length > 0) {
-                fetch('{{ url_for('users.bulk_delete_user') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({users_ids: selectedIds})
-                }).then(response => {
-                    if (response.ok) {
-                        location.href = '{{ url_for('users.users') }}';
-                    } else {
-                        alert('Failed to delete users');
-                    }
-                });
-            } else {
-                alert('No users selected');
-            }
-        });
-
-        document.getElementById('confirm-delete-all').addEventListener('click', function () {
-            if (document.querySelectorAll('input[type="checkbox"]').length === 0) {
-                alert('No users to delete');
-            } else {
-                fetch('{{ url_for('users.delete_all_users') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        location.href = '{{ url_for('users.users') }}';
-                    } else {
-                        alert('Failed to delete users');
-                    }
-                });
-            }
-        });
+        deleteSelectedUsersModal("{{ url_for('users.bulk_delete_user') }}", "{{ url_for('users.users') }}");
+        deleteAllUsersModal("{{ url_for('users.delete_all_users') }}", "{{ url_for('users.users') }}");
     </script>
 {% endblock %}
 {% block content %}
@@ -72,10 +28,10 @@
     <section class="users-database pt-3">
         <div class="container w-75">
             <div class="row">
-                <div class="col-8 text-left">
+                <div class="col-12 col-md-8 text-left">
                     <h2 class="users-database-title"><b>Available</b> Users</h2>
                 </div>
-                <div class="col-4 d-flex justify-content-end">
+                <div class="col-12 col-md-4 d-flex justify-content-end">
                     <button class="btn btn-danger me-2" data-bs-toggle="modal" id="delete-selected"
                             data-bs-target="#delete-select-modal-users">
                         Delete Selected
