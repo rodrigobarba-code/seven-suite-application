@@ -1,6 +1,7 @@
 # Importing Required Libraries
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from . import sites_bp
+from app.decorators import RequirementsDecorators as restriction
 # Importing Required Libraries
 
 # Importing Required Entities
@@ -11,10 +12,13 @@ from app.blueprints.regions.entities import RegionEntity
 # Importing Required Models
 from app.blueprints.sites.models import Site
 from app.blueprints.regions.models import Region
+
+
 # Importing Required Models
 
 # Sites Main Route
 @sites_bp.route('/', methods=['GET'])
+@restriction.login_required
 def sites():
     site_list = Site.get_sites()  # Get the site list
     region_functions = Region()  # Create a Region object
@@ -24,10 +28,13 @@ def sites():
         site_list=site_list,  # Pass the site list to the template
         site=None  # Pass None to the template
     )
+
+
 # Sites Main Route
 
 # Sites Add Route
 @sites_bp.route('/add', methods=['GET', 'POST'])
+@restriction.login_required
 def add_site():
     if request.method == 'POST':  # If the request method is POST
         try:  # Try to add the site
@@ -48,10 +55,13 @@ def add_site():
         region_list=region_list,  # Pass the region list to the template
         site=None  # Pass None to the template
     )
+
+
 # Sites Add Route
 
 # Sites Update Route
 @sites_bp.route('/update/<int:site_id>', methods=['GET', 'POST'])
+@restriction.login_required
 def update_site(site_id):
     if request.method == 'POST':  # If the request method is POST
         try:  # Try to update the site
@@ -73,10 +83,13 @@ def update_site(site_id):
         region_list=region_list,  # Pass the region list to the template
         site=site  # Pass the site to the template
     )
+
+
 # Sites Update Route
 
 # Sites Delete Route
 @sites_bp.route('/delete/<int:site_id>', methods=['GET'])
+@restriction.login_required
 def delete_site(site_id):
     try:  # Try to delete the site
         Site.delete_site(site_id)  # Delete the site

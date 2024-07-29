@@ -1,30 +1,24 @@
-# Importing Required Libraries
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from . import users_bp
-# Importing Required Libraries
-
-# Importing Required Entities
+from app.decorators import RequirementsDecorators as restriction
 from app.blueprints.users.entities import UserEntity
-# Importing Required Entities
-
-# Importing Required Models
 from app.blueprints.users.models import User
 
 
-# Importing Required Models
-
 # Users Main Route
 @users_bp.route('/')
+@restriction.login_required
 def users():
     return render_template(
         'users/users.html',  # Render the users template
         user_list=User.get_users(),  # Pass the user list to the template
         user=None  # Pass None to the template
     )
-# Users Main Routea
+
 
 # Users Add Route
 @users_bp.route('/add', methods=['GET', 'POST'])
+@restriction.login_required
 def add_user():
     if request.method == 'POST':  # If the request method is POST
         try:  # Try to add the user
@@ -47,10 +41,11 @@ def add_user():
         user_list=User.get_users(),  # Pass the user list to the template
         user=None  # Pass None to the template
     )
-# Users Add Route
+
 
 # Users Update Route
 @users_bp.route('/update/<user_id>', methods=['GET', 'POST'])
+@restriction.login_required
 def update_user(user_id):
     if request.method == 'POST':  # If the request method is POST
         try:  # Try to update the user
@@ -73,10 +68,11 @@ def update_user(user_id):
         user_list=User.get_users(),  # Pass the user list to the template
         user=User.get_user(user_id)  # Pass the user to the template
     )
-# Users Update Route
+
 
 # Users Delete Route
 @users_bp.route('/delete/<user_id>')
+@restriction.login_required
 def delete_user(user_id):
     try:  # Try to delete the user
         User.delete_user(user_id)  # Delete the user
@@ -84,10 +80,11 @@ def delete_user(user_id):
     except Exception as e:
         flash(str(e), 'danger')
     return redirect(url_for('users.users'))
-# User Delete Route
+
 
 # Users Bulk Delete Route
 @users_bp.route('/bulk_delete_user', methods=['POST'])
+@restriction.login_required
 def bulk_delete_user():
     data = request.get_json()
     user_ids = data.get('users_ids', [])
@@ -100,10 +97,11 @@ def bulk_delete_user():
     except Exception as e:
         flash(str(e), 'danger')
         return jsonify({'message': 'Failed to delete users', 'error': str(e)}), 500
-# Users Bulk Delete Route
+
 
 # Routers Delete All Route
 @users_bp.route('/delete_all_users', methods=['POST'])
+@restriction.login_required
 def delete_all_users():
     try:
         User.delete_all_users()
@@ -112,4 +110,3 @@ def delete_all_users():
     except Exception as e:
         flash(str(e), 'danger')
         return jsonify({'message': 'Failed to delete routers', 'error': str(e)}), 500
-# Routers Delete All Route
