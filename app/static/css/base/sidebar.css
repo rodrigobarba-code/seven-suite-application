@@ -405,6 +405,5 @@ html, body {
         opacity: 1; /* Make it fully visible */
         transform: translateY(0); /* Move it to its natural position */
         pointer-events: auto; /* Allow interaction */
-        padding-top: 10rem;
     }
 }

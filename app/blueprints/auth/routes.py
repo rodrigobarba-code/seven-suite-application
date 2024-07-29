@@ -18,6 +18,8 @@ def login():
                 print("Password is correct")
                 session['user_id'] = user.user_id
                 session['user_privileges'] = user.user_privileges  # Ensure this line is present
+                session['user_name'] = user.user_name
+                session['user_lastname'] = user.user_lastname  # Add this line
                 if user.user_privileges == 'admin':
                     session['user_avatar'] = url_for('static', filename='img/user_avatars/admin_avatar.svg')
                 elif user.user_privileges == 'employee':
