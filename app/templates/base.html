@@ -113,8 +113,13 @@
                      alt="profileImg">
             </div>
             <div class="name-job">
-                <div class="profile_name">Rodrigo Barba</div>
-                <div class="job">Web Developer</div>
+                <div class="profile_name">{{ session['user_name'] }} {{ session['user_lastname'] }}</div>
+                {% set job_display = {
+                    'admin': 'Admin',
+                    'employee': 'Employee',
+                    'guest': 'Guest'
+                } %}
+                <div class="job">{{ job_display[session['user_privileges']] }}</div>
             </div>
         </div>
         </li>
