@@ -1,11 +1,12 @@
 # Importing Flask, Configurations and App Extensions
-from flask import Flask
+from flask import Flask, session
 from app.extensions import db, migrate
 from app.config import DatabaseConfig, AppConfig
 # Importing Flask, Configurations and App Extensions
 
 # Importing Blueprints
 from app.blueprints.home import home_bp
+from app.blueprints.auth import auth_bp
 from app.blueprints.sites import sites_bp
 from app.blueprints.users import users_bp
 from app.blueprints.routers import routers_bp
@@ -25,6 +26,7 @@ def create_app():
 
     # Registering the blueprints
     app.register_blueprint(home_bp, url_prefix='/')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(sites_bp, url_prefix='/sites')
     app.register_blueprint(users_bp, url_prefix='/users')
     app.register_blueprint(routers_bp, url_prefix='/routers')

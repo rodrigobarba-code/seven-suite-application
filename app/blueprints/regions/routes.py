@@ -1,6 +1,8 @@
 # Importing Required Libraries
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from . import regions_bp
+from app.decorators import RequirementsDecorators as restriction
+
 # Importing Required Libraries
 
 # Importing Required Entities
@@ -9,20 +11,26 @@ from app.blueprints.regions.entities import RegionEntity
 
 # Importing Required Models
 from app.blueprints.regions.models import Region
+
+
 # Importing Required Models
 
 # Regions Main Route
 @regions_bp.route('/', methods=['GET'])
+@restriction.login_required
 def regions():
     region_list = Region.get_regions()  # Get all regions
     return render_template(
         'regions/regions.html',  # Render the regions template
         region_list=region_list, region=None  # Pass the region list and None to the template
     )
+
+
 # Regions Main Route
 
 # Regions Add Route
 @regions_bp.route('/add', methods=['GET', 'POST'])
+@restriction.login_required
 def add_region():
     if request.method == 'POST':  # If the request method is POST
         try:  # Try to add the region
@@ -39,10 +47,13 @@ def add_region():
         'regions/form_regions.html',  # Render the form_regions template
         region=None  # Pass None to the template
     )
+
+
 # Regions Add Route
 
 # Regions Update Route
 @regions_bp.route('/update/<int:region_id>', methods=['GET', 'POST'])
+@restriction.login_required
 def update_region(region_id):
     if request.method == 'POST':  # If the request method is POST
         try:  # Try to update the region
@@ -60,10 +71,13 @@ def update_region(region_id):
         'regions/form_regions.html',  # Render the form_regions template
         region=region  # Pass the region to the template
     )
+
+
 # Regions Update Route
 
 # Regions Delete Route
 @regions_bp.route('/delete/<int:region_id>', methods=['GET'])
+@restriction.login_required
 def delete_region(region_id):
     try:  # Try to delete the region
         Region.delete_region(region_id)  # Delete the region
