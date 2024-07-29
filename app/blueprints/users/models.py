@@ -3,10 +3,12 @@
 # Importing Required Libraries
 import bcrypt
 from app.extensions import db
+from datetime import datetime
 # Importing Required Libraries
 
 # Importing Required Entities
 from app.blueprints.users.entities import UserEntity
+from app.blueprints.users.entities import UserLogEntity
 # Importing Required Entities
 
 # Users Model
@@ -148,3 +150,118 @@ class User(db.Model):
     # Get Users
     # Static Methods
 # Users Model
+
+
+# User Log Model
+class UserLog(db.Model):
+    # Table Name
+    __tablename__ = 'users_log'
+    # Table Name
+
+    # Columns
+    user_log_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    fk_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    user_log_description = db.Column(db.String(256), nullable=True)
+    user_log_action = db.Column(db.String(128), nullable=False)
+    user_log_table = db.Column(db.String(128), nullable=True)
+    user_log_date = db.Column(db.String(128), nullable=False)
+    user_log_public_ip = db.Column(db.String(32), nullable=False)
+    user_log_local_ip = db.Column(db.String(32), nullable=False)
+    # Columns
+
+    # Object Representation
+    def __repr__(self):
+        return f'<UserLog {self.user_log_id}>'
+    # Object Representation
+
+    # Dictionary Representation
+    def to_dict(self):
+        return {
+            'user_log_id': self.user_log_id,
+            'fk_user_id': self.fk_user_id,
+            'user_log_description': self.user_log_description,
+            'user_log_action': self.user_log_action,
+            'user_log_table': self.user_log_table,
+            'user_log_date': self.user_log_date,
+            'user_log_public_ip': self.user_log_public_ip,
+            'user_log_local_ip': self.user_log_local_ip
+        }
+    # Dictionary Representation
+
+    # Static Methods
+    # Add User Log
+    @staticmethod
+    def add_user_log(user_log: UserLogEntity):
+        try:
+            new_user_log = UserLog(
+                user_log_id=None,
+                fk_user_id=user_log.fk_user_id,
+                user_log_description=user_log.user_log_description,
+                user_log_action=user_log.user_log_action,
+                user_log_table=user_log.user_log_table,
+                user_log_date=user_log.user_log_date,
+                user_log_public_ip=user_log.user_log_public_ip,
+                user_log_local_ip=user_log.user_log_local_ip
+            )
+            db.session.add(new_user_log)
+            db.session.commit()
+            return user_log
+        except Exception as e:
+            db.session.rollback()
+            return str(e)
+    # Add User Log
+
+    # Delete From Date Users Log Route
+    from datetime import datetime
+
+    # Delete From Date Users Log Route
+    @staticmethod
+    def delete_from_date_user_log(date_str):
+        try:
+            # Convert date_str to a date object
+            from_date = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+
+            # Loop through all user logs and delete those older than from_date
+            for user_log in UserLog.query.all():
+                # Convert user_log.user_log_date from string to datetime
+                user_log_date = datetime.strptime(user_log.user_log_date, '%d/%m/%Y %H:%M:%S')
+                if user_log_date <= from_date:
+                    db.session.delete(user_log)
+
+            db.session.commit()  # Commit after deleting all the necessary logs
+        except Exception as e:
+            db.session.rollback()
+            print(str(e))
+    # Delete From Date Users Log Route
+
+    # Delete All User Log
+    @staticmethod
+    def delete_all_user_log():
+        try:
+            UserLog.query.delete()
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return str(e)
+    # Delete All User Log
+
+    # Get User Log
+    @staticmethod
+    def get_user_logs():
+        try:
+            user_logs = UserLog.query.all()
+            return [UserLogEntity(
+                user_log_id=user_log.user_log_id,
+                fk_user_id=user_log.fk_user_id,
+                user_log_description=user_log.user_log_description,
+                user_log_action=user_log.user_log_action,
+                user_log_table=user_log.user_log_table,
+                user_log_date=user_log.user_log_date,
+                user_log_public_ip=user_log.user_log_public_ip,
+                user_log_local_ip=user_log.user_log_local_ip
+            ) for user_log in user_logs]
+        except Exception as e:
+            return str(e)
+    # Get User Log
+    # Static Methods
+# User Log Model

@@ -92,7 +92,7 @@
             </div>
             <ul class="sub-menu">
                 <li><a href="{{ url_for('users.users') }}">Users</a></li>
-                <li><a href="">Log</a></li>
+                <li><a href="{{ url_for('users.log') }}">Log</a></li>
             </ul>
         </li>
         <div class="user-actions">
@@ -148,6 +148,20 @@
     {% block content %}
     {% endblock %}
 </section>
+
+{% macro not_item_found() %}
+    <div class="text-center mb-3">
+        <img src="{{ url_for('static', filename='img/no-item-found.jpg') }}" alt="Empty"
+             class="img-fluid" width="300" style="margin-top: -50px">
+        <h5 class="text-center" style="margin-top: -50px">No logs found</h5>
+        <p class="mb-3">It seems that there are no logs to show</p>
+    </div>
+    <style>
+        #user-timeline-body {
+            height: max-content;
+        }
+    </style>
+{% endmacro %}
 <! -- Content -->
 
 <! -- Bootstrap JS -->
