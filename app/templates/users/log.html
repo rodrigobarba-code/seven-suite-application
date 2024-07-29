@@ -87,11 +87,12 @@
                                             <h6>It has been done a <span
                                                     class="badge bg-{% if log.user_log_action == 'INSERT' %}success{% elif log.user_log_action == 'UPDATE' %}warning{% elif log.user_log_action == 'DELETE' %}danger{% elif log.user_log_action == 'LOGIN' %}primary{% else %}secondary{% endif %}">{{ log.user_log_action }}</span>
                                             </h6>
-                                                    Name: {{ user_functions.get_user(log.fk_user_
+
                                             {% if log.user_log_action in ['INSERT', 'UPDATE', 'DELETE'] %}
                                                 <p>On the table {{ log.user_log_table }}, by
-                                                    Username: {{ user_functions.get_user(log.fk_user_id).user_name }},
-                                                    withid).user_name }} {{ user_functions.get_user(log.fk_user_id).user_lastname }}</p>
+                                                    Username: {{ user_functions.get_user(log.fk_user_id).user_username }},
+                                                    With
+                                                    Name: {{ user_functions.get_user(log.fk_user_id).user_name }} {{ user_functions.get_user(log.fk_user_id).user_lastname }}</p>
                                                 <p>Description: {{ log.user_log_description }}</p>
                                                 <strong>
                                                     <p>The Public IP Address is {{ log.user_log_public_ip }}</p>
