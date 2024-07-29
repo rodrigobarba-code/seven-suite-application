@@ -23,7 +23,7 @@
     <! -- Font Awesome -->
 
     <! -- Box Icons -->
-    <link href="https://cdn.jsdelivr.net/gh/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <! -- Box Icons -->
 
     <! -- JQuery -->
@@ -103,13 +103,13 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a id="logout-button" class="dropdown-item rounded-2" href="#"><i
-                        class="fa-solid fa-right-from-bracket"></i>Log Out</a></li>
+                <li><a id="logout-button" class="dropdown-item rounded-2" href="{{ url_for('auth.logout') }}"><i
+                        class=" fa-solid fa-right-from-bracket"></i>Log Out</a></li>
             </ul>
         </div>
         <div class="profile-details" style="text-align: left">
             <div class="profile-content">
-                <img src="https://r1.ilikewallpaper.net/ipad-pro-wallpapers/download/94728/rainbow-blur-abstract-5k-ipad-pro-wallpaper-ilikewallpaper_com_200.jpg"
+                <img src="{{ session['user_avatar'] }}"
                      alt="profileImg">
             </div>
             <div class="name-job">
