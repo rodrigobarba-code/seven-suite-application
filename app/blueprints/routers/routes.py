@@ -1,6 +1,8 @@
 # Importing Required Libraries
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from . import routers_bp
+from app.decorators import RequirementsDecorators as restriction
+
 # Importing Required Libraries
 
 # Importing Required Entities
@@ -10,20 +12,27 @@ from app.blueprints.routers.entities import RouterEntity
 # Importing Required Models
 from app.blueprints.sites.models import Site
 from app.blueprints.routers.models import Router
+
+
 # Importing Required Models
 
 # Routers Main Route
 @routers_bp.route('/', methods=['GET'])
+@restriction.login_required
 def routers():
     router_list = Router.get_all_routers()
     return render_template(
         'routers/routers.html',
         router_list=router_list
     )
+
+
 # Routers Main Route
 
 # Routers Add Route
 @routers_bp.route('/add', methods=['GET', 'POST'])
+@restriction.login_required
+@restriction.admin_required
 def add_router():
     if request.method == 'POST':
         try:
@@ -50,12 +59,16 @@ def add_router():
     return render_template(
         'routers/form_routers.html',
         site_list=site_list,
-        router = None
+        router=None
     )
+
+
 # Routers Add Route
 
 # Routers Update Route
 @routers_bp.route('/update/<int:router_id>', methods=['GET', 'POST'])
+@restriction.login_required
+@restriction.admin_required
 def update_router(router_id):
     if request.method == 'POST':
         try:
@@ -85,10 +98,14 @@ def update_router(router_id):
         site_list=site_list,
         router=router
     )
+
+
 # Routers Update Route
 
 # Routers Delete Route
 @routers_bp.route('/delete/<int:router_id>', methods=['GET'])
+@restriction.login_required
+@restriction.admin_required
 def delete_router(router_id):
     try:
         Router.delete_router(router_id)
@@ -97,10 +114,14 @@ def delete_router(router_id):
     except Exception as e:
         flash(str(e), 'danger')
         return render_template('routers/routers.html')
+
+
 # Routers Delete Route
 
 # Routers Bulk Delete Route
 @routers_bp.route('/bulk_delete_router', methods=['POST'])
+@restriction.login_required
+@restriction.admin_required
 def bulk_delete_router():
     data = request.get_json()
     router_ids = data.get('router_ids', [])
@@ -113,10 +134,14 @@ def bulk_delete_router():
     except Exception as e:
         flash(str(e), 'danger')
         return jsonify({'message': 'Failed to delete routers', 'error': str(e)}), 500
+
+
 # Routers Bulk Delete Route
 
 # Routers Delete All Route
 @routers_bp.route('/delete_all_routers', methods=['POST'])
+@restriction.login_required
+@restriction.admin_required
 def delete_all_routers():
     try:
         Router.delete_all_routers()
@@ -125,10 +150,13 @@ def delete_all_routers():
     except Exception as e:
         flash(str(e), 'danger')
         return jsonify({'message': 'Failed to delete routers', 'error': str(e)}), 500
+
+
 # Routers Delete All Route
 
 # Routers Get Router Details Route
 @routers_bp.route('/get_router_details', methods=['POST'])
+@restriction.login_required
 def get_router_details():
     try:
         data = request.get_json()
