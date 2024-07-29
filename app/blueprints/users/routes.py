@@ -1,5 +1,5 @@
 # Importing Required Libraries
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import render_template, redirect, url_for, flash, request, jsonify, session
 from app.extensions import get_public_ip, get_local_ip
 from datetime import datetime
 from . import users_bp
@@ -48,7 +48,7 @@ def add_user():
 
             user_log = UserLogEntity(
                 user_log_id=None,
-                fk_user_id=1,
+                fk_user_id=session['user_id'],
                 user_log_description='User Added',
                 user_log_action='INSERT',
                 user_log_table='users',
@@ -88,7 +88,7 @@ def update_user(user_id):
 
             user_log = UserLogEntity(
                 user_log_id=None,
-                fk_user_id=1,
+                fk_user_id=session['user_id'],
                 user_log_description='User Updated',
                 user_log_action='UPDATE',
                 user_log_table='users',
@@ -118,7 +118,7 @@ def delete_user(user_id):
 
         user_log = UserLogEntity(
             user_log_id=None,
-            fk_user_id=1,
+            fk_user_id=session['user_id'],
             user_log_description='User Deleted',
             user_log_action='DELETE',
             user_log_table='users',
@@ -148,7 +148,7 @@ def bulk_delete_user():
 
         user_log = UserLogEntity(
             user_log_id=None,
-            fk_user_id=1,
+            fk_user_id=session['user_id'],
             user_log_description=f'{flag} Users Deleted',
             user_log_action='DELETE',
             user_log_table='users',
@@ -175,7 +175,7 @@ def delete_all_users():
 
         user_log = UserLogEntity(
             user_log_id=None,
-            fk_user_id=1,
+            fk_user_id=session['user_id'],
             user_log_description='All Users Deleted',
             user_log_action='DELETE',
             user_log_table='users',
