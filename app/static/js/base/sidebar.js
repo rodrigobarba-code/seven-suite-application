@@ -11,11 +11,15 @@ for (var i = 0; i < arrow.length; i++) {
 // Get the sidebar and user actions elements
 const sidebar = document.querySelector(".sidebar");
 const userActions = document.querySelector('.user-actions');
+// Get the sidebar and user actions elements
+
 
 // Function to toggle sidebar
 function toggleSidebar() {
     sidebar.classList.toggle("close");
 }
+
+// Function to toggle sidebar
 
 // Function to toggle user actions
 function toggleUserActions() {
@@ -32,6 +36,8 @@ function toggleUserActions() {
     }
 }
 
+// Function to toggle user actions
+
 // Toggle sidebar with menu button
 let sidebarBtn = document.querySelector(".bx-menu");
 sidebarBtn.addEventListener("click", (e) => {
@@ -39,6 +45,8 @@ sidebarBtn.addEventListener("click", (e) => {
     toggleSidebar();
 
 });
+// Toggle sidebar with menu button
+
 
 // Toggle user actions dropdown with profile image and open sidebar
 document.querySelector('.profile-content img').addEventListener('click', function (e) {
@@ -48,6 +56,8 @@ document.querySelector('.profile-content img').addEventListener('click', functio
         sidebar.classList.remove('close');
     }
 });
+// Toggle user actions dropdown with profile image and open sidebar
+
 
 // Close sidebar and user actions dropdown when user clicks outside
 document.addEventListener('click', function (e) {
@@ -68,6 +78,7 @@ document.addEventListener('click', function (e) {
         }
     }
 });
+// Close sidebar and user actions dropdown when user clicks outside
 
 // Handle swipe gestures for sidebar
 let touchStartX = 0;
@@ -97,3 +108,26 @@ function handleSwipeGesture() {
         }, 500); // Adjust this duration to match the CSS transition
     }
 }
+
+// Handle swipe gestures for sidebar
+
+// Add styles to home content when user scrolls down
+document.addEventListener("scroll", function () {
+    var homeContent = document.querySelector('.home-content');
+    if (window.scrollY > 100) { // If user scrolls down 100px from the top of the document
+        homeContent.style.borderRadius = "30px"; // Add border radius to bottom right
+        homeContent.style.margin = "10px";
+        // Translate the content to the bottom just a little bit
+        homeContent.style.transform = "translateY(10px)";
+        homeContent.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+        homeContent.style.color = "white";
+        homeContent.style.background = "#252a2f";
+    } else {
+        homeContent.style.borderRadius = "0"; // Remove border radius
+        homeContent.style.margin = "0";
+        homeContent.style.boxShadow = "none";
+        homeContent.style.color = "black";
+        homeContent.style.transform = "translateY(0px)";
+        homeContent.style.background = "#E4E9F7";
+    }
+});
