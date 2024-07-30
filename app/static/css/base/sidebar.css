@@ -288,9 +288,10 @@ html, body {
     align-items: center;
     position: sticky;
     top: 0;
+    z-index: 100;
     background-color: #E4E9F7;
     overflow: hidden;
-    transition: background-color 0.3s ease, opacity 0.3s ease, border-bottom-left-radius 0.3s ease, border-bottom-right-radius 0.3s ease, border-top-left-radius 0.3s ease;
+    transition: background-color 0.8s ease, color 0.8s ease, border-radius 0.3s ease, box-shadow 0.3s ease, margin 0.3s ease, transform 0.3s ease;
 }
 
 .home-section .home-content .bx-menu,
