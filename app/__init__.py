@@ -1,5 +1,5 @@
 # Importing Flask, Configurations and App Extensions
-from flask import Flask, session
+from flask import Flask
 from app.extensions import db, migrate
 from app.config import DatabaseConfig, AppConfig
 # Importing Flask, Configurations and App Extensions
@@ -25,13 +25,13 @@ def create_app():
     migrate.init_app(app, db)  # Initializing the migration
 
     # Registering the blueprints
-    app.register_blueprint(home_bp, url_prefix='/')
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(sites_bp, url_prefix='/sites')
-    app.register_blueprint(users_bp, url_prefix='/users')
-    app.register_blueprint(routers_bp, url_prefix='/routers')
-    app.register_blueprint(regions_bp, url_prefix='/regions')
-    app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
+    app.register_blueprint(home_bp, url_prefix='/')  # Registering the home blueprint
+    app.register_blueprint(auth_bp, url_prefix='/auth')  # Registering the auth blueprint
+    app.register_blueprint(sites_bp, url_prefix='/sites')  # Registering the sites blueprint
+    app.register_blueprint(users_bp, url_prefix='/users')  # Registering the users blueprint
+    app.register_blueprint(routers_bp, url_prefix='/routers')  # Registering the routers blueprint
+    app.register_blueprint(regions_bp, url_prefix='/regions')  # Registering the regions blueprint
+    app.register_blueprint(dashboard_bp, url_prefix='/dashboard')  # Registering the dashboard blueprint
     # Registering the blueprints
 
     return app  # Returning the app

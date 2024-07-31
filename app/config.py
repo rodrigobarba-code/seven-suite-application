@@ -10,7 +10,7 @@ class DatabaseConfig:
 
 # Config class to store all the configurations of the application
 class AppConfig:
-    PORT = 10  # Port number for the app
+    PORT = 5000  # Port number for the app
     DEBUG = True  # Debug mode for the app
     SECRET_KEY = os.urandom(24)  # Secret key for the app
 # Config class to store all the configurations of the application

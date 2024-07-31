@@ -2,7 +2,6 @@
 import ros_api
 # Import the RouterOS API
 
-
 # Class to handle the RouterOS API
 class RouterOSAPI:
     router = None  # RouterOS API object
