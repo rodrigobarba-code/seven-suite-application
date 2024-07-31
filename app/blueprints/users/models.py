@@ -77,7 +77,8 @@ class User(db.Model):
             hashed_password = bcrypt.hashpw(new_user.user_password.encode('utf-8'), bcrypt.gensalt())
             old_user = User.query.get(new_user.user_id)
             old_user.user_username = new_user.user_username
-            old_user.user_password = hashed_password
+            if new_user.user_password != old_user.user_password and new_user.user_password != '':
+                old_user.user_password = hashed_password
             old_user.user_name = new_user.user_name
             old_user.user_lastname = new_user.user_lastname
             old_user.user_privileges = new_user.user_privileges
@@ -249,14 +250,14 @@ class UserLog(db.Model):
     @staticmethod
     def get_user_logs():
         try:
-            user_logs = UserLog.query.all()
+            user_logs = UserLog.query.order_by(UserLog.user_log_date.desc()).all()
             return [UserLogEntity(
                 user_log_id=user_log.user_log_id,
                 fk_user_id=user_log.fk_user_id,
                 user_log_description=user_log.user_log_description,
                 user_log_action=user_log.user_log_action,
                 user_log_table=user_log.user_log_table,
-                user_log_date=user_log.user_log_date,
+                user_log_date=user_log.user_log_date.split(' '),
                 user_log_public_ip=user_log.user_log_public_ip,
                 user_log_local_ip=user_log.user_log_local_ip
             ) for user_log in user_logs]

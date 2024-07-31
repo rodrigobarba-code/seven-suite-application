@@ -79,6 +79,7 @@
     font-weight: 100;
     font-size: 0.9em;
     min-width: 120px;
+    white-space: pre-wrap;
 }
 
 @media (max-width: 767px) {
@@ -135,6 +136,10 @@
     .pagination-controls {
         margin-top: 1.5rem;
         margin-bottom: 1.5rem;
+    }
+
+    .timeline .event:before {
+        white-space: normal;
     }
 }
 

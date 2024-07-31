@@ -26,38 +26,56 @@
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-4">
-                <div class="input-group mb-3">
-                    <input id="searchbox-user-log" type="text" class="form-control"
-                           placeholder="Search, Ex: User Added"
-                           aria-label=""
-                           aria-describedby="button-addon2">
+                <div class="mb-3">
+                    <label for="basic-url" class="form-label">Filter by text:</label>
+                    <div class="input-group">
+                        <input id="searchbox-user-log" type="text" class="form-control"
+                               placeholder="Search by text"
+                               aria-label=""
+                               aria-describedby="button-addon2">
+                    </div>
+                    <div class="form-text" id="basic-addon4">Ex. Added User, Deleted User, Updated User, etc.</div>
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="input-group mb-3">
-                    <select id="selectbox-user-log" class="form-select" aria-label="">
-                        <option selected value="all">All</option>
-                        <option value="insert">Insert</option>
-                        <option value="update">Update</option>
-                        <option value="delete">Delete</option>
-                        <option value="login">Login</option>
-                        <option value="logout">Logout</option>
-                    </select>
+                <div class="mb-3">
+                    <label for="basic-url" class="form-label">Filter by category:</label>
+                    <div class="input-group">
+                        <select id="selectbox-user-log" class="form-select" aria-label="">
+                            <option selected value="all">All</option>
+                            <option value="insert">Insert</option>
+                            <option value="update">Update</option>
+                            <option value="delete">Delete</option>
+                            <option value="login">Login</option>
+                            <option value="logout">Logout</option>
+                        </select>
+                    </div>
+                    <div class="form-text" id="basic-addon4">If you want to sort by a specific badge.</div>
                 </div>
             </div>
             <div class="col-md-2">
-                <div class="input-group mb-3">
-                    <input type="date" class="form-control" id="datebox-user-log" name="datebox-user-log">
+                <div class="mb-3">
+                    <label for="basic-url" class="form-label">Filter by date:</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control" id="datebox-user-log" name="datebox-user-log">
+                    </div>
+                    <div class="form-text" id="basic-addon4">If you want to sort by a specific date.</div>
                 </div>
             </div>
             <div class="col-md-2">
-                <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal"
-                        data-bs-target="#delete-by-date-user-log-modal">
-                    <i class="fa-solid fa-calendar-days"></i>&nbsp; Delete by date
-                </button>
+                <div class="mb-3">
+                    <label for="basic-url" class="form-label">&nbsp;</label>
+                    <div class="input-group w-100">
+                        <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal"
+                                data-bs-target="#delete-by-date-user-log-modal">
+                            <i class="fa-solid fa-calendar-days"></i>&nbsp; Delete by date
+                        </button>
+                    </div>
+                    <div class="form-text" id="basic-addon4">Delete above from a specific date.</div>
+                </div>
             </div>
-            <div class="col-md-2" style="text-align: right">
-                <div class="pagination-controls">
+            <div class="col-md-2 pb-md-3 d-flex justify-content-end align-items-end">
+                <div class="pagination-controls align-bottom" style="bottom: 20px; right: 20px">
                     <button id="prev" class="btn btn-primary"><i class="fa-solid fa-chevron-left"
                                                                  style="color: white"></i></button>
                     <button id="next" class="btn btn-primary"><i class="fa-solid fa-chevron-right"
@@ -72,7 +90,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 mb-3">
-                <div class="card" id="user-timeline-body">
+                <div class="card" id="user-timeline-body" style="border-radius: 15px">
                     <div class="card-body hide-scroll"
                          style="overflow-y: scroll; padding-top: 0rem; padding-bottom: 0rem">
                         <div id="content" class="content-user-log">
@@ -83,7 +101,7 @@
                             {% else %}
                                 <ul class="timeline">
                                     {% for log in user_log_list %}
-                                        <li class="event" data-date="{{ log.user_log_date }}">
+                                        <li class="event" data-date="{{ log.user_log_date[0] }}&#10;{{ log.user_log_date[1] }}">
                                             <h6>It has been done a <span
                                                     class="badge bg-{% if log.user_log_action == 'INSERT' %}success{% elif log.user_log_action == 'UPDATE' %}warning{% elif log.user_log_action == 'DELETE' %}danger{% elif log.user_log_action == 'LOGIN' %}primary{% else %}secondary{% endif %}">{{ log.user_log_action }}</span>
                                             </h6>
