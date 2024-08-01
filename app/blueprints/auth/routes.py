@@ -1,6 +1,6 @@
 # Importing necessary modules
-from flask import render_template, redirect, url_for, flash, request, session
 import bcrypt
+from flask import render_template, redirect, url_for, flash, request, session
 # Importing necessary modules
 
 # Importing necessary decorators
