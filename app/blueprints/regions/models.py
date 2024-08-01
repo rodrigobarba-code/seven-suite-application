@@ -1,4 +1,4 @@
-# Desc: Region Model for the Region Blueprint
+# Description: Region Model for the Region Blueprint
 
 # Importing Required Libraries
 from app.extensions import db
@@ -8,45 +8,55 @@ from app.extensions import db
 from app.blueprints.regions.entities import RegionEntity
 # Importing Required Entities
 
+# Importing Required Exceptions
+from app.blueprints.regions.exceptions import *
+# Importing Required Exceptions
+
 # Region Model
 class Region(db.Model):
-    # Table Name
-    __tablename__ = 'regions'
-    # Table Name
+    __tablename__ = 'regions'  # Table Name
 
     # Columns
-    region_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    region_name = db.Column(db.String(128), nullable=False)
+    region_id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Primary Key
+    region_name = db.Column(db.String(128), nullable=False)  # Region Name
     # Columns
 
     # Object Representation
     def __repr__(self):
-        return f'<Region {self.region_id}>'
+        return f'<Region {self.region_id}>'  # Region Object Representation
     # Object Representation
 
     # Dictionary Representation
     def to_dict(self):
         return {
-            'region_id': self.region_id,
-            'region_name': self.region_name
+            'region_id': self.region_id,  # Region ID
+            'region_name': self.region_name  # Region Name
         }
     # Dictionary Representation
 
     # Static Methods
-    # Add Region
+    # Region - Add Region
     @staticmethod
     def add_region(region):
         try:
-            db.session.add(
-                Region(
+            if Region.query.filter_by(region_name=region.region_name).first():
+                raise RegionAlreadyExists(
+                    region_id=Region.query.filter_by(region_name=region.region_name).first().region_id,
                     region_name=region.region_name
                 )
-            )
-            db.session.commit()
+            else:
+                new_region = Region(
+                    region_name=region.region_name
+                )
+                db.session.add(new_region)
+                db.session.commit()
+        except RegionAlreadyExists as e:
+            db.session.rollback()
+            raise e
         except Exception as e:
             db.session.rollback()
-            return str(e)
-    # Add Region
+            raise e
+    # Region - Add Region
 
     # Update Region
     @staticmethod
