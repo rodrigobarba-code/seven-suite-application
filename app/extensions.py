@@ -1,11 +1,13 @@
 # Importing Necessary Libraries
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy import func
 import requests as r
 import socket
 # Importing Necessary Libraries
 
 # Creating Instances of SQLAlchemy and Migrate
+func = func
 db = SQLAlchemy()
 migrate = Migrate()
 # Creating Instances of SQLAlchemy and Migrate

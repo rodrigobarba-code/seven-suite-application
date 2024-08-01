@@ -1,3 +1,5 @@
+# Description: Regions Routes for the Region Blueprint
+
 # Importing Required Libraries
 from flask import render_template, redirect, url_for, flash, request, jsonify
 # Importing Required Libraries
@@ -32,18 +34,18 @@ def regions():
 # Regions Main Route
 
 # Regions Add Route
-@regions_bp.route('/add', methods=['POST'])
+@regions_bp.route('/add', methods=['GET', 'POST'])
 @restriction.login_required  # Need to be logged in
 @restriction.admin_required  # Need to be an admin
 def add_region():
     if request.method == 'POST':  # If the request method is POST
         try:  # Try to add the region
             region = RegionEntity(  # Create a RegionEntity object
-                region_id=None,
-                region_name=request.form['region_name']
+                region_id=int(),  # Set the region ID
+                region_name=request.form['region_name']  # Set the region name
             )
             Region.add_region(region)  # Add the region
-            flash('Region added successfully!', 'success')  # Flash a success message
+            flash('Region added successfully', 'success')  # Flash a success message
         except Exception as e:  # If an exception occurs
             flash(str(e), 'danger')  # Flash an error message
         return redirect(url_for('regions.regions'))  # Redirect to the regions route
@@ -54,7 +56,7 @@ def add_region():
 # Regions Add Route
 
 # Regions Update Route
-@regions_bp.route('/update/<int:region_id>', methods=['POST'])
+@regions_bp.route('/update/<int:region_id>', methods=['GET', 'POST'])
 @restriction.login_required  # Need to be logged in
 @restriction.admin_required  # Need to be an admin
 def update_region(region_id):
@@ -87,7 +89,7 @@ def update_region(region_id):
 def delete_region(region_id):
     try:  # Try to delete the region
         Region.delete_region(region_id)  # Delete the region
-        flash('Region deleted successfully!', 'success')  # Flash a success message
+        flash('Region deleted successfully', 'success')  # Flash a success message
     except Exception as e:  # If an exception occurs
         flash(str(e), 'danger')  # Flash an error message
     return redirect(url_for('regions.regions'))  # Redirect to the regions route

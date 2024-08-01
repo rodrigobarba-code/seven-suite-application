@@ -1,4 +1,5 @@
 # Description: Region Entities
+
 # Class for Region Entity
 class RegionEntity:
     # Constructor

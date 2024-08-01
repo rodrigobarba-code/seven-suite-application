@@ -1,4 +1,5 @@
 # Description: Exceptions for the Region Blueprint
+
 # Base Exception for the Region Blueprint
 class BaseCustomError(Exception):
     pass  # Pass the BaseCustomError class
@@ -35,3 +36,15 @@ class RegionNotFound(BaseCustomError):
         super().__init__(self.message)  # Call the super constructor with the message as parameter
     # Constructor
 # Region Not Found Exception
+
+# Region Associated With Site Exception
+class RegionAssociatedWithSite(BaseCustomError):
+    # Constructor
+    def __init__(self, region_id, site_id):
+        self.region_id = region_id  # Set the region ID
+        self.site_id = site_id  # Set the site ID
+        # Show the error message
+        self.message = f"Region with ID: {self.region_id} is associated with a Site with ID: {self.site_id}"
+        super().__init__(self.message)  # Call the super constructor with the message as parameter
+    # Constructor
+# Region Associated With Site Exception
