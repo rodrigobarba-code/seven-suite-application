@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} Profile {% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile/styles.css') }}">
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/profile/scripts.js') }}"></script>
+    <script>
+    </script>
+{% endblock %}
+{% block content %}
+    <!-- Users Jumbotron -->
+    <section class="profile-jumbotron">
+        <div class="main-profile p-5 mb-4 base-jumbotron">
+            <div class="container-fluid py-5">
+                <div class="user-profile-img">
+                    <img src="{{ session['user_avatar'] }}" class="rounded-circle mb-3"
+                         style="width: 150px;"
+                         alt="Avatar"/>
+                </div>
+                <div class="user-profile-info">
+                <h5 class="mb-2"><strong>John Doe</strong></h5>
+                <p class="text-muted">Web designer <span class="badge bg-primary">PRO</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Users Jumbotron -->
+{% endblock %}

@@ -7,11 +7,14 @@ from app.config import DatabaseConfig, AppConfig
 # Importing Blueprints
 from app.blueprints.home import home_bp
 from app.blueprints.auth import auth_bp
+from app.blueprints.profile import profile_bp
 from app.blueprints.sites import sites_bp
 from app.blueprints.users import users_bp
 from app.blueprints.routers import routers_bp
 from app.blueprints.regions import regions_bp
 from app.blueprints.dashboard import dashboard_bp
+
+
 # Importing Blueprints
 
 # Function constructor to create the app
@@ -27,6 +30,7 @@ def create_app():
     # Registering the blueprints
     app.register_blueprint(home_bp, url_prefix='/')
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(profile_bp, url_prefix='/profile')
     app.register_blueprint(sites_bp, url_prefix='/sites')
     app.register_blueprint(users_bp, url_prefix='/users')
     app.register_blueprint(routers_bp, url_prefix='/routers')
