@@ -12,8 +12,6 @@ from app.blueprints.routers.entities import RouterEntity
 # Importing Required Models
 from app.blueprints.sites.models import Site
 from app.blueprints.routers.models import Router
-
-
 # Importing Required Models
 
 # Routers Main Route

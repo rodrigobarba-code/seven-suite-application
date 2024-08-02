@@ -16,10 +16,6 @@ from app.blueprints.regions.entities import RegionEntity
 from app.blueprints.regions.models import Region
 # Importing Required Models
 
-# Importing the Extensions
-from app.extensions import create_record_user_log
-# Importing the Extensions
-
 from . import regions_bp  # Import the regions Blueprint
 
 # Regions Main Route
