@@ -15,7 +15,7 @@ from app.blueprints.users.models import UserLog
 # Importing Required Models
 
 # Importing Required Functions
-from app.extensions import get_local_ip, get_public_ip
+from . functions import users_functions as functions
 # Importing Required Functions
 
 # Users Main Route
@@ -45,19 +45,8 @@ def add_user():
                 user_state=request.form['user_state']  # Set the status
             )
             User.add_user(user)  # Add the user
+            functions.create_log(session['user_id'], 'User added', 'INSERT', 'users')  # Create a log
             flash('User added successfully', 'success')  # Flash a success message
-
-            user_log = UserLogEntity(
-                user_log_id=None,
-                fk_user_id=session['user_id'],
-                user_log_description='User Added',
-                user_log_action='INSERT',
-                user_log_table='users',
-                user_log_date=datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
-                user_log_public_ip=get_public_ip(),
-                user_log_local_ip=get_local_ip()
-            )
-            UserLog.add_user_log(user_log)
         except Exception as e:  # If an exception occurs
             flash(str(e), 'danger')  # Flash the exception message
         return redirect(url_for('users.users'))
@@ -85,19 +74,8 @@ def update_user(user_id):
                 user_state=request.form['user_state']  # Set the status
             )
             User.update_user(user)  # Update the user
+            functions.create_log(session['user_id'], 'User updated', 'UPDATE', 'users')  # Create a log
             flash('User updated successfully', 'success')  # Flash a success message
-
-            user_log = UserLogEntity(
-                user_log_id=None,
-                fk_user_id=session['user_id'],
-                user_log_description='User Updated',
-                user_log_action='UPDATE',
-                user_log_table='users',
-                user_log_date=datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
-                user_log_public_ip=get_public_ip(),
-                user_log_local_ip=get_local_ip()
-            )
-            UserLog.add_user_log(user_log)
         except Exception as e:
             flash(str(e), 'danger')
         return redirect(url_for('users.users'))
@@ -115,19 +93,8 @@ def update_user(user_id):
 def delete_user(user_id):
     try:  # Try to delete the user
         User.delete_user(user_id)  # Delete the user
+        functions.create_log(session['user_id'], 'User deleted', 'DELETE', 'users')  # Create a log
         flash('User deleted successfully', 'success')  # Flash a success message
-
-        user_log = UserLogEntity(
-            user_log_id=None,
-            fk_user_id=session['user_id'],
-            user_log_description='User Deleted',
-            user_log_action='DELETE',
-            user_log_table='users',
-            user_log_date=datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
-            user_log_public_ip=get_public_ip(),
-            user_log_local_ip=get_local_ip()
-        )
-        UserLog.add_user_log(user_log)
     except Exception as e:
         flash(str(e), 'danger')
     return redirect(url_for('users.users'))
@@ -145,20 +112,8 @@ def bulk_delete_user():
         for user_id in user_ids:
             User.delete_user(user_id)
             flag += 1
+        functions.create_log(session['user_id'], f'{flag} Users deleted', 'DELETE', 'users')
         flash('Users Deleted Successfully', 'success')
-
-        user_log = UserLogEntity(
-            user_log_id=None,
-            fk_user_id=session['user_id'],
-            user_log_description=f'{flag} Users Deleted',
-            user_log_action='DELETE',
-            user_log_table='users',
-            user_log_date=datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
-            user_log_public_ip=get_public_ip(),
-            user_log_local_ip=get_local_ip()
-        )
-        UserLog.add_user_log(user_log)
-
         return jsonify({'message': 'Users deleted successfully'}), 200
     except Exception as e:
         flash(str(e), 'danger')
@@ -173,19 +128,7 @@ def delete_all_users():
     try:
         User.delete_all_users()
         flash('All Routers Deleted Successfully', 'success')
-
-        user_log = UserLogEntity(
-            user_log_id=None,
-            fk_user_id=session['user_id'],
-            user_log_description='All Users Deleted',
-            user_log_action='DELETE',
-            user_log_table='users',
-            user_log_date=datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
-            user_log_public_ip=get_public_ip(),
-            user_log_local_ip=get_local_ip()
-        )
-        UserLog.add_user_log(user_log)
-
+        functions.create_log(session['user_id'], 'All Users deleted', 'DELETE', 'users')
         return jsonify({'message': 'Routers deleted successfully'}), 200
     except Exception as e:
         flash(str(e), 'danger')
@@ -215,6 +158,7 @@ def delete_by_date_user_log():
     date += ' 23:59:59'
     try:
         UserLog.delete_from_date_user_log(date)
+        functions.create_log(session['user_id'], f'User Logs Deleted', 'DELETE', 'user_logs')
         flash('User Logs Deleted Successfully', 'success')
         return jsonify({'message': 'User Logs Deleted Successfully'}), 200
     except Exception as e:
