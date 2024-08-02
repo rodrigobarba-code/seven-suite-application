@@ -1,6 +1,5 @@
 # Importing Required Libraries
 from flask import render_template, redirect, url_for, flash, request, jsonify, session
-from app.extensions import get_public_ip, get_local_ip
 from datetime import datetime
 from . import users_bp
 # Importing Required Libraries
@@ -13,9 +12,11 @@ from app.blueprints.users.entities import UserLogEntity
 # Importing Required Models
 from app.blueprints.users.models import User
 from app.blueprints.users.models import UserLog
-
-
 # Importing Required Models
+
+# Importing Required Functions
+from app.extensions import get_local_ip, get_public_ip
+# Importing Required Functions
 
 # Users Main Route
 @users_bp.route('/')
