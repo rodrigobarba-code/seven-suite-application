@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Check if the checkbox is checked
 
-function deleteSelectedUsersModal(urlIn, urlOut) {
+function deleteSelectedUsersModal(urlIn, urlOut, type) {
     document.getElementById('delete-selected').addEventListener('click', function () {
         const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
         document.getElementById('total-selected').innerText = String(checkboxes.length);
