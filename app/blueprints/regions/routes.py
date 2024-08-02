@@ -1,7 +1,7 @@
 # Description: Regions Routes for the Region Blueprint
 
 # Importing Required Libraries
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import render_template, redirect, url_for, flash, request, jsonify, session
 # Importing Required Libraries
 
 # Importing Required Decorators
@@ -17,6 +17,7 @@ from app.blueprints.regions.models import Region
 # Importing Required Models
 
 from . import regions_bp  # Import the regions Blueprint
+from app.blueprints.users.functions import users_functions as functions # Import the users functions object
 
 # Regions Main Route
 @regions_bp.route('/', methods=['GET'])
@@ -45,6 +46,7 @@ def add_region():
                 region_name=request.form['region_name']  # Set the region name
             )
             Region.add_region(region)  # Add the region
+            functions.create_log(session['user_id'], 'Region Added', 'INSERT', 'regions')  # Create a log
             flash('Region added successfully', 'success')  # Flash a success message
         except Exception as e:  # If an exception occurs
             flash(str(e), 'danger')  # Flash an error message
@@ -67,12 +69,13 @@ def update_region(region_id):
                 region_name=request.form['region_name']  # Set the region name
             )
             Region.update_region(region)  # Update the region
+            functions.create_log(session['user_id'], 'Region Updated', 'UPDATE', 'regions')  # Create a log
             flash('Region was updated successfully', 'success')  # Flash a success message
         except Exception as e:  # If an exception occurs
             flash(str(e), 'danger')  # Flash an error message
         return redirect(url_for('regions.regions'))  # Redirect to the regions route
     try:  # Try to get the region
-        region = Region.get_region(region_id)  # Get the region by Identifier
+        region = Region.get_region(region_id)  # Get the region
         return render_template(
             'regions/form_regions.html',  # Render the form_regions template
             region=region  # Pass the region to the template
@@ -89,6 +92,7 @@ def update_region(region_id):
 def delete_region(region_id):
     try:  # Try to delete the region
         Region.delete_region(region_id)  # Delete the region
+        functions.create_log(session['user_id'], 'Region Deleted', 'DELETE', 'regions')  # Create a log
         flash('Region deleted successfully', 'success')  # Flash a success message
     except Exception as e:  # If an exception occurs
         flash(str(e), 'danger')  # Flash an error message
@@ -106,6 +110,7 @@ def bulk_delete_region():
             Region.delete_region(region_id)
             flag += 1
         flash('Regions Deleted Successfully', 'success')
+        functions.create_log(session['user_id'], 'Regions Deleted', 'DELETE', 'regions')
         return jsonify({'message': 'Users deleted successfully'}), 200
     except Exception as e:
         flash(str(e), 'danger')
@@ -119,6 +124,7 @@ def bulk_delete_region():
 def delete_all_regions():
     try:  # Try to delete all regions
         Region.delete_all_regions()  # Delete all regions
+        functions.create_log(session['user_id'], 'All Regions Deleted', 'DELETE', 'regions')  # Create a log
         flash('All Regions Deleted Successfully', 'success')  # Flash a success message
     except Exception as e:
         flash(str(e), 'danger')

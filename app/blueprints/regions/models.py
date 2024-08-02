@@ -163,10 +163,12 @@ class Region(db.Model):
             else:
                 # If the region exists, return it
                 tmp = Region.query.get_or_404(region_id).to_dict()  # Get the region by ID and convert it to a dictionary
-                return RegionEntity(
+                region = RegionEntity(
                     tmp['region_id'],  # Region ID
                     tmp['region_name']  # Region Name
-                ).validate()  # Validate the Region Entity
+                )
+                region.validate()  # Validate the Region Entity
+                return region  # Return the Region Entity
                 # If the region exists, return it
         except RegionNotFound as e:  # If the region does not exist
             raise e  # Raise the exception
