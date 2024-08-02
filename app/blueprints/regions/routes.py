@@ -16,6 +16,10 @@ from app.blueprints.regions.entities import RegionEntity
 from app.blueprints.regions.models import Region
 # Importing Required Models
 
+# Importing the Extensions
+from app.extensions import create_record_user_log
+# Importing the Extensions
+
 from . import regions_bp  # Import the regions Blueprint
 
 # Regions Main Route
@@ -94,3 +98,33 @@ def delete_region(region_id):
         flash(str(e), 'danger')  # Flash an error message
     return redirect(url_for('regions.regions'))  # Redirect to the regions route
 # Regions Delete Route
+
+# Regions Bulk Delete Route
+@regions_bp.route('/delete/bulk', methods=['POST'])
+def bulk_delete_region():
+    data = request.get_json()
+    regions_ids = data.get('regions_ids', [])
+    try:
+        flag = 0
+        for region_id in regions_ids:
+            Region.delete_region(region_id)
+            flag += 1
+        flash('Regions Deleted Successfully', 'success')
+        return jsonify({'message': 'Users deleted successfully'}), 200
+    except Exception as e:
+        flash(str(e), 'danger')
+        return jsonify({'message': 'Failed to delete users', 'error': str(e)}), 500
+# Regions Bulk Delete Route
+
+# Regions Delete All Route
+@regions_bp.route('/delete/all', methods=['GET'])
+@restriction.login_required  # Need to be logged in
+@restriction.admin_required  # Need to be an admin
+def delete_all_regions():
+    try:  # Try to delete all regions
+        Region.delete_all_regions()  # Delete all regions
+        flash('All Regions Deleted Successfully', 'success')  # Flash a success message
+    except Exception as e:
+        flash(str(e), 'danger')
+    return redirect(url_for('regions.regions'))
+# Regions Delete All Route
