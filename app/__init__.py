@@ -1,5 +1,6 @@
 # Importing Flask, Configurations and App Extensions
 from flask import Flask
+from app.functions import functions
 from app.extensions import db, migrate
 from app.config import DatabaseConfig, AppConfig
 # Importing Flask, Configurations and App Extensions
