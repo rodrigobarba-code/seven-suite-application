@@ -15,7 +15,7 @@ from app.blueprints.users.models import UserLog
 # Importing Required Models
 
 # Importing Required Functions
-from . functions import users_functions as functions
+from .functions import users_functions as functions
 # Importing Required Functions
 
 # Users Main Route

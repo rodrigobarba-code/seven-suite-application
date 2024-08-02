@@ -101,9 +101,11 @@ def delete_region(region_id):
 
 # Regions Bulk Delete Route
 @regions_bp.route('/delete/bulk', methods=['POST'])
+@restriction.login_required  # Need to be logged in
+@restriction.admin_required  # Need to be an admin
 def bulk_delete_region():
     data = request.get_json()
-    regions_ids = data.get('regions_ids', [])
+    regions_ids = data.get('items_ids', [])
     try:
         flag = 0
         for region_id in regions_ids:
