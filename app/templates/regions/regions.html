@@ -1,4 +1,4 @@
-{% from 'macros.html' import delete_modal %}
+{% from 'macros.html' import delete_modal, delete_select_modal, delete_all_modal %}
 {% extends 'base.html' %}
 {% block title %} Regions {% endblock %}
 {% block head %}
@@ -7,8 +7,7 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/regions/scripts.js') }}"></script>
 <script>
-    deleteSelectModal("{{ url_for('users.bulk_delete_user') }}", "{{ url_for('users.users') }}");
-    deleteAllModal("{{ url_for('users.delete_all_users') }}", "{{ url_for('users.users') }}");
+    deleteSelectModal("{{ url_for('regions.bulk_delete_region') }}", "{{ url_for('regions.regions') }}", 'region');
 </script>
 {% endblock %}
 {% block content %}
@@ -33,12 +32,12 @@
                 <h2 class="users-database-title"><b>Available</b> Regions</h2>
             </div>
             <div class="col-12 col-md-4 d-flex justify-content-end">
-                <button type="button" class="btn btn-md btn-danger me-2" data-bs-toggle="modal" id="delete-selected"
-                        data-bs-target="#delete-select-modal-users">
+                <button type="button" class="btn btn-md btn-danger me-2" data-bs-toggle="modal" id="delete-select"
+                        data-bs-target="#delete-select-modal">
                     <i class="fa-solid fa-square-minus"></i>&nbsp; Delete Selected
                 </button>
                 <button type="button" class="btn btn-md btn-dark" data-bs-toggle="modal"
-                        data-bs-target="#delete-all-modal-users">
+                        data-bs-target="#delete-all-modal">
                     <i class="fa-solid fa-trash"></i>&nbsp; Delete All
                 </button>
             </div>
@@ -95,7 +94,9 @@
 </section>
 <!-- Regions Table -->
 
-<!-- Delete Modal -->
+<!-- Delete Modals -->
 <div class="delete-modal-container">{{ delete_modal() }}</div>
-<!-- Delete Modal -->
+<div class="delete-select-modal-container">{{ delete_select_modal() }}</div>
+<div class="delete-all-modal-container">{{ delete_all_modal() }}</div>
+<!-- Delete Modals -->
 {% endblock %}

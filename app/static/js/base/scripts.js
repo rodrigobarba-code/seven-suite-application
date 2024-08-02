@@ -26,21 +26,30 @@ $(document).ready(function () {
 });
 /* Contains all the scripts for the base app running on the client side. */
 
-function deleteSelectModal(urlIn, urlOut) {
-    document.getElementById('delete-selected').addEventListener('click', function () {
+/**
+ * Function to delete selected items in a table using a modal.
+ *
+ * @param   {string} urlIn - The URL to send the delete request to.
+ * @param   {string} urlOut - The URL to redirect to after a successful delete
+ * @param   {string} type - The type of item to delete.
+ * @returns {void}
+ */
+function deleteSelectModal(urlIn, urlOut, type) {
+    document.getElementById('delete-select').addEventListener('click', function () {
         const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-        document.getElementById('total-selected').innerText = String(checkboxes.length);
+        document.getElementById('total-select').innerText = String(checkboxes.length);
+        document.getElementById('select-modal-type').innerText = type;
     });
 
-    document.getElementById('confirm-delete').addEventListener('click', function () {
+    document.getElementById('confirm-delete-select').addEventListener('click', function () {
         const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-        const selectedIds = Array.from(checkboxes).map(cb => cb.id.replace('user-', ''));
+        const selectedIds = Array.from(checkboxes).map(cb => cb.id.replace(type + '-', ''));
 
         if (selectedIds.length > 0) {
             fetch(urlIn, {
                 method: 'POST', headers: {
                     'Content-Type': 'application/json'
-                }, body: JSON.stringify({users_ids: selectedIds})
+                }, body: JSON.stringify({items_ids: selectedIds})
             }).then(response => {
                 if (response.ok) {
                     location.href = urlOut;
@@ -49,11 +58,19 @@ function deleteSelectModal(urlIn, urlOut) {
                 }
             });
         } else {
-            alert('No users selected');
+            alert('No ' + type + 's to delete');
         }
     });
 }
+/* Function to delete selected items in a table using a modal. */
 
+/**
+ * Function to delete all items in a table using a modal.
+ *
+ * @param   {string} urlIn - The URL to send the delete request to.
+ * @param   {string} urlOut - The URL to redirect to after a successful delete
+ * @returns {void}
+ */
 function deleteAllModal(urlIn, urlOut) {
     document.getElementById('confirm-delete-all').addEventListener('click', function () {
         if (document.querySelectorAll('input[type="checkbox"]').length === 0) {
@@ -73,3 +90,4 @@ function deleteAllModal(urlIn, urlOut) {
         }
     });
 }
+/* Function to delete all items in a table using a modal. */
