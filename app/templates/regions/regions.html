@@ -7,6 +7,8 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/regions/scripts.js') }}"></script>
 <script>
+    setDataTableConfig("#regions-table");
+    deleteAllModal("{{ url_for('regions.delete_all_regions') }}", "{{ url_for('regions.regions') }}", 'regions');
     deleteSelectModal("{{ url_for('regions.bulk_delete_region') }}", "{{ url_for('regions.regions') }}", 'region');
 </script>
 {% endblock %}
@@ -36,7 +38,7 @@
                         data-bs-target="#delete-select-modal">
                     <i class="fa-solid fa-square-minus"></i>&nbsp; Delete Selected
                 </button>
-                <button type="button" class="btn btn-md btn-dark" data-bs-toggle="modal"
+                <button type="button" class="btn btn-md btn-dark" data-bs-toggle="modal" id="delete-all"
                         data-bs-target="#delete-all-modal">
                     <i class="fa-solid fa-trash"></i>&nbsp; Delete All
                 </button>
@@ -57,7 +59,7 @@
 <!-- Regions Table -->
 <section class="regions-table hide-scroll pt-3 pb-3">
     <div class="container w-75" id="regions-table-c">
-        <table class="table table-responsive" id="regions-table">
+        <table class="table table-responsive" id="datatable-object">
             <thead>
             <tr>
                 <th scope="col"></th>

@@ -1,3 +1,5 @@
+<!-- Macros for the modals -->
+<!-- Macro for the delete modal -->
 {% macro delete_modal() %}
 <div class="modal fade delete-modal" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label"
      aria-hidden="true">
@@ -19,7 +21,9 @@
     </div>
 </div>
 {% endmacro %}
+<!-- Macro for the delete modal -->
 
+<!-- Macro for the delete select modal -->
 {% macro delete_select_modal() %}
 <section class="delete-select-modal">
     <div class="modal fade" id="delete-select-modal" tabindex="-1" aria-labelledby="" aria-hidden="true">
@@ -42,7 +46,9 @@
     </div>
 </section>
 {% endmacro %}
+<!-- Macro for the delete select modal -->
 
+<!-- Macro for the delete all modal -->
 {% macro delete_all_modal() %}
 <section class="delete-all-modal">
     <div class="modal fade" id="delete-all-modal" tabindex="-1" aria-labelledby=""
@@ -54,7 +60,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body
-                    ">Are you sure you want to delete all users?
+                    ">Are you sure you want to delete all <span id="all-modal-type">0</span>?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -65,7 +71,9 @@
     </div>
 </section>
 {% endmacro %}
+<!-- Macro for the delete all modal -->
 
+<!-- Macro for the not item found -->
 {% macro not_item_found() %}
 <div class="text-center mb-3">
     <img src="{{ url_for('static', filename='img/no-item-found.jpg') }}" alt="Empty"
@@ -79,3 +87,5 @@
     }
 </style>
 {% endmacro %}
+<!-- Macro for the not item found -->
+<!-- Macros for the modals -->
