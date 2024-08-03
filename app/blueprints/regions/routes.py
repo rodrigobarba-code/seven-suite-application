@@ -17,7 +17,8 @@ from app.blueprints.regions.models import Region
 # Importing Required Models
 
 from . import regions_bp  # Import the regions Blueprint
-from app.blueprints.users.functions import users_functions as functions # Import the users functions object
+from app.blueprints.users.functions import users_functions as functions  # Import the users functions object
+
 
 # Regions Main Route
 @regions_bp.route('/', methods=['GET'])
@@ -32,6 +33,8 @@ def regions():
     except Exception as e:  # If an exception occurs
         flash(str(e), 'danger')  # Flash an error message
         return redirect(url_for('regions.regions'))  # Redirect to the regions route
+
+
 # Regions Main Route
 
 # Regions Add Route
@@ -46,7 +49,7 @@ def add_region():
                 region_name=request.form['region_name']  # Set the region name
             )
             Region.add_region(region)  # Add the region
-            functions.create_log(session['user_id'], 'Region Added', 'INSERT', 'regions')  # Create a log
+            functions.create_log(session['user_id'], 'Region added', 'INSERT', 'regions')  # Create a log
             flash('Region added successfully', 'success')  # Flash a success message
         except Exception as e:  # If an exception occurs
             flash(str(e), 'danger')  # Flash an error message
@@ -55,6 +58,8 @@ def add_region():
         'regions/form_regions.html',  # Render the form_regions template
         region=None  # Pass None to the template
     )
+
+
 # Regions Add Route
 
 # Regions Update Route
@@ -83,6 +88,8 @@ def update_region(region_id):
     except Exception as e:  # If an exception occurs
         flash(str(e), 'danger')  # Flash an error message
         return redirect(url_for('regions.regions'))  # Redirect to the regions route
+
+
 # Regions Update Route
 
 # Regions Delete Route
@@ -97,6 +104,8 @@ def delete_region(region_id):
     except Exception as e:  # If an exception occurs
         flash(str(e), 'danger')  # Flash an error message
     return redirect(url_for('regions.regions'))  # Redirect to the regions route
+
+
 # Regions Delete Route
 
 # Regions Bulk Delete Route
@@ -117,6 +126,8 @@ def bulk_delete_region():
     except Exception as e:
         flash(str(e), 'danger')
         return jsonify({'message': 'Failed to delete users', 'error': str(e)}), 500
+
+
 # Regions Bulk Delete Route
 
 # Regions Delete All Route
