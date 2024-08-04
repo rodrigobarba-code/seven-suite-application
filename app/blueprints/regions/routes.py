@@ -106,19 +106,19 @@ def delete_region(region_id):
 @restriction.login_required  # Need to be logged in
 @restriction.admin_required  # Need to be an admin
 def bulk_delete_region():
-    data = request.get_json()
-    regions_ids = data.get('items_ids', [])
+    data = request.get_json()  # Get the JSON data
+    regions_ids = data.get('items_ids', [])  # Get the regions IDs
     try:
-        flag = 0
-        for region_id in regions_ids:
-            Region.delete_region(region_id)
-            flag += 1
-        flash(f'{flag} Regions Deleted Successfully', 'success')
+        flag = 0  # Set the flag to 0
+        for region_id in regions_ids:  # Loop through the regions IDs
+            Region.delete_region(region_id)  # Delete the region
+            flag += 1  # Increment the flag
+        flash(f'{flag} Regions Deleted Successfully', 'success')  # Flash a success message
         functions.create_log(session['user_id'], f'{flag} Regions Deleted', 'DELETE', 'regions')  # Create a log
         return jsonify({'message': 'Regions deleted successfully'}), 200  # Return a success message
-    except Exception as e:
-        flash(str(e), 'danger')
-        return jsonify({'message': 'Failed to delete users', 'error': str(e)}), 500
+    except Exception as e:  # If an exception occurs
+        flash(str(e), 'danger')  # Flash an error message
+        return jsonify({'message': 'Failed to delete regions', 'error': str(e)}), 500  # Return an error message
 # Regions Bulk Delete Route
 
 # Regions Delete All Route
@@ -131,7 +131,7 @@ def delete_all_regions():
         flash('All Regions Deleted Successfully', 'success')  # Flash a success message
         functions.create_log(session['user_id'], 'All Regions Deleted', 'DELETE', 'regions')  # Create a log
         return jsonify({'message': 'Regions deleted successfully'}), 200  # Return a success message
-    except Exception as e:
-        flash(str(e), 'danger')
-    return redirect(url_for('regions.regions'))
+    except Exception as e:  # If an exception occurs
+        flash(str(e), 'danger')  # Flash an error message
+        return jsonify({'message': 'Failed to delete regions', 'error': str(e)}), 500  # Return an error message
 # Regions Delete All Route
