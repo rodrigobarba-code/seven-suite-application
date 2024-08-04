@@ -5,6 +5,11 @@
  * @returns {void}
  */
 $(document).ready(function () {
+    // Assign title to top link
+    let title = document.title;  // Get the title of the page
+    $('#top-link').text(title);  // Assign title to top link
+    // Assign title to top link
+
     // Assign Data Table to regions table
     $("#datatable-object").DataTable({
         'info': true,  // Enable pagination information
