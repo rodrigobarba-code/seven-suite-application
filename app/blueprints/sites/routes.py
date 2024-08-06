@@ -1,8 +1,8 @@
 # Description: Sites Routes for the Site Blueprint
 
 # Importing Required Local Modules
-from app.blueprints.users.functions import users_functions as functions  # Import the users functions object
 from . import sites_bp  # Import the sites Blueprint
+from app.blueprints.users.functions import users_functions as functions  # Import the users functions object
 # Importing Required Local Modules
 
 # Importing Required Libraries
@@ -20,6 +20,7 @@ from app.blueprints.sites.entities import SiteEntity
 # Importing Required Models
 from app.blueprints.sites.models import Site
 from app.blueprints.regions.models import Region
+from app.blueprints.routers.models import Router
 # Importing Required Models
 
 # Sites Main Route
@@ -105,7 +106,7 @@ def update_site(site_id):
 @restriction.admin_required  # Need to be an admin
 def delete_site(site_id):
     try:  # Try to delete the site
-        Site.delete_site(site_id)  # Delete the site
+        Site.delete_site(site_id, Router)  # Delete the site
         flash('Site deleted successfully', 'success')  # Flash a success message
         functions.create_log(session['user_id'], 'Site Deleted', 'DELETE', 'sites')  # Create a log
     except Exception as e:  # If an exception occurs
