@@ -8,12 +8,8 @@ from app.extensions import db
 from app.blueprints.routers.entities import RouterEntity
 # Importing Required Entities
 
-# Importing Required Models
-from app.blueprints.sites.models import Site as Site
-# Importing Required Models
-
 # Importing Required Functions
-from app.blueprints.routers.functions import RoutersFunctions as functions
+from app.blueprints.routers.functions import RoutersFunctions
 # Importing Required Functions
 
 # Router Model
@@ -64,10 +60,11 @@ class Router(db.Model):
     # Router - Add Router
     @staticmethod
     def add_router(router: RouterEntity):
+        model_r = Router  # Router Model
+        v_router = RoutersFunctions()  # Router Functions Instance
         try:
-            model = Site(site_id=router.fk_site_id, site_name=str(), fk_region_id=int(), site_segment=int())  # Site Model
             # Check if the router information is valid
-            if functions.validate_router(router, 'insert', model):
+            if v_router.validate_router(router, 'insert', model_r):
                 # If everything is valid, add the router to the database
                 # Create a new Router object
                 new_router = Router(
@@ -82,9 +79,11 @@ class Router(db.Model):
                     router_password=router.router_password,  # Router Password
                     allow_scan=router.allow_scan  # Allow Scan
                 )
-                router.validate()  # Validate the Router Entity
                 db.session.add(new_router)  # Add the new router to the session
+                db.session.commit()  # Commit the changes
                 # If everything is valid, add the router to the database
+            else:  # If the router information is not valid
+                raise Exception()  # Raise an exception
         except Exception as e:  # If any other exception occurs
             db.session.rollback()  # Rollback the session
             raise e  # Raise the exception
@@ -93,10 +92,11 @@ class Router(db.Model):
     # Router - Update Router
     @staticmethod
     def update_router(new_router: RouterEntity):
+        model_r = Router  # Router Model
+        v_router = RoutersFunctions()  # Router Functions Instance
         try:
-            model = Site()  # Site Model
             # Check if the router information is valid
-            if functions.validate_router(new_router, 'update', model):
+            if v_router.validate_router(new_router, 'update', model_r):
                 # If everything is valid, update the router in the database
                 # Get the router that will be updated
                 old_router = Router.query.get(new_router.router_id)
@@ -111,9 +111,10 @@ class Router(db.Model):
                 old_router.router_username = new_router.router_username  # Router Username
                 old_router.router_password = new_router.router_password  # Router Password
                 old_router.allow_scan = new_router.allow_scan  # Allow Scan
-                new_router.validate()  # Validate the Router Entity
                 db.session.commit()  # Commit the changes
                 # If everything is valid, update the router in the database
+            else:  # If the router information is not valid
+                raise Exception()  # Raise an exception
         except Exception as e:  # If any other exception occurs
             db.session.rollback()  # Rollback the session
             raise e  # Raise the exception
@@ -122,10 +123,11 @@ class Router(db.Model):
     # Router - Delete Router
     @staticmethod
     def delete_router(router_id):
+        model_r = Router  # Router Model
+        v_router = RoutersFunctions()  # Router Functions Instance
         try:
-            model = Site()  # Site Model
             # Check if the router information is valid
-            if functions.validate_router(
+            if v_router.validate_router(
                     RouterEntity(
                         router_id=router_id,  # Router ID
                         router_name=str(),  # Router Name
@@ -140,7 +142,7 @@ class Router(db.Model):
                         allow_scan=int()  # Allow Scan
                     ),
                     'delete',  # Operation
-                    model  # Site Model
+                    model_r  # Site Model
             ):
                 # If everything is valid, delete the router from the database
                 # Get the router that will be deleted
@@ -148,6 +150,8 @@ class Router(db.Model):
                 db.session.delete(router)  # Delete the router
                 db.session.commit()  # Commit the changes
                 # If everything is valid, delete the router from the database
+            else:  # If the router information is not valid
+                raise Exception()  # Raise an exception
         except Exception as e:  # If any other exception occurs
             db.session.rollback()  # Rollback the session
             raise e  # Raise the exception
@@ -167,10 +171,11 @@ class Router(db.Model):
     # Router - Get Router
     @staticmethod
     def get_router(router_id):
+        model_r = Router  # Router Model
+        v_router = RoutersFunctions()  # Router Functions Instance
         try:
-            model = Site()  # Site Model
             # Check if the router information is valid
-            if functions.validate_router(
+            if v_router.validate_router(
                     RouterEntity(
                         router_id=router_id,  # Router ID
                         router_name=str(),  # Router Name
@@ -185,13 +190,15 @@ class Router(db.Model):
                         allow_scan=int()  # Allow Scan
                     ),
                     'get',  # Operation
-                    model  # Site Model
+                    model_r  # Site Model
             ):
                 # If everything is valid, get the router from the database
                 # Get the router
                 router = Router.query.get(router_id)
                 return router  # Return the router
                 # If everything is valid, get the router from the database
+            else:  # If the router information is not valid
+                raise Exception()  # Raise an exception
         except Exception as e:  # If any other exception occurs
             raise e  # Raise the exception
     # Router - Get Router
