@@ -91,8 +91,9 @@ class Site(db.Model):
                 raise SiteNotFound(
                     new_site.site_id  # Site ID
                 )
-            # Check if the site segment already exists
-            elif Site.query.filter(Site.site_segment == new_site.site_segment).first():
+            # Check if the site segment already exists in other site
+            elif Site.query.filter(Site.site_segment == new_site.site_segment).first() and \
+                    Site.query.filter(Site.site_segment == new_site.site_segment).first().site_id != new_site.site_id:
                 # Raise SiteSameSegment Exception
                 raise SiteSameSegment(
                     site_id=Site.query.filter(Site.site_segment == new_site.site_segment).first().site_id,  # Site ID
@@ -102,8 +103,9 @@ class Site(db.Model):
                 old_site = db.session.query(Site).get(new_site.site_id)
 
                 if old_site.site_name != new_site.site_name:
-                    # Check if the site name already exists
-                    if Site.query.filter(func.lower(Site.site_name) == func.lower(new_site.site_name)).first():
+                    # Check if the site name already exists in other site
+                    if Site.query.filter(func.lower(Site.site_name) == func.lower(new_site.site_name)).first() and \
+                            Site.query.filter(func.lower(Site.site_name) == func.lower(new_site.site_name)).first().site_id != new_site.site_id:
                         # If the site name already exists, raise SiteAlreadyExists Exception
                         raise SiteAlreadyExists(
                             # Site ID
