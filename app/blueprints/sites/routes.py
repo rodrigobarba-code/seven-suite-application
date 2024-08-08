@@ -120,10 +120,10 @@ def delete_site(site_id):
 @restriction.admin_required  # Need to be an admin
 def bulk_delete_site():
     data = request.get_json()  # Get the JSON data
-    sitess_ids = data.get('items_ids', [])  # Get the sites IDs
+    sites_ids = data.get('items_ids', [])  # Get the sites IDs
     try:
         flag = 0  # Set the flag to 0
-        for site_id in sitess_ids:  # Loop through the sites IDs
+        for site_id in sites_ids:  # Loop through the sites IDs
             Site.delete_site(site_id)  # Delete the site
             flag += 1  # Increment the flag
         flash(f'{flag} Sites Deleted Successfully', 'success')  # Flash a success message
